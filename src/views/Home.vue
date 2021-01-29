@@ -1,30 +1,39 @@
 <template>
-  <div class="home">
-    <v-card :loading="loading" class="mx-auto my-12" max-width="374">
-      <template slot="progress">
-        <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-        ></v-progress-linear>
-      </template>
-      <v-img
-        height="250"
-        src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-      ></v-img>
-
-      <v-card-title>Cafe Badilico</v-card-title>
-    </v-card>
-  </div>
+  <v-container fill-height>
+    <v-row class="mb-15">
+      <v-col>
+        <v-card class="pa-2">
+          <v-btn href="/inoutmanage" text>
+            <v-card-title>FE Room control</v-card-title>
+          </v-btn>
+           <v-card-text>FE Room control</v-card-text>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card class="pa-2">
+          <v-btn href="" text>
+            Safety & PPE Room control
+          </v-btn>
+        </v-card>
+      </v-col>
+      <v-col>
+        <v-card class="pa-2">
+          <v-btn href="" text>
+            Equipment & IT Room control
+          </v-btn>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-
 export default {
-  components: {
-
+  data() {
+    return {};
   },
+  components: {},
 };
 </script>
 
-<style></style>
+<style scoped></style>
