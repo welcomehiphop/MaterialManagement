@@ -156,6 +156,11 @@ export default {
       ],
     };
   },
+  methods: {
+    ShareData(id){
+      this.$router.push(`/detailgr/${id}`)
+    }
+  },
 };
 </script>
 <style scoped>

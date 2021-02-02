@@ -101,7 +101,7 @@ const routes = [{
                 component: AddGI
             },
             {
-                path: '/detailgr',
+                path: '/detailgr/:id',
                 name: 'DetailGR',
                 component: DetailGR
             }
