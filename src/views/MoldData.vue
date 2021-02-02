@@ -17,23 +17,51 @@
         <template v-slot:item="{ item }">
           <tr class="mx-2">
             <td>
-              {{
-                data_set
-                  .map(function(x) {
-                    return x.id;
-                  })
-                  .indexOf(item.id) + 1
-              }}
+              <v-layout justify-center>
+                {{
+                  data_set
+                    .map(function(x) {
+                      return x.id;
+                    })
+                    .indexOf(item.id) + 1
+                }}
+              </v-layout>
             </td>
-            <td>{{ item.type }}</td>
             <td>
-              <a href="" @click="ShareData(item.id)">{{ item.spare_code }}</a>
+              <v-layout justify-center>
+                {{ item.type }}
+              </v-layout>
             </td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.safe_stock }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ "Pamorn Sirimak" }}</td>
-            <td>{{ item.plant }}</td>
+            <td>
+              <v-layout justify-center>
+                {{ item.spare_code }}
+              </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>
+                {{ item.description }}
+              </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>
+                {{ item.safe_stock }}
+              </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>
+                {{ item.price }}
+              </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>
+                {{ item.reg_name }}
+              </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>
+                {{ item.plant }}
+              </v-layout>
+            </td>
             <td>
               <img
                 :src="imageUrl + item.picture"
@@ -44,13 +72,6 @@
             </td>
             <td>
               <div class="actionIcon">
-                <a href="/addlocation" class="ml-3"
-                  ><img
-                    src="../assets/add.png"
-                    height="25px"
-                    width="25px"
-                    alt="Image not found"
-                /></a>
                 <a href="" class="ml-3" @click="ShareData(item.id)"
                   ><img
                     src="../assets/edit.png"
@@ -107,15 +128,69 @@ export default {
       imageUrl: "http://localhost:3000/image/",
       data_set: [],
       headers: [
-        { text: "No", value: "No", sortable: false },
-        { text: "Type", value: "type", sortable: false },
-        { text: "Spare Code", value: "spare_code", sortable: false },
-        { text: "Description", value: "description", sortable: false },
-        { text: "Safe Stock", value: "safe_stock", sortable: false },
-        { text: "Price(Bath)", value: "price", sortable: false },
-        { text: "Reg.Name", value: "reg_name", sortable: false },
-        { text: "Plant", value: "plant", sortable: false },
-        { text: "Picture", value: "picture", sortable: false },
+        {
+          text: "No",
+          value: "No",
+          sortable: false,
+          width: "2%",
+          align: "center",
+        },
+        {
+          text: "Type",
+          value: "type",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
+        {
+          text: "Spare Code",
+          value: "spare_code",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
+        {
+          text: "Description",
+          value: "description",
+          sortable: false,
+          width: "20%",
+          align: "center",
+        },
+        {
+          text: "Safe Stock",
+          value: "safe_stock",
+          sortable: false,
+          width: "2%",
+          align: "center",
+        },
+        {
+          text: "Price(Bath)",
+          value: "price",
+          sortable: false,
+          width: "2%",
+          align: "center",
+        },
+        {
+          text: "Reg.Name",
+          value: "reg_name",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
+        {
+          text: "Plant",
+          value: "plant",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
+        {
+          text: "Picture",
+          value: "picture",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
       ],
     };
   },

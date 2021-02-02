@@ -32,6 +32,11 @@ export const esrc_location = {
     delete_location: 'delete_location'
 }
 
+export const esrc_inout = {
+    get_inout_list: 'get_inout_list',
+    post_inout_gr: 'post_inout_gr'
+}
+
 export const test = {
     post_test: 'atp_get_list',
     atp_get_list_update: 'atp_get_list_update'

@@ -15,7 +15,7 @@ import AddGR from '../components/AddGR.vue'
 import AddGI from '../components/AddGI.vue'
 import ItemGR from '../components/ItemGR.vue'
 import MasterData from '../views/MasterData.vue'
-
+import DetailGR from '../components/DetailGR.vue'
 
 Vue.use(VueRouter)
 
@@ -25,13 +25,13 @@ const routes = [{
         component: Home
     },
     {
+        path: '/',
+        redirect: '/home'
+    },
+    {
         path: '/itemgr',
         name: 'ItemGR',
         component: ItemGR
-    },
-    {
-        path: '/',
-        redirect: '/home'
     },
     {
         path: '*',
@@ -99,7 +99,13 @@ const routes = [{
                 path: '/addgi',
                 name: 'AddGI',
                 component: AddGI
+            },
+            {
+                path: '/detailgr',
+                name: 'DetailGR',
+                component: DetailGR
             }
+
         ]
     }
 ]

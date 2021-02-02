@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h1>In-Out Management</h1>
-    <SearchIO/>
+    <SearchIO />
     <v-card class elevation="2 mt-5">
       <v-data-table
         dense
@@ -17,15 +17,56 @@
       >
         <template v-slot:item="{ item }">
           <tr class="mx-2">
-            <td>{{data_set.map(function(x) {return x.id; }).indexOf(item.id) + 1}}</td>
-            <td>{{ item.spare_code }}</td>
-            <td>{{ item.movement }}</td>
-            <td>{{ item.spare_name }}</td>
-            <td>{{ item.locaiton }}</td>
-            <td>{{ item.qty }}</td>
-            <td>{{ item.reg_name }}</td>
-            <td>{{ item.reg_date }}</td>
-            <td>{{ item.plant }}</td>
+            <td>
+              <v-layout justify-center>
+                {{
+                  data_set
+                    .map(function(x) {
+                      return x.id;
+                    })
+                    .indexOf(item.id) + 1
+                }}
+              </v-layout>
+            </td>
+
+            <td>
+              <v-layout justify-center> {{ item.spare_code }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.movement }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.description }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.location_code }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.qty }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.reg_name }}</v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.reg_date }} </v-layout>
+            </td>
+            <td>
+              <v-layout justify-center>{{ item.plant }}</v-layout>
+            </td>
+            <td>
+              <div class="actionIcon">
+                <a href="" class="ml-3" @click="ShareData(item.id)"
+                  ><img
+                    class="mr-4"
+                    src="../assets/reviews.png"
+                    height="40px"
+                    width="40px"
+                    alt="Image not found"
+                  />
+                  <div class="mr-3">Detail</div></a
+                >
+              </div>
+            </td>
           </tr>
         </template>
       </v-data-table>
@@ -34,27 +75,92 @@
 </template>
 
 <script>
-import SearchIO from '../components/SearchIO'
+import api from "@/services/api";
+import SearchIO from "../components/SearchIO";
 export default {
+  async mounted() {
+    const result = await api.getInout();
+    this.data_set = result;
+  },
   name: "Home",
   components: {
-    SearchIO
+    SearchIO,
   },
   data() {
     return {
       data_set: [],
       headers: [
-        { text: "No", value: "No", sortable: false },
-        { text: "Spare Code", value: "spare_code", sortable: false },
-        { text: "Movement", value: "movement", sortable: false },
-        { text: "Spare Name", value: "spare_name", sortable: false },
-        { text: "Location", value: "location", sortable: false },
-        { text: "Qty", value: "qty", sortable: false },
-        { text: "Reg.Name", value: "reg_name", sortable: false },
-        { text: "Reg.Date", value: "reg_date", sortable: false },
-        { text: "Plant", value: "plant", sortable: false },
+        {
+          text: "No",
+          value: "No",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
+        {
+          text: "Spare Code",
+          value: "spare_code",
+          sortable: false,
+          width: "15%",
+          align: "center",
+        },
+        {
+          text: "Movement",
+          value: "movement",
+          sortable: false,
+          width: "1%",
+          align: "center",
+        },
+        {
+          text: "Spare Name",
+          value: "spare_name",
+          sortable: false,
+          width: "15%",
+          align: "center",
+        },
+        {
+          text: "Location",
+          value: "location",
+          sortable: false,
+          width: "15%",
+          align: "center",
+        },
+        {
+          text: "Qty",
+          value: "qty",
+          sortable: false,
+          width: "1%",
+          align: "center",
+        },
+        {
+          text: "Reg.Name",
+          value: "reg_name",
+          sortable: false,
+          align: "center",
+          width: "15%",
+        },
+        {
+          text: "Reg.Date",
+          value: "reg_date",
+          sortable: false,
+          width: "15%",
+          align: "center",
+        },
+        {
+          text: "Plant",
+          value: "plant",
+          sortable: false,
+          width: "10%",
+          align: "center",
+        },
       ],
     };
   },
 };
 </script>
+<style scoped>
+.actionIcon {
+  margin: 1rem;
+  text-align: center;
+}
+</style>

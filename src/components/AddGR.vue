@@ -1,13 +1,26 @@
 <template>
   <v-container>
     <h2>GR Register</h2>
+    {{ locations }}
+    {{ $store.state.selected }}
+    {{ $store.state.type }}
+    {{ $store.state.spare_name }}
+    {{ $store.state.spare_code }}
     <v-form>
       <v-row>
         <v-col cols="4">
-          <v-text-field label="Spare Code * " />
+          <v-text-field v-model="spare_code" label="Spare Code * " readonly />
         </v-col>
         <v-col cols="4 mt-4">
-          <v-btn href="/itemGR" class="mx-2" small dark color="primary" fab>
+          <v-btn
+            class="mx-2"
+            small
+            dark
+            color="primary"
+            fab
+            @click.stop="showScheduleForm = true"
+          >
+            <ScheduleForm v-model="showScheduleForm" />
             <v-icon dark>
               mdi-magnify
             </v-icon>
@@ -16,25 +29,50 @@
       </v-row>
       <v-row>
         <v-col cols="4">
-          <v-text-field label="Spare Type * "></v-text-field>
+          <v-text-field
+            v-model="type"
+            label="Spare Type * "
+            readonly
+          ></v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
         <v-col cols="5">
-          <v-text-field label="Spare Name * "></v-text-field>
+          <v-text-field
+            v-model="spare_name"
+            label="Spare Name * "
+            readonly
+          ></v-text-field>
         </v-col>
       </v-row>
-      <v-text-field label="Purpose * "> </v-text-field>
+      <v-text-field v-model="form.purpose" label="Purpose * "> </v-text-field>
       <v-row>
         <v-col cols="4">
-          <v-text-field label="PO * "></v-text-field>
+          <v-text-field v-model="form.po" label="PO * "></v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
-        <v-col cols="5">
-          <v-text-field label="GR Date * "></v-text-field>
+        <v-col cols="3">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="form.gr_date"
+                label="GR Date * "
+                v-bind="attrs"
+                v-on="on"
+                prepend-icon="mdi-calendar-month-outline"
+              />
+            </template>
+            <v-date-picker v-model="form.gr_date"></v-date-picker>
+          </v-menu>
         </v-col>
       </v-row>
-      <v-text-field label="Qty * "></v-text-field>
-      <v-select label="Location * "></v-select>
+      <v-text-field v-model="form.qty" label="Qty * "></v-text-field>
+      <v-select
+        v-model="form.location"
+        :items="locations"
+        item-text="location_code"
+        item-value="location_code"
+        label="Location * "
+      ></v-select>
       <div class="text-right">
         <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit">
           Submit
@@ -43,7 +81,7 @@
       <h2>Register Infor</h2>
       <v-row>
         <v-col cols="3">
-          <v-text-field label="Name">PA</v-text-field>
+          <v-text-field v-model="form.gr_emp" label="Name">PA</v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
         <v-col cols="3">
@@ -55,7 +93,63 @@
 </template>
 
 <script>
-export default {};
+import api from "@/services/api";
+import ScheduleForm from "../components/ScheduleForm";
+export default {
+  async mounted() {
+    const result = await api.getLocation();
+    this.locations = result;
+  },
+  data() {
+    return {
+      form: {
+        purpose: "",
+        po: "",
+        gr_date: new Date().toISOString().substr(0, 10),
+        qty: "",
+        location: "",
+        gr_emp: "Pamorn Sirimak",
+      },
+      locations: [],
+      showScheduleForm: false,
+    };
+  },
+  components: {
+    ScheduleForm,
+  },
+  methods: {
+    async submit() {
+      let data = {
+        spare_code : this.spare_code,
+        purpose : this.form.purpose,
+        po : this.form.po,
+        reg_date : this.form.gr_date,
+        qty : this.form.qty,
+        location: this.form.location,
+        reg_name: this.form.gr_emp,
+        movement : "GR"
+      }
+      await api.postInoutGR(data)
+    },
+  },
+  computed: {
+    spare_code: {
+      get() {
+        return this.$store.state.spare_code;
+      },
+    },
+    spare_name: {
+      get() {
+        return this.$store.state.spare_name;
+      },
+    },
+    type: {
+      get() {
+        return this.$store.state.type;
+      },
+    },
+  },
+};
 </script>
 
 <style></style>

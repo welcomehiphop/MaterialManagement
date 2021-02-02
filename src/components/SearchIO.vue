@@ -52,15 +52,15 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="1" class="mr-10">
-        <v-btn>
+        <v-btn class="elevation-5">
           Search
         </v-btn>
       </v-col>
       <v-col cols="2">
-        <v-btn class="pa-5 mr-5" href="/addgr" color="success">
+        <v-btn class="pa-6 mr-5" href="/addgr" color="success">
           GR
         </v-btn>
-        <v-btn class="pa-5" href="/addgi" color="success">
+        <v-btn class="pa-6" href="/addgi" color="success">
           GI
         </v-btn>
       </v-col>
@@ -72,6 +72,7 @@
 export default {
   data() {
     return {
+      search:'',
       selectMovement: { movement: "All", value: "All" },
       selectPlant: { plant: "All", value: "All" },
       plants: [
