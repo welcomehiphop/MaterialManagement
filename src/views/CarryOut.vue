@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <h1>Carry Out</h1>
-
-    <v-card class elevation="2 mt-10">
+    <SearchCarryOut/>
+    <v-card class elevation="2 ma-10">
       <v-data-table
         dense
         :headers="headers"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-
+import SearchCarryOut from '../components/SearchCarryOut'
 export default {
   data() {
     return {
@@ -56,7 +56,7 @@ export default {
     };
   },
   components: {
-
+    SearchCarryOut
   },
 };
 </script>

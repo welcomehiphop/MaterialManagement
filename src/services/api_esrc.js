@@ -49,12 +49,21 @@ export const getInout = async() => {
     return result.data
 }
 
+export const getInoutByID = async(id) => {
+    let result = await httpClient.get(esrc_inout.get_inout_list + "/" + `${id}`)
+    return result.data
+}
+
 export const postInoutGR = async(data) => {
-    let result = await httpClient.post(esrc_inout.post_inout_gr, data).then((resp => {
+    await httpClient.post(esrc_inout.post_inout_gr, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS");
             router.push("/inoutmanage")
         }
     }))
+}
+
+export const getApprover = async() => {
+    let result = await httpClient.get(esrc_inout.get_approve_list)
     return result.data
 }

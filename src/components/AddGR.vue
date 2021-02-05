@@ -1,11 +1,6 @@
 <template>
   <v-container>
     <h2>GR Register</h2>
-    {{ locations }}
-    {{ $store.state.selected }}
-    {{ $store.state.type }}
-    {{ $store.state.spare_name }}
-    {{ $store.state.spare_code }}
     <v-form>
       <v-row>
         <v-col cols="4">
@@ -81,11 +76,11 @@
       <h2>Register Infor</h2>
       <v-row>
         <v-col cols="3">
-          <v-text-field v-model="form.gr_emp" label="Name">PA</v-text-field>
+          <v-text-field v-model="form.gr_empName" label="Name">PA</v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
         <v-col cols="3">
-          <v-text-field label="EmpNo."></v-text-field>
+          <v-text-field v-model="form.gr_empNo" label="EmpNo."></v-text-field>
         </v-col>
       </v-row>
     </v-form>
@@ -108,7 +103,8 @@ export default {
         gr_date: new Date().toISOString().substr(0, 10),
         qty: "",
         location: "",
-        gr_emp: "Pamorn Sirimak",
+        gr_empName: "Pamorn Sirimak",
+        gr_empNo: "20528906"
       },
       locations: [],
       showScheduleForm: false,
@@ -126,7 +122,7 @@ export default {
         reg_date : this.form.gr_date,
         qty : this.form.qty,
         location: this.form.location,
-        reg_name: this.form.gr_emp,
+        reg_empno: this.form.gr_empNo,
         movement : "GR"
       }
       await api.postInoutGR(data)

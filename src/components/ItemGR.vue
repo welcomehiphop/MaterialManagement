@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <h2>Spare List:</h2>
-    {{$store.state.selected}}
     <v-card class="mt-10">
       <v-row justify="center" align="center">
         <v-col cols="3">

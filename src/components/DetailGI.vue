@@ -2,7 +2,7 @@
   <v-container>
     <div v-for="(item, id) in data_set" :key="id">
       <v-card class="pa-5">
-        <h2>GR Detail</h2>
+        <h2>GI Detail</h2>
         <v-form>
           <v-row>
             <v-col cols="4">
@@ -34,14 +34,6 @@
           <v-text-field v-model="item.purpose" label="Purpose * " readonly>
           </v-text-field>
           <v-row>
-            <v-col cols="4">
-              <v-text-field
-                v-model="item.po"
-                label="PO * "
-                readonly
-              ></v-text-field>
-            </v-col>
-            <v-col cols="1"></v-col>
             <v-col cols="3">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">

@@ -37,8 +37,8 @@
       ></v-text-field>
 
        <v-text-field
-        v-model="form.reg_name"
-        label="Reg Name *"
+        v-model="form.reg_empno"
+        label="Reg No *"
         required
       ></v-text-field>
 
@@ -79,7 +79,7 @@ export default {
         price: "",
         safeStock: "",
         description: "",
-        reg_name:"",
+        reg_empno:"",
       },
       types: [
         {type:"Select Type",value:"undefined"},
@@ -120,7 +120,7 @@ export default {
       bodyFormData.append("price", this.form.price);
       bodyFormData.append("safe_stock", this.form.safeStock);
       bodyFormData.append("type", this.form.selectType.value);
-      bodyFormData.append("reg_name",this.form.reg_name)
+      bodyFormData.append("reg_empno",this.form.reg_empno)
       // bodyFormData.append("action", this.form.action);
       // bodyFormData.append("dateAndTime", this.timestamp);
       // bodyFormData.append("status", "Finish");

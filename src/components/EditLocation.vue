@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <h2>Location Detail</h2>
-    {{ data_set }}
     <form>
       <div v-for="(list, id) in data_set" :key="id" class="mt-5">
         <v-select

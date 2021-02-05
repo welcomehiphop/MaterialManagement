@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <h2>Spare Part Detail</h2>
-
     <form>
       <div v-for="(list, index) in data_set" :key="index" class="mt-5">
         <v-select

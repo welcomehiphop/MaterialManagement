@@ -2,7 +2,7 @@
   <v-container>
     <h1>Mold Data</h1>
     <SearchSpare />
-    <v-card class="elevation-2 mt-10">
+    <v-card class="elevation-2 ma-10">
       <v-data-table
         :headers="headers"
         :items="data_set"
@@ -181,7 +181,7 @@ export default {
           text: "Plant",
           value: "plant",
           sortable: false,
-          width: "10%",
+          width: "1%",
           align: "center",
         },
         {

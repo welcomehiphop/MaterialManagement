@@ -14,12 +14,18 @@ import EditLocation from '../components/EditLocation.vue'
 import AddGR from '../components/AddGR.vue'
 import AddGI from '../components/AddGI.vue'
 import ItemGR from '../components/ItemGR.vue'
-import MasterData from '../views/MasterData.vue'
 import DetailGR from '../components/DetailGR.vue'
+import DetailGI from '../components/DetailGI.vue'
+import RequestCarry from '../components/RequestCarry.vue'
+import TestVuex from '../views/TestVuex.vue'
 
 Vue.use(VueRouter)
 
 const routes = [{
+        path: '/testvuex',
+        name: 'TestVuex',
+        component: TestVuex
+    }, {
         path: '/home',
         name: 'Home',
         component: Home
@@ -36,11 +42,6 @@ const routes = [{
     {
         path: '*',
         redirect: '/home'
-    },
-    {
-        path: '/masterdata',
-        name: 'MasterData',
-        component: MasterData
     },
     {
         path: '/Menu',
@@ -104,6 +105,17 @@ const routes = [{
                 path: '/detailgr/:id',
                 name: 'DetailGR',
                 component: DetailGR
+            },
+            {
+
+                path: '/detailgi/:id',
+                name: 'DetailGI',
+                component: DetailGI
+            },
+            {
+                path: '/requestcarry',
+                name: 'Request',
+                component: RequestCarry
             }
 
         ]
