@@ -1,11 +1,11 @@
 const state = {
-    carrier: {
+    spare: {
 
     }
 }
 
 const getters = {
-    getCarrier: state => state.carrier
+    getSpare: state => state.spare
 }
 
 const actions = {
@@ -13,8 +13,8 @@ const actions = {
 }
 
 const mutations = {
-    setCarrier(state, carrier) {
-        state.carrier = carrier
+    setSpare(state, spare) {
+        state.spare = spare
     }
 }
 

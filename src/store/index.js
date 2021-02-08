@@ -31,6 +31,6 @@ export default new Vuex.Store({
     },
     modules: {
         approver,
-        carrier
+        carrier,
     }
 })

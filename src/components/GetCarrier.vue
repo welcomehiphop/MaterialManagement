@@ -2,7 +2,6 @@
   <v-dialog v-model="show" max-width="500px" scrollable>
     <v-card class="pa-10">
       <h2>Select Carrier</h2>
-      +++++++++++++++++++++++{{getCarrier}}
       <v-card class="ma-5">
         <div>
           <v-row>
@@ -107,7 +106,6 @@ export default {
     onClick(item) {
       this.setCarrier(item)
       this.show = false;
-      console.log(this.getCarrier)
     },
   },
 };

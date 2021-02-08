@@ -3,6 +3,7 @@
     <h2>Request Carry Out</h2>
     <!-- Approveal Process Form -->
     <v-card class="mt-5">
+      
       <v-card-title>Approval Process</v-card-title>
       <v-form>
         <v-data-table
@@ -98,9 +99,9 @@
     </v-card>
 
     <!-- Request Detail form -->
-    <v-card class="mt-5">
-      --------{{getCarrier}}
+    <v-card class="mt-5"> 
       <v-card-title>Request Detail</v-card-title>
+      {{getCarrier}}
       <v-form>
         <v-row align-content="center" justify="center">
           <v-col cols="1">
@@ -169,8 +170,9 @@
             <v-text-field
               outlined
               dense
-              disabled
-              reqDetail.carrier
+              readonly
+              v-bind="reqDetail.carrier"
+              v-model="getCarrier.emp_name"
             ></v-text-field>
           </v-col>
           <v-col cols="1">
@@ -183,7 +185,7 @@
               @click.stop="showGetCarrier = true"
             >
             <!-- add dialog here -->
-            <GetCarrier v-model="showGetCarrier" />
+             <GetCarrier v-model="showGetCarrier" />
               <v-icon dark>
                 mdi-magnify
               </v-icon>
@@ -196,8 +198,8 @@
             <v-text-field
               outlined
               dense
-              disabled
-              v-model="reqDetail.department"
+              readonly
+              v-model="getCarrier.department"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -343,16 +345,16 @@
 <script>
 import { mapGetters } from "vuex";
 import GetApprove from "./GetApprove";
-import GetCarrier from './GetCarrier'
+import GetCarrier from "./GetCarrier"
 export default {
   methods: {
     onSubmit() {
       console.log(this.selectedFile);
-      // console.log(this.approveProcess.req);
-      // console.log(this.approveProcess.approve);
-      // console.log(this.reqDetail);
-      // console.log(this.spares);
-      // console.log(this.files);
+      console.log(this.approveProcess.req);
+      console.log(this.approveProcess.approve);
+      console.log(this.reqDetail);
+      console.log(this.spares);
+      console.log(this.files);
     },
     onFileSelected(event) {
       this.selectedFile = event.target.files;
@@ -487,7 +489,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getApprover"],["getCarrier"]),
+    ...mapGetters(["getApprover"]),
+    ...mapGetters(["getCarrier"])
   },
   components: {
     GetApprove,
