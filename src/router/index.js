@@ -18,6 +18,9 @@ import DetailGR from '../components/DetailGR.vue'
 import DetailGI from '../components/DetailGI.vue'
 import RequestCarry from '../components/RequestCarry.vue'
 import TestVuex from '../views/TestVuex.vue'
+import PPERoom from '../components/PPERoom.vue'
+import Equipment from '../components/Equipment.vue'
+import FERoom from '../components/FERoom.vue'
 
 Vue.use(VueRouter)
 
@@ -116,8 +119,22 @@ const routes = [{
                 path: '/requestcarry',
                 name: 'Request',
                 component: RequestCarry
+            },
+            {
+                path: '/pperoom',
+                name: 'PPERoom',
+                component: PPERoom
+            },
+            {
+                path: '/equipment',
+                name: 'Equipment',
+                component: Equipment
+            },
+            {
+                path: '/feroom',
+                name: 'FERoom',
+                component: FERoom
             }
-
         ]
     }
 ]

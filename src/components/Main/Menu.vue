@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     onClickMenu(menu) {
-      this.$router.push(menu);
+      this.$router.push(menu).catch(()=>{});
     },
   },
 };

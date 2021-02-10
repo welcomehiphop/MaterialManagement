@@ -67,3 +67,8 @@ export const getApprover = async() => {
     let result = await httpClient.get(esrc_inout.get_approve_list)
     return result.data
 }
+
+export const getSparePart = async() => {
+    let result = await httpClient.get(esrc_inout.get_spare_list)
+    return result.data
+}

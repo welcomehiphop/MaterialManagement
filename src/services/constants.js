@@ -35,7 +35,8 @@ export const esrc_location = {
 export const esrc_inout = {
     get_inout_list: 'get_inout_list',
     post_inout_gr: 'post_inout_gr',
-    get_approve_list: 'get_approve_list'
+    get_approve_list: 'get_approve_list',
+    get_spare_list: 'get_spare_list'
 }
 
 

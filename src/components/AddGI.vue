@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h2>GR Register</h2>
+    <h2>GI Register</h2>
     <v-form>
       <v-row>
         <v-col cols="4">

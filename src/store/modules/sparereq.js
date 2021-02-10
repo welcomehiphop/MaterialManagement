@@ -1,7 +1,6 @@
 const state = {
-    spare: {
+    spare: []
 
-    }
 }
 
 const getters = {
@@ -14,7 +13,10 @@ const actions = {
 
 const mutations = {
     setSpare(state, spare) {
-        state.spare = spare
+        state.spare.push(spare)
+    },
+    deSpare(state) {
+        state.spare.pop()
     }
 }
 
