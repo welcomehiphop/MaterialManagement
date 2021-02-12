@@ -23,7 +23,6 @@
 export default {
   methods:{
     onClick(path){
-      console.log(path)
        this.$router.push(path).catch(()=>{});
     }
   },

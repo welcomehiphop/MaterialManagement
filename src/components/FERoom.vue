@@ -22,6 +22,7 @@
                 v-for="(stock, key) in stocks[index]"
                 :key="key"
               >
+
                 {{ stock.location_code }}
               </v-card>
             </v-card>
@@ -33,13 +34,18 @@
 </template>
 
 <script>
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
-  async mounted() {
+  components: {
+  },
+  async created() {
     await this.fetchStocks();
-    this.stocks.push(this.getStocks)
+    this.stocks = this.getStocks;
   },
   methods: {
+    onClickStock(stock) {
+      console.log(stock);
+    },
     ...mapActions(["fetchStocks"]),
     onClick(item) {
       console.log(item);
