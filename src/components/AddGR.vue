@@ -4,7 +4,11 @@
     <v-form>
       <v-row>
         <v-col cols="4">
-          <v-text-field v-model="spare_code" label="Spare Code * " readonly />
+          <v-text-field
+            label="Spare Code * "
+            v-model="allSpare.spare_code"
+            readonly
+          />
         </v-col>
         <v-col cols="4 mt-4">
           <v-btn
@@ -25,7 +29,7 @@
       <v-row>
         <v-col cols="4">
           <v-text-field
-            v-model="type"
+            v-model="allSpare.type"
             label="Spare Type * "
             readonly
           ></v-text-field>
@@ -33,7 +37,7 @@
         <v-col cols="1"></v-col>
         <v-col cols="5">
           <v-text-field
-            v-model="spare_name"
+            v-model="allSpare.description"
             label="Spare Name * "
             readonly
           ></v-text-field>
@@ -90,6 +94,7 @@
 <script>
 import api from "@/services/api";
 import ScheduleForm from "../components/ScheduleForm";
+import { mapGetters } from "vuex";
 export default {
   async mounted() {
     const result = await api.getLocation();
@@ -104,7 +109,7 @@ export default {
         qty: "",
         location: "",
         gr_empName: "Pamorn Sirimak",
-        gr_empNo: "20528906"
+        gr_empNo: "20528906",
       },
       locations: [],
       showScheduleForm: false,
@@ -116,34 +121,20 @@ export default {
   methods: {
     async submit() {
       let data = {
-        spare_code : this.spare_code,
-        purpose : this.form.purpose,
-        po : this.form.po,
-        reg_date : this.form.gr_date,
-        qty : this.form.qty,
+        spare_code: this.allSpare.spare_code,
+        purpose: this.form.purpose,
+        po: this.form.po,
+        reg_date: this.form.gr_date,
+        qty: this.form.qty,
         location: this.form.location,
         reg_empno: this.form.gr_empNo,
-        movement : "GR"
-      }
-      await api.postInoutGR(data)
+        movement: "GR",
+      };
+      await api.postInoutGR(data);
     },
   },
   computed: {
-    spare_code: {
-      get() {
-        return this.$store.state.spare_code;
-      },
-    },
-    spare_name: {
-      get() {
-        return this.$store.state.spare_name;
-      },
-    },
-    type: {
-      get() {
-        return this.$store.state.type;
-      },
-    },
+    ...mapGetters(["allSpare"]),
   },
 };
 </script>

@@ -43,6 +43,7 @@
 
 <script>
 import api from "@/services/api";
+import { mapMutations } from 'vuex';
 
 export default {
   async mounted() {
@@ -72,12 +73,11 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['setSelected']),
     onClick(item) {
-      this.$store.commit("setSelected", item.id);
-      this.$store.commit("setSpareName", item.description);
-      this.$store.commit("setSpareCode", item.spare_code);
-      this.$store.commit("setType", item.type);
+      this.setSelected(item),
       this.show = false;
+
     },
   },
 };

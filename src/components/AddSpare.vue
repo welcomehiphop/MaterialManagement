@@ -36,11 +36,11 @@
         required
       ></v-text-field>
 
-       <v-text-field
+       <!-- <v-text-field
         v-model="form.reg_empno"
         label="Reg No *"
         required
-      ></v-text-field>
+      ></v-text-field> -->
 
       <v-select
         v-model="form.selectType"
@@ -120,7 +120,7 @@ export default {
       bodyFormData.append("price", this.form.price);
       bodyFormData.append("safe_stock", this.form.safeStock);
       bodyFormData.append("type", this.form.selectType.value);
-      bodyFormData.append("reg_empno",this.form.reg_empno)
+      bodyFormData.append("reg_empno","20528906")
       // bodyFormData.append("action", this.form.action);
       // bodyFormData.append("dateAndTime", this.timestamp);
       // bodyFormData.append("status", "Finish");

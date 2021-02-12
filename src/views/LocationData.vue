@@ -73,7 +73,7 @@ export default {
           sortable: false,
         },
         {
-          text: "Locatino Name",
+          text: "location Name",
           value: "location_name",
           sortable: false,
         },

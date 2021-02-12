@@ -4,7 +4,7 @@
     <v-form>
       <v-row>
         <v-col cols="4">
-          <v-text-field v-model="spare_code" label="Spare Code * " readonly />
+          <v-text-field v-model="allSpare.spare_code" label="Spare Code * " readonly />
         </v-col>
         <v-col cols="4 mt-4">
           <v-btn
@@ -25,7 +25,7 @@
       <v-row>
         <v-col cols="4">
           <v-text-field
-            v-model="type"
+            v-model="allSpare.type"
             label="Spare Type * "
             readonly
           ></v-text-field>
@@ -33,7 +33,7 @@
         <v-col cols="1"></v-col>
         <v-col cols="5">
           <v-text-field
-            v-model="spare_name"
+            v-model="allSpare.description"
             label="Spare Name * "
             readonly
           ></v-text-field>
@@ -86,6 +86,7 @@
 <script>
 import api from "@/services/api";
 import ScheduleForm from "../components/ScheduleForm";
+import { mapGetters } from 'vuex';
 export default {
   async mounted() {
     const result = await api.getLocation();
@@ -111,7 +112,7 @@ export default {
   methods: {
     async submit() {
       let data = {
-        spare_code : this.spare_code,
+        spare_code : this.allSpare.spare_code,
         purpose : this.form.purpose,
         po : "",
         reg_date : this.form.gr_date,
@@ -124,21 +125,7 @@ export default {
     },
   },
   computed: {
-    spare_code: {
-      get() {
-        return this.$store.state.spare_code;
-      },
-    },
-    spare_name: {
-      get() {
-        return this.$store.state.spare_name;
-      },
-    },
-    type: {
-      get() {
-        return this.$store.state.type;
-      },
-    },
+    ...mapGetters(["allSpare"]),
   },
 };
 </script>

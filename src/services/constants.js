@@ -39,6 +39,10 @@ export const esrc_inout = {
     get_spare_list: 'get_spare_list'
 }
 
+export const esrc_monitoring = {
+    get_fe_monitoring : 'get_fe_monitoring'
+}
+
 
 
 export const test = {

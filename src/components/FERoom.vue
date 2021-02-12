@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2 class="mt-4">FE Room</h2>
+    <!-- {{ getStocks }} -->
     <v-container class="pa-10 mt-4">
       <v-row>
         <v-col>
@@ -16,12 +17,12 @@
                 </v-layout>
               </v-card-title>
               <v-card
-                :color="getColor(stock.total, stock.safeStock)"
+                :color="getColor(stock.qty, stock.safe_stock)"
                 class="item"
                 v-for="(stock, key) in stocks[index]"
                 :key="key"
               >
-                {{ stock.stock }}
+                {{ stock.location_code }}
               </v-card>
             </v-card>
           </div>
@@ -32,8 +33,14 @@
 </template>
 
 <script>
+import { mapGetters,mapActions } from "vuex";
 export default {
+  async mounted() {
+    await this.fetchStocks();
+    this.stocks.push(this.getStocks)
+  },
   methods: {
+    ...mapActions(["fetchStocks"]),
     onClick(item) {
       console.log(item);
     },
@@ -43,50 +50,11 @@ export default {
       else if (total < safeStock) return "red";
     },
   },
+  computed: mapGetters(["getStocks"]),
+
   data() {
     return {
-      stocks: [
-        [
-          { id: "1", stock: "StockA-1", total: 5, safeStock: 5 },
-          { id: "2", stock: "StockA-2", total: 1, safeStock: 4 },
-          { id: "3", stock: "StockA-3" },
-          { id: "4", stock: "StockA-4" },
-          { id: "5", stock: "StockA-5" },
-          { id: "6", stock: "StockA-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-      ],
+      stocks: [],
       items: [
         { id: "1", param: "FE-01" },
         { id: "2", param: "FE-02" },

@@ -14,6 +14,7 @@
         }"
         :items-per-page="20"
       >
+      
         <template v-slot:item="{ item }">
           <tr class="mx-2">
             <td>
@@ -54,7 +55,7 @@
             </td>
             <td>
               <v-layout justify-center>
-                {{ item.reg_name }}
+                Pamorn Sirimak
               </v-layout>
             </td>
             <td>
