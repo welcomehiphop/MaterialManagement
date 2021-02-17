@@ -1,28 +1,23 @@
 <template>
   <div>
     <h2 class="mt-4">FE Room</h2>
-    <!-- {{ getStocks }} -->
+
     <v-container class="pa-10 mt-4">
       <v-row>
         <v-col>
           <div class="todos">
-            <v-card
-              class="todo pb-5"
-              v-for="(item, index) in items"
-              :key="index"
-            >
+            <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  {{ item.param }}
+                  FE-01
                 </v-layout>
               </v-card-title>
               <v-card
-                :color="getColor(stock.qty, stock.safe_stock)"
                 class="item"
-                v-for="(stock, key) in stocks[index]"
+                v-for="(stock, key) in stocks"
                 :key="key"
+                :color="getColor(stock.location_code, getFeSpares)"
               >
-
                 {{ stock.location_code }}
               </v-card>
             </v-card>
@@ -36,30 +31,35 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  components: {
-  },
+  components: {},
   async created() {
     await this.fetchStocks();
+    await this.fetchFeSpares();
     this.stocks = this.getStocks;
   },
   methods: {
+    getColor(location, status) {
+      if (location == "StockA-01") {
+        if(status == undefined) return "#909090"
+        for(let i=0;i< status.length ;i++){
+          if(status[i].status == 'NG') return "red"
+          else return "green"
+        }
+      }
+    },
+    getSpareData(item) {
+      console.log(item);
+    },
     onClickStock(stock) {
       console.log(stock);
     },
-    ...mapActions(["fetchStocks"]),
-    onClick(item) {
-      console.log(item);
-    },
-    getColor(total, safeStock) {
-      if (total == undefined || safeStock == undefined) return "#909090";
-      if (total >= safeStock) return "green";
-      else if (total < safeStock) return "red";
-    },
+    ...mapActions(["fetchStocks", "fetchFeSpares"]),
   },
-  computed: mapGetters(["getStocks"]),
+  computed: mapGetters(["getStocks", "getFeSpares"]),
 
   data() {
     return {
+      color: "",
       stocks: [],
       items: [
         { id: "1", param: "FE-01" },
