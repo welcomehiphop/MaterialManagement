@@ -2,33 +2,30 @@ import api from "@/services/api";
 
 const state = {
     stocks: [],
-
+    feSpares: []
 };
 
 const getters = {
     getStocks: state => state.stocks,
+    getFeSpares: state => state.feSpares
 };
 
 const actions = {
     async fetchStocks({ commit }) {
-        let data = []
         const result = await api.getFeRoom('%StockA%');
-        const result2 = await api.getFeRoom('%StockB%');
-        const result3 = await api.getFeRoom('%StockC%');
-        const result4 = await api.getFeRoom('%StockD%');
-        const result5 = await api.getFeRoom('%StockE%');
-        data.push(result.data)
-        data.push(result2.data)
-        data.push(result3.data)
-        data.push(result4.data)
-        data.push(result5.data)
-        commit('setStocks', data);
+        commit('setStocks', result.data);
+    },
+    async fetchFeSpares({ commit }) {
+        const result = await api.getFeSpare('%StockA%');
+        commit('setFeSpares', result.data);
     },
 }
 
 const mutations = {
-    setStocks: (state, stocks) => (state.stocks = stocks)
-};
+    setStocks: (state, stocks) => (state.stocks = stocks),
+    setFeSpares: (state, feSpares) => (state.feSpares = feSpares),
+
+}
 
 export default {
     state,

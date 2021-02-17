@@ -63,6 +63,14 @@ export const postInoutGR = async(data) => {
     }))
 }
 
+export const postInoutStock = async(data) => {
+    await httpClient.post(esrc_inout.post_inout_stock,data)
+}
+
+export const UpdateInoutStock = async(data) =>{
+    await httpClient.put(esrc_inout.update_stock_qty,data)
+}
+
 export const getApprover = async() => {
     let result = await httpClient.get(esrc_inout.get_approve_list)
     return result.data

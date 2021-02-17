@@ -36,11 +36,15 @@ export const esrc_inout = {
     get_inout_list: 'get_inout_list',
     post_inout_gr: 'post_inout_gr',
     get_approve_list: 'get_approve_list',
-    get_spare_list: 'get_spare_list'
+    get_spare_list: 'get_spare_list',
+    post_inout_stock : 'post_inout_stock',
+    update_stock_qty : 'update_stock_qty'
 }
 
 export const esrc_monitoring = {
-    get_fe_monitoring : 'get_fe_monitoring'
+    get_fe_monitoring : 'get_fe_monitoring',
+    get_fe_spare : 'get_fe_spare',
+    get_stock_qty : 'get_stock_qty'
 }
 
 

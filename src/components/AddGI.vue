@@ -4,7 +4,11 @@
     <v-form>
       <v-row>
         <v-col cols="4">
-          <v-text-field v-model="allSpare.spare_code" label="Spare Code * " readonly />
+          <v-text-field
+            v-model="allSpare.spare_code"
+            label="Spare Code * "
+            readonly
+          />
         </v-col>
         <v-col cols="4 mt-4">
           <v-btn
@@ -65,7 +69,7 @@
         label="Location * "
       ></v-select>
       <div class="text-right">
-        <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit">
+        <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit()">
           Submit
         </v-btn>
       </div>
@@ -86,7 +90,7 @@
 <script>
 import api from "@/services/api";
 import ScheduleForm from "../components/ScheduleForm";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   async mounted() {
     const result = await api.getLocation();
@@ -100,7 +104,7 @@ export default {
         qty: "",
         location: "",
         gr_empName: "Pamorn Sirimak",
-        gr_empNo: "20528906"
+        gr_empNo: "20528906",
       },
       locations: [],
       showScheduleForm: false,
@@ -122,6 +126,18 @@ export default {
         movement : "GI"
       }
       await api.postInoutGR(data)
+      let result = await api.getStockQty(
+        this.allSpare.spare_code,
+        this.form.location
+      );
+      if (result.data[0] != null) {
+        let dataUpdate = {
+          spare_code: this.allSpare.spare_code,
+          location_code: this.form.location,
+          qty: parseInt(result.data[0].qty) - parseInt(this.form.qty),
+        };
+        await api.UpdateInoutStock(dataUpdate);
+      }
     },
   },
   computed: {

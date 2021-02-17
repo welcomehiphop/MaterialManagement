@@ -131,6 +131,26 @@ export default {
         movement: "GR",
       };
       await api.postInoutGR(data);
+
+      let result = await api.getStockQty(
+        this.allSpare.spare_code,
+        this.form.location
+      );
+      if (result.data[0] != null) {
+        let dataUpdate = {
+          spare_code: this.allSpare.spare_code,
+          location_code: this.form.location,
+          qty: parseInt(this.form.qty) + parseInt(result.data[0].qty),
+        };
+        await api.UpdateInoutStock(dataUpdate);
+      } else {
+        let data_stock = {
+          spare_code: this.allSpare.spare_code,
+          location_code: this.form.location,
+          qty: this.form.qty,
+        };
+        await api.postInoutStock(data_stock);
+      }
     },
   },
   computed: {
