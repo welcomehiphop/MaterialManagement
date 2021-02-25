@@ -3,8 +3,8 @@ import { esrc, esrc_inout } from "@/services/constants";
 import { esrc_location } from "@/services/constants"
 import router from "@/router";
 
-export const getEsrcData = async() => {
-    let result = await httpClient.get(esrc.get_esrc_list)
+export const getEsrcData = async(data) => {
+    let result = await httpClient.get(esrc.get_esrc_list + "?spare_code=" + data.spare_code + "&plant=" + data.plant)
     return result.data
 }
 
@@ -24,8 +24,8 @@ export const deleteEsrcData = async id => {
 }
 
 
-export const getLocation = async() => {
-    let result = await httpClient.get(esrc_location.get_location)
+export const getLocation = async(condition) => {
+    let result = await httpClient.get(esrc_location.get_location + "?location_code=" + condition.location_code + "&plant=" + condition.plant)
     return result.data
 }
 
@@ -44,8 +44,8 @@ export const deleteLocation = async id => {
     return result.data
 }
 
-export const getInout = async() => {
-    let result = await httpClient.get(esrc_inout.get_inout_list)
+export const getInout = async(spare_code, movement, plant) => {
+    let result = await httpClient.get(esrc_inout.get_inout_list + "?spare_code=" + `${spare_code}` + "&movement=" + `${movement}` + "&plant=" + `${plant}`)
     return result.data
 }
 
@@ -64,19 +64,25 @@ export const postInoutGR = async(data) => {
 }
 
 export const postInoutStock = async(data) => {
-    await httpClient.post(esrc_inout.post_inout_stock,data)
+    await httpClient.post(esrc_inout.post_inout_stock, data)
 }
 
-export const UpdateInoutStock = async(data) =>{
-    await httpClient.put(esrc_inout.update_stock_qty,data)
+export const UpdateInoutStock = async(data) => {
+    await httpClient.put(esrc_inout.update_stock_qty, data)
 }
 
-export const getApprover = async() => {
-    let result = await httpClient.get(esrc_inout.get_approve_list)
+export const getApprover = async(deptcd, usrnm) => {
+    let result = await httpClient.get(esrc_inout.get_approve_list + "?deptcd=" + `${deptcd}` + "&usrnm=" + `${usrnm}`)
     return result.data
 }
 
-export const getSparePart = async() => {
-    let result = await httpClient.get(esrc_inout.get_spare_list)
+export const getCarrierList = async(deptcd, usrnm) => {
+    let result = await httpClient.get(esrc_inout.get_carrier_list + "?deptcd=" + `${deptcd}` + "&usrnm=" + `${usrnm}`)
+    return result
+}
+
+export const getSparePart = async(location, spare_code) => {
+    let result = await httpClient.get(esrc_inout.get_spare_list + "?location=" + `${location}` + "&spare_code=" + `${spare_code}`)
     return result.data
+
 }

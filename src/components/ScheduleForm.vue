@@ -47,7 +47,11 @@ import { mapMutations } from 'vuex';
 
 export default {
   async mounted() {
-    const result = await api.getEsrcData();
+    const condition = {
+      spare_code : "%%",
+      plant :"%%"
+    }
+    const result = await api.getEsrcData(condition);
     this.data_set = result;
   },
   props: {

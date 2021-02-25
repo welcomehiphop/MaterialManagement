@@ -57,10 +57,10 @@
         </v-btn>
       </v-col>
       <v-col cols="2">
-        <v-btn class="pa-6 mr-5" href="/addgr" color="success">
+        <v-btn class="pa-6 mr-5" href="/addgr" color="primary">
           GR
         </v-btn>
-        <v-btn class="pa-6" href="/addgi" color="success">
+        <v-btn class="pa-6" href="/addgi" color="primary">
           GI
         </v-btn>
       </v-col>

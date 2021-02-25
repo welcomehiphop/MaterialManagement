@@ -7,17 +7,18 @@
           <v-row>
             <v-col cols="4">
               <v-subheader>
-                Department
+                Location
               </v-subheader>
             </v-col>
             <v-col cols="7">
               <v-select
+                @change="onSelected()"
                 outlined
                 dense
-                v-model="searchDepartment"
-                :items="departments"
-                item-text="text"
-                item-value="value"
+                v-model="searchLocation"
+                :items="locations"
+                item-text="location_code"
+                item-value="location_code"
               />
             </v-col>
           </v-row>
@@ -26,12 +27,12 @@
           <v-row>
             <v-col cols="4">
               <v-subheader>
-                Emp Name
+                Spare Code
               </v-subheader>
             </v-col>
             <v-col cols="7">
-              <v-text-field outlined dense v-model="searchName"></v-text-field>
-            </v-col>  
+              <v-text-field outlined dense v-model="searchSpareCode"></v-text-field>
+            </v-col>
           </v-row>
         </div>
       </v-card>
@@ -50,7 +51,6 @@
             <td>{{ item.description }}</td>
             <td>{{ item.location }}</td>
             <td>{{ item.qty }}</td>
-            <td></td>
           </tr>
         </template>
       </v-data-table>
@@ -64,27 +64,24 @@
 
 <script>
 import api from "@/services/api";
-import {mapMutations} from 'vuex'
+import { mapMutations } from "vuex";
 export default {
   async mounted() {
-    const result = await api.getSparePart();
+    const result = await api.getSparePart("%%", "%%");
     this.data_set = result;
+    const data = await api.getAllLocation();
+    this.locations = data.data;
+    this.locations.unshift(this.searchLocation);
   },
   props: {
     value: Boolean,
   },
   data() {
     return {
-      searchDepartment: { text: "All", value: "all" },
-      searchName: "",
+      searchLocation: { location_code: "All", id: "" },
+      searchSpareCode: "",
       data_set: [],
-      departments: [
-        { text: "All", value: "all" },
-        { text: "MIS", value: "mis" },
-        { text: "REF", value: "ref" },
-        { text: "W/M", value: "wm" },
-        { text: "KS", value: "ks" },
-      ],
+      locations: [],
       headers: [
         { text: "Spare Code", value: "spare_code", sortable: false },
         { text: "Spare Name", value: "spare_name", sortable: false },
@@ -104,6 +101,12 @@ export default {
     },
   },
   methods: {
+    async onSelected() {
+      const result = await api.getSparePart(
+        "%"+this.searchLocation+"%",
+        "%"+this.searchSpareCode+"%");
+      this.data_set = result;
+    },
     ...mapMutations(["setSpare"]),
     onClick(item) {
       this.setSpare(item);

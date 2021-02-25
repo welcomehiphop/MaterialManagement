@@ -1,7 +1,55 @@
 <template>
   <v-container>
     <h1>Mold Data</h1>
-    <SearchSpare />
+    <v-card class="elevation-5 mt-5 px-5">
+      <v-row align="center">
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Spare Code:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="3">
+          <v-text-field
+            v-on:keyup.enter="onEnter"
+            class="mb-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col cols="1"></v-col>
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Plant:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="3">
+          <v-select
+            @change="onSelected()"
+            v-model="selectPlant"
+            :items="plants"
+            item-text="plant"
+            item-value="value"
+            label="Select Plant"
+            persistent-hint
+            single-line
+          ></v-select>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="1" class="mr-10">
+          <v-btn dark @click="onSearch()">
+            Search
+          </v-btn>
+        </v-col>
+        <v-col cols="1">
+          <v-btn class="pa-5" href="/addspare" color="primary">
+            ADD
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
     <v-card class="elevation-2 ma-10">
       <v-data-table
         :headers="headers"
@@ -14,7 +62,6 @@
         }"
         :items-per-page="20"
       >
-      
         <template v-slot:item="{ item }">
           <tr class="mx-2">
             <td>
@@ -64,12 +111,14 @@
               </v-layout>
             </td>
             <td>
-              <img
-                :src="imageUrl + item.picture"
-                alt="Image not found"
-                width="80"
-                height="80"
-              />
+              <v-layout justify-center>
+                <img
+                  :src="imageUrl + item.picture"
+                  alt="Image not found"
+                  width="40px"
+                  height="40px"
+                />
+              </v-layout>
             </td>
             <td>
               <div class="actionIcon">
@@ -99,9 +148,32 @@
 
 <script>
 import api from "@/services/api";
-import SearchSpare from "../components/SearchSpare";
 export default {
   methods: {
+    async onSelected() {
+      const data = {
+        spare_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getEsrcData(data)
+      this.data_set = result
+    },
+    async onEnter() {
+      const data = {
+        spare_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getEsrcData(data);
+      this.data_set = result;
+    },
+    async onSearch() {
+      const data = {
+        spare_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getEsrcData(data);
+      this.data_set = result;
+    },
     ShareData(id) {
       this.$router.push(`/editspare/${id}`);
     },
@@ -116,16 +188,35 @@ export default {
             alert(error);
           });
       }
-      const result = await api.getEsrcData();
+      const data = {
+        spare_code: "%%",
+        plant: "%%",
+      };
+      const result = await api.getEsrcData(data);
       this.data_set = result;
     },
   },
   async mounted() {
-    const result = await api.getEsrcData();
+    const data = {
+      spare_code: "%%",
+      plant: "%%",
+    };
+    const result = await api.getEsrcData(data);
     this.data_set = result;
   },
   data() {
     return {
+      search: "",
+      selectPlant: "",
+      plants: [
+        { plant: "All", value: "" },
+        { plant: "KS", value: "KS" },
+        { plant: "A/C", value: "AC" },
+        { plant: "DW", value: "DW" },
+        { plant: "PBA", value: "PBA" },
+        { plant: "REF", value: "REF" },
+        { plant: "W/M", value: "WM" },
+      ],
       imageUrl: "http://localhost:3000/image/",
       data_set: [],
       headers: [
@@ -195,9 +286,7 @@ export default {
       ],
     };
   },
-  components: {
-    SearchSpare,
-  },
+  components: {},
 };
 </script>
 

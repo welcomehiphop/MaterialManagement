@@ -93,7 +93,11 @@ import ScheduleForm from "../components/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
-    const result = await api.getLocation();
+    const condition = {
+      location_code: "%%",
+      plant: "%%",
+    };
+    const result = await api.getLocation(condition);
     this.locations = result;
   },
   data() {
@@ -116,27 +120,33 @@ export default {
   methods: {
     async submit() {
       let data = {
-        spare_code : this.allSpare.spare_code,
-        purpose : this.form.purpose,
-        po : "",
-        reg_date : this.form.gr_date,
-        qty : this.form.qty,
+        spare_code: this.allSpare.spare_code,
+        purpose: this.form.purpose,
+        po: "",
+        reg_date: this.form.gr_date,
+        qty: this.form.qty,
         location: this.form.location,
         reg_empno: this.form.gr_empNo,
-        movement : "GI"
-      }
-      await api.postInoutGR(data)
+        movement: "GI",
+      };
+      //get qty in stock for update
       let result = await api.getStockQty(
         this.allSpare.spare_code,
         this.form.location
       );
+      //update stock qty - out
       if (result.data[0] != null) {
-        let dataUpdate = {
-          spare_code: this.allSpare.spare_code,
-          location_code: this.form.location,
-          qty: parseInt(result.data[0].qty) - parseInt(this.form.qty),
-        };
-        await api.UpdateInoutStock(dataUpdate);
+        if (parseInt(result.data[0].qty) - parseInt(this.form.qty) >= 0) {
+          let dataUpdate = {
+            spare_code: this.allSpare.spare_code,
+            location_code: this.form.location,
+            qty: parseInt(result.data[0].qty) - parseInt(this.form.qty),
+          };
+          await api.UpdateInoutStock(dataUpdate);
+          await api.postInoutGR(data);
+        } else {
+          alert("Stock is not enough , " + " Max = " + result.data[0].qty);
+        }
       }
     },
   },

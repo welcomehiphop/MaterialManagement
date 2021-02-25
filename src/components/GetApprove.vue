@@ -2,7 +2,6 @@
   <v-dialog v-model="show" max-width="500px" scrollable>
     <v-card class="pa-10">
       <h2>Select Approver</h2>
-      
       <v-card class="ma-5">
         <div>
           <v-row>
@@ -13,12 +12,14 @@
             </v-col>
             <v-col cols="7">
               <v-select
+                :items="deptList"
+                item-text="name"
+                label="Select Department"
+                item-value="code"
+                @change="onSelected()"
                 outlined
                 dense
                 v-model="searchDepartment"
-                :items="departments"
-                item-text="text"
-                item-value="value"
               />
             </v-col>
           </v-row>
@@ -31,7 +32,14 @@
               </v-subheader>
             </v-col>
             <v-col cols="7">
-              <v-text-field outlined dense v-model="searchName"></v-text-field>
+              <v-text-field
+                v-on:keyup.enter="onEnter"
+                label="Enter Emp Name"
+                outlined
+                dense
+                v-model="searchName"
+                clearable
+              ></v-text-field>
             </v-col>
           </v-row>
         </div>
@@ -43,13 +51,12 @@
         :items="data_set"
         item-key="name"
         class="elevation-1 row-pointer"
-       
         :items-per-page="6"
       >
         <template v-slot:item="{ item }">
           <tr @click="onClick(item)">
-            <td>{{ item.emp_name }}</td>
-            <td>{{ item.department }}</td>
+            <td>{{ item.usrnm }}</td>
+            <td>{{ item.posnm }}</td>
             <td></td>
           </tr>
         </template>
@@ -64,26 +71,21 @@
 
 <script>
 import api from "@/services/api";
-import {mapMutations} from 'vuex'
+import { mapMutations } from "vuex";
 export default {
   async mounted() {
-    const result = await api.getApprover();
-    this.data_set = result;
+    const deptListResult = await api.getDeptList();
+    this.deptList = deptListResult.data;
+    this.deptList.unshift(this.searchDepartment);
   },
   props: {
     value: Boolean,
   },
   data() {
     return {
-      searchDepartment: {text:"All",value:"all"},
+      deptList: [],
+      searchDepartment: { name: "All", code: "" },
       searchName: "",
-      departments: [
-        { text: "All", value: "all" },
-        { text: "MIS", value: "mis" },
-        { text: "REF", value: "ref" },
-        { text: "W/M", value: "wm" },
-        { text: "KS", value: "ks" },
-      ],
       data_set: [],
       headers: [
         { text: "Emp Name", value: "emp_name", sortable: false },
@@ -102,9 +104,23 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(['setApprover']),
+    async onEnter() {
+      const result = await api.getApprover(
+        "%" + this.searchDepartment + "%",
+        "%" + this.searchName + "%"
+      );
+      this.data_set = result;
+    },
+    async onSelected() {
+      const result = await api.getApprover(
+        "%" + this.searchDepartment + "%",
+        "%" + this.searchName + "%"
+      );
+      this.data_set = result;
+    },
+    ...mapMutations(["setApprover"]),
     onClick(item) {
-      this.setApprover(item)
+      this.setApprover(item);
       this.show = false;
     },
   },

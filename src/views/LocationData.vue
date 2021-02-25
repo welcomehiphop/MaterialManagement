@@ -1,7 +1,55 @@
 <template>
   <v-container>
     <h1>Location Data</h1>
-    <SearchLocation />
+    <v-card class="elevation-5 mt-5 px-5">
+      <v-row align="center">
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Location Code:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="3">
+          <v-text-field
+            v-on:keyup.enter="onEnter"
+            class="mb-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col cols="1"></v-col>
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Plant:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="3">
+          <v-select
+            @change="onSelected()"
+            v-model="selectPlant"
+            :items="plants"
+            item-text="plant"
+            item-value="value"
+            label="Select Plant"
+            persistent-hint
+            single-line
+          ></v-select>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="1" class="mr-10">
+          <v-btn dark @click="onClickSearch()">
+            Search
+          </v-btn>
+        </v-col>
+        <v-col cols="1">
+          <v-btn class="pa-5" href="/addlocation" color="primary">
+            ADD
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
 
     <v-card class="mx-auto mt-10" width="600px">
       <v-data-table
@@ -12,7 +60,7 @@
         :footer-props="{
           'items-per-page-options': [10, 20, 30, 40],
         }"
-        :items-per-page="20"
+        :items-per-page="10"
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -56,14 +104,28 @@
 
 <script>
 import api from "@/services/api";
-import SearchLocation from "../components/SearchLocation";
 export default {
   async mounted() {
-    const result = await api.getLocation();
+    const condition = {
+      location_code: "%%",
+      plant: "%%",
+    };
+    const result = await api.getLocation(condition);
     this.data_set = result;
   },
   data() {
     return {
+      search: "",
+      selectPlant: "",
+      plants: [
+        { plant: "All", value: "" },
+        { plant: "KS", value: "KS" },
+        { plant: "A/C", value: "AC" },
+        { plant: "DW", value: "DW" },
+        { plant: "PBA", value: "PBA" },
+        { plant: "REF", value: "REF" },
+        { plant: "W/M", value: "WM" },
+      ],
       data_set: [],
       headers: [
         { text: "No", value: "No", sortable: false },
@@ -81,11 +143,33 @@ export default {
       ],
     };
   },
-  components: {
-    SearchLocation,
-  },
+  components: {},
   methods: {
-    ShareData(id){
+    async onEnter() {
+      const condition = {
+        location_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getLocation(condition);
+      this.data_set = result;
+    },
+    async onSelected() {
+      const condition = {
+        location_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getLocation(condition);
+      this.data_set = result;
+    },
+    async onClickSearch() {
+      const condition = {
+        location_code: "%" + this.search + "%",
+        plant :"%" + this.selectPlant +"%"
+      };
+      const result = await api.getLocation(condition)
+      this.data_set = result
+    },
+    ShareData(id) {
       this.$router.push(`/editlocation/${id}`);
     },
     async onDelete(id) {

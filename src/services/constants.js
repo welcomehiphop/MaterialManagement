@@ -37,17 +37,32 @@ export const esrc_inout = {
     post_inout_gr: 'post_inout_gr',
     get_approve_list: 'get_approve_list',
     get_spare_list: 'get_spare_list',
-    post_inout_stock : 'post_inout_stock',
-    update_stock_qty : 'update_stock_qty'
+    post_inout_stock: 'post_inout_stock',
+    update_stock_qty: 'update_stock_qty',
+    get_carrier_list: 'get_carrier_list'
+
 }
 
 export const esrc_monitoring = {
-    get_fe_monitoring : 'get_fe_monitoring',
-    get_fe_spare : 'get_fe_spare',
-    get_stock_qty : 'get_stock_qty'
+    get_fe_monitoring: 'get_fe_monitoring',
+    get_fe_spare: 'get_fe_spare',
+    get_stock_qty: 'get_stock_qty'
 }
 
+export const esrc_appprove = {
+    post_req_approve: 'post_req_approve',
+    post_spare_approve: 'post_spare_approve',
+    post_files_approve: 'post_files_approve',
+    post_process_approve: 'post_process_approve',
+    post_list_approve: 'post_list_approve',
+    get_carry_list: 'get_carry_list',
+    get_app_list: 'get_app_list',
+    get_all_location: 'get_all_location'
+}
 
+export const esrc_fe_search = {
+    get_depart_list: 'get_depart_list',
+}
 
 export const test = {
     post_test: 'atp_get_list',

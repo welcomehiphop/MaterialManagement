@@ -97,7 +97,11 @@ import ScheduleForm from "../components/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
-    const result = await api.getLocation();
+    const condition = {
+      location_code: "%%",
+      plant: "%%",
+    };
+    const result = await api.getLocation(condition);
     this.locations = result;
   },
   data() {
@@ -118,6 +122,7 @@ export default {
   components: {
     ScheduleForm,
   },
+
   methods: {
     async submit() {
       let data = {

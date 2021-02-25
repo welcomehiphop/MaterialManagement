@@ -10,7 +10,6 @@
         item-value="value"
         label="Plant *"
         persistent-hint
-        return-object
         single-line
         required
       ></v-select>
@@ -49,7 +48,6 @@
         item-value="value"
         label="Type *"
         persistent-hint
-        return-object
         single-line
         required
       ></v-select>
@@ -73,21 +71,21 @@ export default {
   data() {
     return {
       form: {
-        selectPlant: {plant:"Select Plant",value:"undefined"},
+        selectPlant: {plant:"Select Plant",value:""},
         spareCode: "",
-        selectType: {type:"Select Type",value:"undefined"},
+        selectType: {type:"Select Type",value:""},
         price: "",
         safeStock: "",
         description: "",
         reg_empno:"",
       },
       types: [
-        {type:"Select Type",value:"undefined"},
+        {type:"Select Type",value:""},
         { type: "Spare Part", value: "Spare Part" },
         { type: "Equipment", value: "Equipment" },
       ],
       plants: [
-        {plant:"Select Plant",value:"undefined"},
+        {plant:"Select Plant",value:""},
         { plant: "KS", value: "KS" },
         { plant: "A/C", value: "AC" },
         { plant: "DW", value: "DW" },
@@ -138,6 +136,7 @@ export default {
             this.$router.push({ path:'/molddata' });
           }
         });
+      
       // }
     },
   },

@@ -1,7 +1,71 @@
 <template>
   <v-container>
     <h1>In-Out Management</h1>
-    <SearchIO />
+    <!-- search tab -->
+    <v-card class="elevation-5 mt-5 px-5">
+      <v-row align="center">
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Spare Code:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="2">
+          <v-text-field
+            v-on:keyup.enter="onEnter"
+            class="mb-4"
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-col>
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Movement:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="1">
+          <v-select
+            v-model="selectMovement"
+            :items="movements"
+            item-text="movement"
+            item-value="value"
+            label="Select Plant"
+          ></v-select>
+        </v-col>
+        <v-col cols="1">
+          <v-subheader>
+            <div class="search">Plant:</div>
+          </v-subheader>
+        </v-col>
+        <v-col cols="1">
+          <v-select
+            v-model="selectPlant"
+            :items="plants"
+            item-text="plant"
+            item-value="value"
+            label="Select Plant"
+          ></v-select>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col cols="1" class="mr-10">
+          <v-btn class="elevation-5" @click="onSearch()" dark>
+            Search
+          </v-btn>
+        </v-col>
+        <v-col cols="2">
+          <v-btn class="pa-6 mr-5" href="/addgr" color="primary">
+            GR
+          </v-btn>
+          <v-btn class="pa-6" href="/addgi" color="primary">
+            GI
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-card>
+
+    <!-- table data -->
     <v-data-table
       dense
       :headers="headers"
@@ -44,7 +108,7 @@
             <v-layout justify-center>{{ item.qty }}</v-layout>
           </td>
           <td>
-            <v-layout justify-center>{{ item.reg_empno }}</v-layout>
+            <v-layout justify-center>{{ item.emp_name }}</v-layout>
           </td>
           <td>
             <v-layout justify-center>{{ item.reg_date }} </v-layout>
@@ -74,18 +138,32 @@
 
 <script>
 import api from "@/services/api";
-import SearchIO from "../components/SearchIO";
 export default {
   async mounted() {
-    const result = await api.getInout();
+    const result = await api.getInout("%%", "%%", "%%");
     this.data_set = result;
   },
   name: "Home",
-  components: {
-    SearchIO,
-  },
+  components: {},
   data() {
     return {
+      search: "",
+      selectMovement: "",
+      selectPlant: "",
+      plants: [
+        { plant: "All", value: "" },
+        { plant: "A/C", value: "AC" },
+        { plant: "DW", value: "DW" },
+        { plant: "KS", value: "KS" },
+        { plant: "PBA", value: "PBA" },
+        { plant: "REF", value: "REF" },
+        { plant: "W/M", value: "WM" },
+      ],
+      movements: [
+        { movement: "All", value: "" },
+        { movement: "GI", value: "GI" },
+        { movement: "GR", value: "GR" },
+      ],
       data_set: [],
       headers: [
         {
@@ -155,13 +233,30 @@ export default {
     };
   },
   methods: {
+    async onEnter() {
+      const result = await api.getInout(
+        "%" + this.search + "%",
+        "%" + this.selectMovement + "%",
+        "%" + this.selectPlant + "%"
+      );
+      this.data_set = result;
+    },
+    async onSearch() {
+      const result = await api.getInout(
+        "%" + this.search + "%",
+        "%" + this.selectMovement + "%",
+        "%" + this.selectPlant + "%"
+      );
+      this.data_set = result;
+      console.log(this.search);
+      console.log(this.selectMovement);
+      console.log(this.selectPlant);
+    },
     ShareData(id, movement) {
       if (movement === "GI") {
-        console.log("GI");
         this.$router.push(`/detailgi/${id}`);
       } else {
         this.$router.push(`/detailgr/${id}`);
-        console.log("GR");
       }
     },
   },

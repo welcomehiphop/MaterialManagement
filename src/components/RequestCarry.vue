@@ -51,7 +51,7 @@
                       outlined
                       dense
                       readonly
-                      v-model="getApprover.emp_name"
+                      v-model="getApprover.usrnm"
                     />
                     <v-btn
                       class="ml-4"
@@ -86,13 +86,18 @@
                 </v-layout>
               </td>
               <td>
-                <v-layout justify-center>
-                  //role comment
+                <v-layout class="mt-5 ml-2" justify-center>
+                  <div v-if="item.id === '1'">
+                    <v-text-field
+                      outlined
+                      dense
+                      v-model="approveProcess.req.comment"
+                    />
+                  </div>
                 </v-layout>
               </td>
             </tr>
           </template>
-          <v-text-field outlined dense></v-text-field>
         </v-data-table>
       </v-form>
     </v-card>
@@ -170,7 +175,7 @@
               dense
               readonly
               v-bind="reqDetail.carrier"
-              v-model="getCarrier.emp_name"
+              v-model="getCarrier.usrnm"
             ></v-text-field>
           </v-col>
           <v-col cols="1">
@@ -197,7 +202,7 @@
               outlined
               dense
               readonly
-              v-model="getCarrier.department"
+              v-model="getCarrier.deptnm"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -295,7 +300,7 @@
           </v-subheader>
         </v-col>
         <v-col cols="1" class="mt-2">
-          <input type="file" @change="onFileSelected" multiple/>
+          <input type="file" @change="onFileSelected" multiple />
         </v-col>
         <v-col cols="7"></v-col>
       </v-row>
@@ -307,40 +312,150 @@
 </template>
 
 <script>
+import api from "@/services/api";
 import { mapGetters, mapMutations } from "vuex";
 import GetApprove from "./GetApprove";
 import GetCarrier from "./GetCarrier";
 import GetSpare from "./GetSpare";
 export default {
+  created() {
+    this.getNow();
+  },
   methods: {
-    onSubmit() {
-      let data = {
-        req: {
-          name: this.approveProcess.req.name,
-          jobTitle: this.approveProcess.req.jobTitle,
-        },
-        detail: {
-          reqFor: this.reqDetail.reqFor,
-          date: this.reqDetail.date,
-          des: this.reqDetail.destination,
-          purpose: this.reqDetail.purpose,
-        },
-        carrier: {
-          emp_no: this.getCarrier.emp_no,
-          emp_name: this.getCarrier.emp_name,
-          department: this.getCarrier.department,
-        },
-        spare: {
-          spare: this.getSpare,
-        },
-        file: {
-          filename: this.selectedFile,
-        },
+    getNow: function() {
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const date = today.getFullYear() + "-" + month + "-" + day;
+      // const date = day + "-" + month + "-" + today.getFullYear();
+      const time =
+        String(today.getHours()).padStart(2, "0") +
+        ":" +
+        String(today.getMinutes()).padStart(2, "0") +
+        ":" +
+        String(today.getSeconds()).padStart(2, "0");
+      const dateTime = date + " " + time;
+      this.approveProcess.req.date = dateTime;
+    },
+    ramdomno() {
+      let guid = () => {
+        let s4 = () => {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        };
+        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
       };
-      console.log(data);
+      return guid();
+    },
+    async onSubmit() {
+      console.log(this.approveProcess.req.comment)
+      let count = "1";
+      let stocks = [];
+      let stock = [];
+      for (let i = 0; i < this.getSpare.length; i++) {
+        stock[i] = await api.getStockQty(
+          this.getSpare[i].spare_code,
+          this.getSpare[i].location
+        );
+        stocks[i] = stock[i].data[0];
+      }
+      for (let i = 0; i < this.getSpare.length; i++) {
+        if (this.getSpare[i].qty <= stocks[i].qty) {
+          count = "0";
+        } else {
+          alert("Spare Code " + stocks[i].spare_code + " is not enough");
+        }
+      }
+
+      if (count == "0") {
+        //insert to t_esrc_carry
+        const payload = {
+          docno: this.ramdomno(),
+          reqType: this.reqDetail.reqFor.type,
+          carry_date: this.reqDetail.date,
+          destination: this.reqDetail.destination,
+          purpose: this.reqDetail.purpose,
+          carrier: this.getCarrier.empno,
+          department: this.getCarrier.deptnm,
+          reg_no: this.approveProcess.req.emp_no,
+          reg_date: this.approveProcess.req.date,
+        };
+        let result = await api.PostApproveProcess(payload);
+
+        //insert to t_esrc_carry_spare
+        for (let i = 0; i < this.getSpare.length; i++) {
+          const spare_data = {
+            ref_id: result.data[0].id,
+            spare_code: this.getSpare[i].spare_code,
+            location_code: this.getSpare[i].location,
+            qty: this.getSpare[i].qty,
+            approve_status: "P",
+            price: this.getSpare[i].price,
+          };
+          await api.PostApproveSpare(spare_data);
+        }
+        //   //insert to t_esrc_carry_file
+        let bodyFormData = new FormData();
+        bodyFormData.append("ref_id", result.data[0].id);
+        for (let i = 0; i < this.selectedFile.length; i++) {
+          bodyFormData.append("files", this.selectedFile[i]);
+        }
+        await api.PostApproveFiles(bodyFormData);
+
+        //   //insert to t_esrc_applist
+        const role = ["Creator", "Mold Team Charger", "Carrier"];
+        const app_type = ["CR", "AP", "NO"];
+        const step = ["0", "1", "2"];
+        const app_user = [
+          payload.reg_no,
+          this.getApprover.empno,
+          this.getCarrier.empno,
+        ];
+        for (let i = 0; i < role.length; i++) {
+          const app_list = {
+            docno: payload.docno,
+            bocd: "jigmolddie",
+            ref_id: result.data[0].id,
+            app_user: app_user[i],
+            role: role[i],
+            app_type: app_type[i],
+            appst: "P",
+            withdraw: "0",
+            step: step[i],
+            ordno: step[i],
+            comment: "",
+            rcv_date: payload.reg_date,
+            app_date: payload.reg_date,
+            send_mail: "1",
+          };
+          if(i==0) app_list.comment = this.approveProcess.req.comment
+          if (i === 1 || i == 2) {
+            app_list.rcv_date = "";
+            app_list.app_date = "";
+          }
+          await api.PostListApprove(app_list);
+        }
+
+        //   // Insert to t_esrc_appprocess
+        const data = {
+          title:
+            "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
+          bocd: "jigmolddie",
+          ref_id: result.data[0].id,
+          reg_no: payload.reg_no,
+          reg_date: payload.reg_date,
+          curstep: "2",
+          docst: "P",
+        };
+        await api.PostProcessApprove(data);
+      }
+
+      //   //get ref_id
+      //   // console.log(result.data[0].id);
     },
     onFileSelected(event) {
-        this.selectedFile = event.target.files;
+      this.selectedFile = event.target.files;
     },
     ...mapMutations(["deSpare"]),
   },
@@ -349,14 +464,15 @@ export default {
       selectedFile: [],
       approveProcess: {
         req: {
+          emp_no: "20528906",
           name: "Pamorn Sirimak",
           jobTitle: "MIS",
-          date: new Date().toISOString().substr(0, 10),
+          date: "",
           comment: "",
         },
         approve: {
           name: "Approve",
-          jobTitle: "Leader",
+          jobTitle: "Mold Team Charger",
           date: "",
           comment: "",
         },

@@ -21,6 +21,7 @@ import TestVuex from '../views/TestVuex.vue'
 import PPERoom from '../components/PPERoom.vue'
 import Equipment from '../components/Equipment.vue'
 import FERoom from '../components/FERoom.vue'
+import CarryDetail from '../components/CarryDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -134,6 +135,11 @@ const routes = [{
                 path: '/feroom',
                 name: 'FERoom',
                 component: FERoom
+            },
+            {
+                path: '/carrydetail/:id',
+                name: 'CarryDetail',
+                component: CarryDetail
             }
         ]
     }
