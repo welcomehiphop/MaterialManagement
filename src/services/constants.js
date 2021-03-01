@@ -64,6 +64,10 @@ export const esrc_fe_search = {
     get_depart_list: 'get_depart_list',
 }
 
+export const ppe_inout = {
+    get_inout_list: 'get_inout_list'
+}
+
 export const test = {
     post_test: 'atp_get_list',
     atp_get_list_update: 'atp_get_list_update'

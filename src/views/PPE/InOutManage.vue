@@ -121,7 +121,7 @@
               <a href="" class="ml-3" @click="ShareData(item.id, item.movement)"
                 ><img
                   class="mr-4"
-                  src="../assets/reviews.png"
+                  src = "@/assets/reviews.png"
                   height="40px"
                   width="40px"
                   alt="Image not found"

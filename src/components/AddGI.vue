@@ -69,7 +69,7 @@
         label="Location * "
       ></v-select>
       <div class="text-right">
-        <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit()">
+        <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit">
           Submit
         </v-btn>
       </div>
@@ -118,7 +118,8 @@ export default {
     ScheduleForm,
   },
   methods: {
-    async submit() {
+    async submit(e) {
+      e.preventDefault();
       let data = {
         spare_code: this.allSpare.spare_code,
         purpose: this.form.purpose,
@@ -145,8 +146,10 @@ export default {
           await api.UpdateInoutStock(dataUpdate);
           await api.postInoutGR(data);
         } else {
-          alert("Stock is not enough , " + " Max = " + result.data[0].qty);
+          alert(this.form.location + " is not enough , " + " Total = " + result.data[0].qty);
         }
+      }else{
+        alert(this.form.location + " is empty")
       }
     },
   },

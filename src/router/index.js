@@ -23,6 +23,13 @@ import Equipment from '../components/Equipment.vue'
 import FERoom from '../components/FERoom.vue'
 import CarryDetail from '../components/CarryDetail.vue'
 
+import PPEMenu from '../components/Main/PPEMenu.vue'
+import PPEInout from '../views/PPE/InOutManage.vue'
+import PPECarryOut from '../views/PPE/CarryOut.vue'
+import PPEMoldData from '../views/PPE/MoldData.vue'
+import PPELocationData from '../views/PPE/LocationData.vue'
+import PPEMonitor from '../views/PPE/Monitoring.vue'
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -142,7 +149,55 @@ const routes = [{
                 component: CarryDetail
             }
         ]
+    },
+    {
+        path: '/PPEMenu',
+        name: 'PPEMenu',
+        component: PPEMenu,
+        children: [{
+                path: '/ppe_inout',
+                name: 'PPEInout',
+                component: PPEInout
+            },
+            {
+                path: '/ppe_carryout',
+                name: 'PPECarryOut',
+                component: PPECarryOut
+            },
+            {
+                path: '/ppe_molddata',
+                name: 'PPEMoldData',
+                component: PPEMoldData
+            },
+            {
+                path: '/ppe_location',
+                name: 'PPELocation',
+                component: PPELocationData
+            },
+            {
+                path: '/ppe_monitoring',
+                name: 'PPEMonitoring',
+                component: PPEMonitor
+            },
+            {
+                path: '/ppe_pperoom',
+                name: 'PPERoom',
+                component: PPERoom
+            },
+            {
+                path: '/ppe_equipment',
+                name: 'Equipment',
+                component: Equipment
+            },
+            {
+                path: '/ppe_feroom',
+                name: 'FERoom',
+                component: FERoom
+            },
+        ]
     }
+
+
 ]
 
 const router = new VueRouter({

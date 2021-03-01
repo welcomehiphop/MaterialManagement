@@ -11,7 +11,7 @@
       </v-col>
       <v-col>
         <v-card class="pa-2">
-          <v-btn href="" text>
+          <v-btn href="/ppe_inout" text>
             Safety & PPE Room control
           </v-btn>
         </v-card>

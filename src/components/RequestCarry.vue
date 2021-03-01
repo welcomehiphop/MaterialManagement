@@ -338,18 +338,10 @@ export default {
       this.approveProcess.req.date = dateTime;
     },
     ramdomno() {
-      let guid = () => {
-        let s4 = () => {
-          return Math.floor((1 + Math.random()) * 0x10000)
-            .toString(16)
-            .substring(1);
-        };
-        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
-      };
-      return guid();
+      var dt = new Date();
+      return dt.getTime();
     },
     async onSubmit() {
-      console.log(this.approveProcess.req.comment)
       let count = "1";
       let stocks = [];
       let stock = [];
@@ -361,7 +353,9 @@ export default {
         stocks[i] = stock[i].data[0];
       }
       for (let i = 0; i < this.getSpare.length; i++) {
-        if (this.getSpare[i].qty <= stocks[i].qty) {
+        if (this.getSpare[i].qty === 0) {
+          alert("Spare Code : " + stocks[i].spare_code + " are out of stock");
+        } else if (this.getSpare[i].qty <= stocks[i].qty) {
           count = "0";
         } else {
           alert("Spare Code " + stocks[i].spare_code + " is not enough");
@@ -429,7 +423,7 @@ export default {
             app_date: payload.reg_date,
             send_mail: "1",
           };
-          if(i==0) app_list.comment = this.approveProcess.req.comment
+          if (i == 0) app_list.comment = this.approveProcess.req.comment;
           if (i === 1 || i == 2) {
             app_list.rcv_date = "";
             app_list.app_date = "";
