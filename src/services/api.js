@@ -3,8 +3,7 @@ import * as apiESRC from "@/services/api_esrc.js"
 import * as apiESRCMonitoring from "@/services/api_monitoring.js"
 import * as apiApprove from "@/services/api_approve"
 import * as apiSearch from "@/services/api_search"
-
-
+import * as apiPPE from "@/services/api_ppe"
 
 export default {
     ...apiAtp,
@@ -12,4 +11,5 @@ export default {
     ...apiESRCMonitoring,
     ...apiApprove,
     ...apiSearch,
+    ...apiPPE,
 };

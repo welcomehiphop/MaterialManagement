@@ -55,10 +55,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/ppe/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/addgi" color="primary">
+          <v-btn class="pa-6" href="/ppe/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -121,7 +121,7 @@
               <a href="" class="ml-3" @click="ShareData(item.id, item.movement)"
                 ><img
                   class="mr-4"
-                  src = "@/assets/reviews.png"
+                  src="@/assets/reviews.png"
                   height="40px"
                   width="40px"
                   alt="Image not found"
@@ -140,7 +140,12 @@
 import api from "@/services/api";
 export default {
   async mounted() {
-    const result = await api.getInout("%%", "%%", "%%");
+    const condition = {
+      spare_code: "",
+      movement: "",
+      plant: "",
+    };
+    const result = await api.getInoutData(condition);
     this.data_set = result;
   },
   name: "Home",
@@ -234,29 +239,28 @@ export default {
   },
   methods: {
     async onEnter() {
-      const result = await api.getInout(
-        "%" + this.search + "%",
-        "%" + this.selectMovement + "%",
-        "%" + this.selectPlant + "%"
-      );
+      const condition = {
+        spare_code: this.search,
+        movement: this.selectMovement,
+        plant: this.selectPlant,
+      };
+      const result = await api.getInoutData(condition);
       this.data_set = result;
     },
     async onSearch() {
-      const result = await api.getInout(
-        "%" + this.search + "%",
-        "%" + this.selectMovement + "%",
-        "%" + this.selectPlant + "%"
-      );
+      const condition = {
+        spare_code: this.search,
+        movement: this.selectMovement,
+        plant: this.selectPlant,
+      };
+      const result = await api.getInoutData(condition);
       this.data_set = result;
-      console.log(this.search);
-      console.log(this.selectMovement);
-      console.log(this.selectPlant);
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/detailgi/${id}`);
+        this.$router.push(`/ppe/detailgi/${id}`);
       } else {
-        this.$router.push(`/detailgr/${id}`);
+        this.$router.push(`/ppe/detailgr/${id}`);
       }
     },
   },

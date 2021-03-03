@@ -40,7 +40,6 @@ export const PostListApprove = async(data) => {
 export const GetCarryList = async(data) => {
 
     const result = await httpClient.get(esrc_appprove.get_carry_list + "?emp_name=" + data.emp_name + "&docst=" + data.docst + "&fromDate=" + data.fromDate + "&toDate=" + data.toDate)
-    console.log(result)
     return result
 }
 

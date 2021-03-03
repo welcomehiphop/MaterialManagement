@@ -80,15 +80,15 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/ppe_carryout"],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/ppe_inout"],
+        ["Carry Out List", "mdi-text-box-multiple-outline", "/ppe/carryout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/ppe/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/ppe_molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/ppe_location"],
+        ["Mold Data", "mdi-text-box-multiple-outline", "/ppe/molddata"],
+        ["Location Data", "mdi-text-box-multiple-outline", "/ppe/location"],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/ppe_monitoring"],
+        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/ppe/monitoring"],
       ],
     };
   },

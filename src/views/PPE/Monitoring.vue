@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       items: [
-        { id: "1", param: "PPE Room", path: "/ppe_pperoom" },
-        { id: "2", param: "Equipment", path: "/ppe_equipment" },
-        { id: "3", param: "FE Room", path: "/ppe_feroom" },
+        { id: "1", param: "PPE Room", path: "/ppe/pperoom" },
+        { id: "2", param: "Equipment", path: "/ppe/equipment" },
+        { id: "3", param: "FE Room", path: "/ppe/feroom" },
       ],
     };
   },

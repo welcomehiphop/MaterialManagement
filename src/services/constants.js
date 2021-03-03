@@ -64,9 +64,22 @@ export const esrc_fe_search = {
     get_depart_list: 'get_depart_list',
 }
 
-export const ppe_inout = {
-    get_inout_list: 'get_inout_list'
+export const ppe = {
+    get_ppe_mold: 'get_ppe_mold',
+    delete_ppe_mold: 'delete_ppe_mold',
+    post_ppe_mold: 'post_ppe_mold',
+    update_ppe_mold: 'update_ppe_mold',
+    get_ppe_location: 'get_ppe_location',
+    put_ppe_location: 'put_ppe_location',
+    delete_ppe_location: 'delete_ppe_location',
+    post_ppe_location: 'post_ppe_location',
+    get_ppe_inout: 'get_ppe_inout',
+    post_ppe_inout: 'post_ppe_inout',
+    post_ppe_stock: 'post_ppe_stock',
+    put_ppe_stock: 'put_ppe_stock',
+    get_ppe_stock: 'get_ppe_stock'
 }
+
 
 export const test = {
     post_test: 'atp_get_list',

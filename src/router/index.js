@@ -1,34 +1,42 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import InOutManage from '../views/InOutManage.vue'
-import CarryOut from '../views/CarryOut.vue'
-import MoldData from '../views/MoldData.vue'
-import LocationData from '../views/LocationData.vue'
-import Monitoring from '../views/Monitoring.vue'
-import Menu from '../components/Main/Menu.vue'
-import AddSpare from '../components/AddSpare.vue'
-import AddLocation from '../components/AddLocation.vue'
-import EditSpare from '../components/EditSpare.vue'
-import EditLocation from '../components/EditLocation.vue'
-import AddGR from '../components/AddGR.vue'
-import AddGI from '../components/AddGI.vue'
-import ItemGR from '../components/ItemGR.vue'
-import DetailGR from '../components/DetailGR.vue'
-import DetailGI from '../components/DetailGI.vue'
-import RequestCarry from '../components/RequestCarry.vue'
-import TestVuex from '../views/TestVuex.vue'
-import PPERoom from '../components/PPERoom.vue'
-import Equipment from '../components/Equipment.vue'
-import FERoom from '../components/FERoom.vue'
-import CarryDetail from '../components/CarryDetail.vue'
+import Home from '@/views/Home.vue'
+import InOutManage from '@/views/InOutManage.vue'
+import CarryOut from '@/views/CarryOut.vue'
+import MoldData from '@/views/MoldData.vue'
+import LocationData from '@/views/LocationData.vue'
+import Monitoring from '@/views/Monitoring.vue'
+import Menu from '@/components/Main/Menu.vue'
+import AddSpare from '@/components/AddSpare.vue'
+import AddLocation from '@/components/AddLocation.vue'
+import EditSpare from '@/components/EditSpare.vue'
+import EditLocation from '@/components/EditLocation.vue'
+import AddGR from '@/components/AddGR.vue'
+import AddGI from '@/components/AddGI.vue'
+import ItemGR from '@/components/ItemGR.vue'
+import DetailGR from '@/components/DetailGR.vue'
+import DetailGI from '@/components/DetailGI.vue'
+import RequestCarry from '@/components/RequestCarry.vue'
+import TestVuex from '@/views/TestVuex.vue'
+import PPERoom from '@/components/PPERoom.vue'
+import Equipment from '@/components/Equipment.vue'
+import FERoom from '@/components/FERoom.vue'
+import CarryDetail from '@/components/CarryDetail.vue'
 
-import PPEMenu from '../components/Main/PPEMenu.vue'
-import PPEInout from '../views/PPE/InOutManage.vue'
-import PPECarryOut from '../views/PPE/CarryOut.vue'
-import PPEMoldData from '../views/PPE/MoldData.vue'
-import PPELocationData from '../views/PPE/LocationData.vue'
-import PPEMonitor from '../views/PPE/Monitoring.vue'
+import PPEMenu from '@/components/Main/PPEMenu.vue'
+import PPEInout from '@/views/PPE/InOutManage.vue'
+import PPECarryOut from '@/views/PPE/CarryOut.vue'
+import PPEMoldData from '@/views/PPE/MoldData.vue'
+import PPELocationData from '@/views/PPE/LocationData.vue'
+import PPEMonitor from '@/views/PPE/Monitoring.vue'
+import PPEAddSpare from '@/components/PPE/AddSpare'
+import PPEEditSpare from '@/components/PPE/EditSpare'
+import PPEEditLocation from '@/components/PPE/EditLocation'
+import PPEAddLocation from '@/components/PPE/AddLocation'
+import PPEDetailGR from '@/components/PPE/DetailGR'
+import PPEDetailGI from '@/components/PPE/DetailGI'
+import PPEAddGR from '@/components/PPE/AddGR'
+import PPEAddGI from '@/components/PPE/AddGI'
 
 Vue.use(VueRouter)
 
@@ -155,45 +163,85 @@ const routes = [{
         name: 'PPEMenu',
         component: PPEMenu,
         children: [{
-                path: '/ppe_inout',
+                path: '/ppe/inout',
                 name: 'PPEInout',
                 component: PPEInout
             },
             {
-                path: '/ppe_carryout',
+                path: '/ppe/carryout',
                 name: 'PPECarryOut',
                 component: PPECarryOut
             },
             {
-                path: '/ppe_molddata',
+                path: '/ppe/molddata',
                 name: 'PPEMoldData',
                 component: PPEMoldData
             },
             {
-                path: '/ppe_location',
+                path: '/ppe/location',
                 name: 'PPELocation',
                 component: PPELocationData
             },
             {
-                path: '/ppe_monitoring',
+                path: '/ppe/monitoring',
                 name: 'PPEMonitoring',
                 component: PPEMonitor
             },
             {
-                path: '/ppe_pperoom',
-                name: 'PPERoom',
+                path: '/ppe/pperoom',
+                name: 'PPE_PPERoom',
                 component: PPERoom
             },
             {
-                path: '/ppe_equipment',
-                name: 'Equipment',
+                path: '/ppe/equipment',
+                name: 'PPE_Equipment',
                 component: Equipment
             },
             {
-                path: '/ppe_feroom',
-                name: 'FERoom',
+                path: '/ppe/feroom',
+                name: 'PPE_FERoom',
                 component: FERoom
             },
+            {
+                path: '/ppe/addspare',
+                name: 'PPEAddSpare',
+                component: PPEAddSpare
+            },
+            {
+                path: '/ppe/editspare/:id',
+                name: 'PPEEditSpare',
+                component: PPEEditSpare
+            },
+            {
+                path: '/ppe/editlocation/:id',
+                name: 'PPEEditLocation',
+                component: PPEEditLocation
+            },
+            {
+                path: '/ppe/addlocation',
+                name: 'PPEAddLocation',
+                component: PPEAddLocation
+            },
+            {
+                path: '/ppe/detailgr/:id',
+                name: 'PPEDetailGR',
+                component: PPEDetailGR
+            }, {
+                path: '/ppe/detailgi/:id',
+                name: 'PPEDetailGI',
+                component: PPEDetailGI
+            },
+            {
+                path: '/ppe/addgr',
+                name: 'PPEAddGR',
+                component: PPEAddGR
+            },
+            {
+                path: '/ppe/addgi',
+                name: 'PPEAddGI',
+                component: PPEAddGI
+            }
+
         ]
     }
 

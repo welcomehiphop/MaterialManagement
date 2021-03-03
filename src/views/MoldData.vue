@@ -122,17 +122,17 @@
             </td>
             <td>
               <div class="actionIcon">
-                <a href="" class="ml-3" @click="ShareData(item.id)"
+                <a href="" @click="ShareData(item.id)"
                   ><img
-                    src="../assets/edit.png"
+                    src="@/assets/edit.png"
                     height="25px"
                     width="25px"
                     alt="Image not found"
                 /></a>
-                <a href="javascript:;" class="ml-3"
-                  ><img
+                <a href="javascript:;"
+                  ><img class="ml-3"
                     @click="onDelete(item.id)"
-                    src="../assets/empty-tash-can.png"
+                    src="@/assets/empty-tash-can.png"
                     height="25px"
                     width="25px"
                     alt="Image not found"
@@ -292,7 +292,7 @@ export default {
 
 <style scoped>
 .actionIcon {
-  margin: 1rem;
+  margin: 30px auto 30px auto;
   text-align: center;
 }
 </style>
