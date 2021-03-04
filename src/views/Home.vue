@@ -18,7 +18,7 @@
       </v-col>
       <v-col>
         <v-card class="pa-2">
-          <v-btn href="" text>
+          <v-btn href="/it/inout" text>
             Equipment & IT Room control
           </v-btn>
         </v-card>

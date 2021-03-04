@@ -314,9 +314,9 @@
 <script>
 import api from "@/services/api";
 import { mapGetters, mapMutations } from "vuex";
-import GetApprove from "@/components/GetApprove";
-import GetCarrier from "@/components/GetCarrier";
-import GetSpare from "@/components/GetSpare";
+import GetApprove from "@/components/IT/GetApprove";
+import GetCarrier from "@/components/IT/GetCarrier";
+import GetSpare from "@/components/IT/GetSpare";
 export default {
   created() {
     this.getNow();
@@ -346,24 +346,26 @@ export default {
       let stocks = [];
       let stock = [];
       for (let i = 0; i < this.getSpare.length; i++) {
-        stock[i] = await api.getStockQty(
+        stock[i] = await api.getITStock(
           this.getSpare[i].spare_code,
           this.getSpare[i].location
         );
-        stocks[i] = stock[i].data[0];
-      }
-      for (let i = 0; i < this.getSpare.length; i++) {
-        if (this.getSpare[i].qty === 0) {
-          alert("Spare Code : " + stocks[i].spare_code + " are out of stock");
-        } else if (this.getSpare[i].qty <= stocks[i].qty) {
-          count = "0";
-        } else {
-          alert("Spare Code " + stocks[i].spare_code + " is not enough");
-        }
+        stocks[i] = stock[i];
       }
 
+      for (let i = 0; i < this.getSpare.length; i++) {
+        if (this.getSpare[i].qty === 0) {
+          alert(
+            "Spare Code : " + stocks[i][0].spare_code + " are out of stock"
+          );
+        } else if (this.getSpare[i].qty <= stocks[i][0].qty) {
+          count = "0";
+        } else {
+          alert("Spare Code " + stocks[i][0].spare_code + " is not enough");
+        }
+      }
       if (count == "0") {
-        //insert to t_esrc_carry
+        // insert to t_esrc_carry
         const payload = {
           docno: this.ramdomno(),
           reqType: this.reqDetail.reqFor.type,
@@ -375,8 +377,9 @@ export default {
           reg_no: this.approveProcess.req.emp_no,
           reg_date: this.approveProcess.req.date,
         };
-        let result = await api.PostApproveProcess(payload);
-
+        let result = await api.postITReqCarry(payload);
+        // console.log(result)
+        // console.log(result.data[0].id);
         //insert to t_esrc_carry_spare
         for (let i = 0; i < this.getSpare.length; i++) {
           const spare_data = {
@@ -387,17 +390,16 @@ export default {
             approve_status: "P",
             price: this.getSpare[i].price,
           };
-          await api.PostApproveSpare(spare_data);
+          await api.postITCarrySpare(spare_data);
         }
-        //   //insert to t_esrc_carry_file
+        //insert to t_esrc_carry_file
         let bodyFormData = new FormData();
         bodyFormData.append("ref_id", result.data[0].id);
         for (let i = 0; i < this.selectedFile.length; i++) {
           bodyFormData.append("files", this.selectedFile[i]);
         }
-        await api.PostApproveFiles(bodyFormData);
-
-        //   //insert to t_esrc_applist
+        await api.postITCarryFile(bodyFormData);
+        //insert to t_esrc_applist
         const role = ["Creator", "Mold Team Charger", "Carrier"];
         const app_type = ["CR", "AP", "NO"];
         const step = ["0", "1", "2"];
@@ -409,7 +411,7 @@ export default {
         for (let i = 0; i < role.length; i++) {
           const app_list = {
             docno: payload.docno,
-            bocd: "jigmolddie",
+            bocd: "pperoom",
             ref_id: result.data[0].id,
             app_user: app_user[i],
             role: role[i],
@@ -430,12 +432,11 @@ export default {
           }
           await api.PostListApprove(app_list);
         }
-
-        //   // Insert to t_esrc_appprocess
+        // Insert to t_esrc_appprocess
         const data = {
           title:
             "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
-          bocd: "jigmolddie",
+          bocd: "itroom",
           ref_id: result.data[0].id,
           reg_no: payload.reg_no,
           reg_date: payload.reg_date,
@@ -443,9 +444,10 @@ export default {
           docst: "P",
         };
         await api.PostProcessApprove(data);
-        alert("Success")
-        this.$router.push("/carryout");
+        alert("Success");
+        this.$router.push("/it/carryout");
       }
+
       //   //get ref_id
       //   // console.log(result.data[0].id);
     },

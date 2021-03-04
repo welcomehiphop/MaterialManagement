@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <h2>GR Register</h2>
+    <h2>GI Register</h2>
     <v-form>
       <v-row>
         <v-col cols="4">
           <v-text-field
-            label="Spare Code * "
             v-model="allSpare.spare_code"
+            label="Spare Code * "
             readonly
           />
         </v-col>
@@ -45,16 +45,12 @@
       </v-row>
       <v-text-field v-model="form.purpose" label="Purpose * "> </v-text-field>
       <v-row>
-        <v-col cols="4">
-          <v-text-field v-model="form.po" label="PO * "></v-text-field>
-        </v-col>
-        <v-col cols="1"></v-col>
         <v-col cols="3">
           <v-menu offset-y>
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="form.gr_date"
-                label="GR Date * "
+                label="GI Date * "
                 v-bind="attrs"
                 v-on="on"
                 prepend-icon="mdi-calendar-month-outline"
@@ -93,7 +89,7 @@
 
 <script>
 import api from "@/services/api";
-import ScheduleForm from "@/components/PPE/ScheduleForm";
+import ScheduleForm from "@/components/IT/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
@@ -101,14 +97,13 @@ export default {
       location_code: "",
       plant: "",
     };
-    const result = await api.getLocationData(condition);
-    this.locations = result.data;
+    const result = await api.getITLocation(condition);
+    this.locations = result;
   },
   data() {
     return {
       form: {
         purpose: "",
-        po: "",
         gr_date: new Date().toISOString().substr(0, 10),
         qty: "",
         location: "",
@@ -122,39 +117,46 @@ export default {
   components: {
     ScheduleForm,
   },
-
   methods: {
-    async submit() {
+    async submit(e) {
+      e.preventDefault();
       let data = {
         spare_code: this.allSpare.spare_code,
         purpose: this.form.purpose,
-        po: this.form.po,
+        po: "",
         reg_date: this.form.gr_date,
         qty: this.form.qty,
         location: this.form.location,
         reg_empno: this.form.gr_empNo,
-        movement: "GR",
+        movement: "GI",
       };
-      await api.postInoutData(data);
-
-      let result = await api.getPPEStock(
+      //get qty in stock for update
+      let result = await api.getITStock(
         this.allSpare.spare_code,
         this.form.location
       );
-      if (result.data[0] != null) {
-        let dataUpdate = {
-          spare_code: this.allSpare.spare_code,
-          location_code: this.form.location,
-          qty: parseInt(this.form.qty) + parseInt(result.data[0].qty),
-        };
-        await api.putPPEStock(dataUpdate);
+      console.log(result);
+
+      //update stock qty - out
+      if (result[0] != null) {
+        if (parseInt(result[0].qty) - parseInt(this.form.qty) >= 0) {
+          let dataUpdate = {
+            spare_code: this.allSpare.spare_code,
+            location_code: this.form.location,
+            qty: parseInt(result[0].qty) - parseInt(this.form.qty),
+          };
+          await api.putITStock(dataUpdate);
+          await api.postITInout(data);
+        } else {
+          alert(
+            this.form.location +
+              " is not enough , " +
+              " Total = " +
+              result[0].qty
+          );
+        }
       } else {
-        let data_stock = {
-          spare_code: this.allSpare.spare_code,
-          location_code: this.form.location,
-          qty: this.form.qty,
-        };
-        await api.postPPEStock(data_stock);
+        alert("Location : " + this.form.location + " is empty");
       }
     },
   },

@@ -56,7 +56,7 @@
 import api from "@/services/api";
 export default {
   async mounted() {
-    let result = await api.getMoldByID(this.$route.params.id);
+    let result = await api.getITMoldByID(this.$route.params.id);
     this.data_set = result.data;
   },
   data() {
@@ -96,7 +96,7 @@ export default {
         console.log(this.selectedFile);
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
       }
-      await api.putMoldData(this.$route.params.id,bodyFormData)
+      await api.putITMold(this.$route.params.id,bodyFormData)
     //   await axios
     //     .put(
     //       "http://localhost:3000/update_esrc_list/" +

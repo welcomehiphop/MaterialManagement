@@ -83,7 +83,7 @@
         <v-col cols="10"></v-col>
         <v-col cols="2">
           <div class="text-right mr-3 mb-2">
-            <v-btn href="/requestcarry" color="primary">
+            <v-btn href="/it/requestcarry" color="primary">
               Request
             </v-btn>
           </div>
@@ -182,14 +182,14 @@ export default {
         this.toDate.substring(0, 4) +
         this.toDate.substring(5, 7) +
         this.toDate.substring(8, 10);
-      const data = {
-        emp_name: `%${this.search}%`,
-        docst: `%${this.selectStatus}%`,
-        fromDate: `${this.format_fromdate}`,
-        toDate: `${this.format_todate}`,
+      const condition = {
+        emp_name: this.search,
+        docst: this.selectStatus,
+        fromDate: this.format_fromdate,
+        toDate: this.format_todate,
       };
-      let result = await api.GetCarryList(data);
-      this.data_set = result.data;
+      let result = await api.getITCarry(condition);
+      this.data_set = result;
     },
     async onEnter() {
       this.format_fromdate =
@@ -200,14 +200,14 @@ export default {
         this.toDate.substring(0, 4) +
         this.toDate.substring(5, 7) +
         this.toDate.substring(8, 10);
-      const data = {
-        emp_name: `%${this.search}%`,
-        docst: `%${this.selectStatus}%`,
-        fromDate: `${this.format_fromdate}`,
-        toDate: `${this.format_todate}`,
+      const condition = {
+        emp_name: this.search,
+        docst: this.selectStatus,
+        fromDate: this.format_fromdate,
+        toDate: this.format_todate,
       };
-      let result = await api.GetCarryList(data);
-      this.data_set = result.data;
+      let result = await api.getITCarry(condition);
+      this.data_set = result;
     },
     formatDate() {
       var days = 7;
@@ -228,17 +228,17 @@ export default {
         this.toDate.substring(0, 4) +
         this.toDate.substring(5, 7) +
         this.toDate.substring(8, 10);
-      const data = {
-        emp_name: `%${this.search}%`,
-        docst: `%${this.selectStatus}%`,
-        fromDate: `${this.format_fromdate}`,
-        toDate: `${this.format_todate}`,
+      const condition = {
+        emp_name: this.search,
+        docst: this.selectStatus,
+        fromDate: this.format_fromdate,
+        toDate: this.format_todate,
       };
-      let result = await api.GetCarryList(data);
-      this.data_set = result.data;
+      let result = await api.getITCarry(condition);
+      this.data_set = result;
     },
     shareData(id) {
-      this.$router.push(`/carrydetail/${id}`);
+      this.$router.push(`carrydetail/${id}`);
     },
   },
   data() {

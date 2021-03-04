@@ -37,6 +37,27 @@ import PPEDetailGR from '@/components/PPE/DetailGR'
 import PPEDetailGI from '@/components/PPE/DetailGI'
 import PPEAddGR from '@/components/PPE/AddGR'
 import PPEAddGI from '@/components/PPE/AddGI'
+import PPERequestCarry from '@/components/PPE/RequestCarry'
+import PPECarryDetail from '@/components/PPE/CarryDetail'
+
+import ITMenu from '@/components/Main/ITMenu'
+import ITInout from '@/views/IT/InOutManage'
+import ITMold from '@/views/IT/MoldData'
+import ITAddSpare from '@/components/IT/AddSpare'
+import ITEditSpare from '@/components/IT/EditSpare'
+import ITLocation from '@/views/IT/LocationData'
+import ITEditLocation from '@/components/IT/EditLocation'
+import ITAddLocation from '@/components/IT/AddLocation'
+import ITDetailGR from '@/components/IT/DetailGR'
+import ITDetailGI from '@/components/IT/DetailGI'
+import ITAddGR from '@/components/IT/AddGR'
+import ITAddGI from '@/components/IT/AddGI'
+import ITCarryOut from '@/views/IT/CarryOut'
+import ITRequestCarry from '@/components/IT/RequestCarry'
+import ITCarryDetail from '@/components/IT/CarryDetail'
+
+
+
 
 Vue.use(VueRouter)
 
@@ -240,6 +261,93 @@ const routes = [{
                 path: '/ppe/addgi',
                 name: 'PPEAddGI',
                 component: PPEAddGI
+            },
+            {
+                path: '/ppe/requestcarry',
+                name: 'PPERequestCarry',
+                component: PPERequestCarry
+            },
+            {
+                path: '/ppe/carrydetail/:id',
+                name: 'PPECarryDetail',
+                component: PPECarryDetail
+            }
+
+        ]
+    },
+    {
+        path: '/itmenu',
+        name: 'ITMenu',
+        component: ITMenu,
+        children: [{
+                path: '/it/inout',
+                name: 'ITInout',
+                component: ITInout
+            },
+            {
+                path: '/it/molddata',
+                name: 'ITMold',
+                component: ITMold
+            },
+            {
+                path: '/it/addspare',
+                name: 'ITAddSpare',
+                component: ITAddSpare
+            },
+            {
+                path: '/it/editspare/:id',
+                name: 'ITEditSpare',
+                component: ITEditSpare
+            },
+            {
+                path: '/it/locationdata',
+                name: 'ITLocation',
+                component: ITLocation
+            },
+            {
+                path: '/it/editlocation/:id',
+                name: 'ITEditLocation',
+                component: ITEditLocation
+            },
+            {
+                path: '/it/addlocation',
+                name: 'ITAddLocation',
+                component: ITAddLocation
+            },
+            {
+                path: '/it/detailgr/:id',
+                name: 'ITDetailGR',
+                component: ITDetailGR
+            },
+            {
+                path: '/it/detailgi/:id',
+                name: 'ITDetailGI',
+                component: ITDetailGI
+            },
+            {
+                path: '/it/addgr',
+                name: 'ITAddGR',
+                component: ITAddGR
+            },
+            {
+                path: '/it/addgi',
+                name: 'ITAddGI',
+                component: ITAddGI
+            },
+            {
+                path: '/it/carryout',
+                name: 'ITCarryOut',
+                component: ITCarryOut
+            },
+            {
+                path: '/it/requestcarry',
+                name: 'ITRequestCarry',
+                component: ITRequestCarry
+            },
+            {
+                path: '/it/carrydetail/:id',
+                name: 'ITCarryDetail',
+                component: ITCarryDetail
             }
 
         ]

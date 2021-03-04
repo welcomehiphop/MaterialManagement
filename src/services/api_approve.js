@@ -1,6 +1,5 @@
 import httpClient from "@/services/httpClient";
 import { esrc_appprove } from "@/services/constants"
-import router from "@/router";
 
 
 export const PostApproveProcess = async(data) => {
@@ -23,12 +22,7 @@ export const PostApproveFiles = async(files) => {
 }
 
 export const PostProcessApprove = async(data) => {
-    const result = await httpClient.post(esrc_appprove.post_process_approve, data).then((resp => {
-        if (resp.status == "200") {
-            alert("SUCCESS")
-            router.push("/carryout")
-        }
-    }))
+    const result = await httpClient.post(esrc_appprove.post_process_approve, data)
     return result
 }
 
@@ -38,7 +32,6 @@ export const PostListApprove = async(data) => {
 }
 
 export const GetCarryList = async(data) => {
-
     const result = await httpClient.get(esrc_appprove.get_carry_list + "?emp_name=" + data.emp_name + "&docst=" + data.docst + "&fromDate=" + data.fromDate + "&toDate=" + data.toDate)
     return result
 }

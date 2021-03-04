@@ -93,7 +93,7 @@
 
 <script>
 import api from "@/services/api";
-import ScheduleForm from "@/components/PPE/ScheduleForm";
+import ScheduleForm from "@/components/IT/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
@@ -101,8 +101,8 @@ export default {
       location_code: "",
       plant: "",
     };
-    const result = await api.getLocationData(condition);
-    this.locations = result.data;
+    const result = await api.getITLocation(condition);
+    this.locations = result;
   },
   data() {
     return {
@@ -135,26 +135,25 @@ export default {
         reg_empno: this.form.gr_empNo,
         movement: "GR",
       };
-      await api.postInoutData(data);
-
-      let result = await api.getPPEStock(
+      await api.postITInout(data);
+      let result = await api.getITStock(
         this.allSpare.spare_code,
         this.form.location
       );
-      if (result.data[0] != null) {
+      if (result[0] != null) {
         let dataUpdate = {
           spare_code: this.allSpare.spare_code,
           location_code: this.form.location,
-          qty: parseInt(this.form.qty) + parseInt(result.data[0].qty),
+          qty: parseInt(this.form.qty) + parseInt(result[0].qty),
         };
-        await api.putPPEStock(dataUpdate);
+        await api.putITStock(dataUpdate);
       } else {
         let data_stock = {
           spare_code: this.allSpare.spare_code,
           location_code: this.form.location,
           qty: this.form.qty,
         };
-        await api.postPPEStock(data_stock);
+        await api.postITStock(data_stock);
       }
     },
   },

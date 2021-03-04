@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     getColor(location, status) {
-      let count = 0;
       for (let i = 0; i < status.length; i++) {
         if (status[i].location_code == location) {
           if (status[i].status === "NULL" || status[i].status == 0) return "#909090";
@@ -131,7 +130,6 @@ export default {
           else if (status[i].status == "OK") return "green";
         }
       }
-      console.log(count);
     },
     getSpareData(item) {
       console.log(item);

@@ -79,7 +79,45 @@ export const ppe = {
     put_ppe_stock: 'put_ppe_stock',
     get_ppe_stock: 'get_ppe_stock'
 }
+export const ppe_carry = {
+    get_ppe_carry: 'get_ppe_carry',
+    post_ppe_req_approve: 'post_ppe_req_approve',
+    post_ppe_carry_spare: 'post_ppe_carry_spare',
+    post_ppe_carry_file: 'post_ppe_carry_file',
+    get_ppe_spare: 'get_ppe_spare',
+    get_ppe_all_location: 'get_ppe_all_location'
+}
 
+export const it_mold = {
+    post_it_mold: 'post_it_mold',
+    delete_it_mold: 'delete_it_mold',
+    update_it_mold: 'update_it_mold',
+    get_it_mold: 'get_it_mold'
+}
+
+export const it_location = {
+    get_it_location: 'get_it_location',
+    delete_it_location: 'delete_it_location',
+    update_it_location: 'update_it_location',
+    post_it_location: 'post_it_location'
+}
+
+export const it_inout = {
+    get_it_inout: 'get_it_inout',
+    post_it_inout: 'post_it_inout',
+    get_it_stock: 'get_it_stock',
+    post_it_stock: 'post_it_stock',
+    put_it_stock: 'put_it_stock'
+}
+
+export const it_carry = {
+    get_it_carry: 'get_it_carry',
+    get_it_all_location: 'get_it_all_location',
+    get_it_spare: 'get_it_spare',
+    post_it_req: 'post_it_req',
+    post_it_carry_spare: 'post_it_carry_spare',
+    post_it_carry_file: 'post_it_carry_file'
+}
 
 export const test = {
     post_test: 'atp_get_list',

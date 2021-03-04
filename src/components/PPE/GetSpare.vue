@@ -1,25 +1,24 @@
 <template>
   <v-dialog v-model="show" max-width="500px" scrollable>
     <v-card class="pa-10">
-      <h2>Select Carrier</h2>
+      <h2>Select Spare Part</h2>
       <v-card class="ma-5">
         <div>
           <v-row>
             <v-col cols="4">
               <v-subheader>
-                Department
+                Location
               </v-subheader>
             </v-col>
             <v-col cols="7">
               <v-select
-                :items="deptList"
-                item-text="name"
-                label="Select Department"
-                item-value="code"
                 @change="onSelected()"
                 outlined
                 dense
-                v-model="searchDepartment"
+                v-model="searchLocation"
+                :items="locations"
+                item-text="location_code"
+                item-value="value"
               />
             </v-col>
           </v-row>
@@ -28,17 +27,11 @@
           <v-row>
             <v-col cols="4">
               <v-subheader>
-                Emp Name
+                Spare Code
               </v-subheader>
             </v-col>
             <v-col cols="7">
-              <v-text-field
-                v-on:keyup.enter="onEnter"
-                label="Enter Emp Name"
-                outlined
-                dense
-                v-model="searchName"
-              ></v-text-field>
+              <v-text-field outlined dense v-model="searchSpareCode"></v-text-field>
             </v-col>
           </v-row>
         </div>
@@ -54,9 +47,10 @@
       >
         <template v-slot:item="{ item }">
           <tr @click="onClick(item)">
-            <td>{{ item.usrnm }}</td>
-            <td>{{ item.posnm }}</td>
-            <td></td>
+            <td>{{ item.spare_code }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.location }}</td>
+            <td>{{ item.qty }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -71,30 +65,28 @@
 <script>
 import api from "@/services/api";
 import { mapMutations } from "vuex";
-
 export default {
   async mounted() {
-    const deptListResult = await api.getDeptList();
-    this.deptList = deptListResult.data;
-    // this.deptList.unshift(this.searchDepartment);
-
-    // this.deptList.unshift(this.searchDepartment);
-    // this.deptList.unshift(this.searchDepartment);
-    // const result = await api.getApprover();
-    // this.data_set = result;
+    const result = await api.getPPESpare("", "");
+    this.data_set = result;
+    const data = await api.getPPELocation();
+    this.locations = data;
+    this.locations.unshift(this.searchLocation);
   },
   props: {
     value: Boolean,
   },
   data() {
     return {
-      deptList: [],
-      searchDepartment: { name: "All", code: "" },
-      searchName: "",
+      searchLocation: { location_code: "All", value: "" },
+      searchSpareCode: "",
       data_set: [],
+      locations: [],
       headers: [
-        { text: "Emp Name", value: "emp_name", sortable: false },
-        { text: "Position", value: "position", sortable: false },
+        { text: "Spare Code", value: "spare_code", sortable: false },
+        { text: "Spare Name", value: "spare_name", sortable: false },
+        { text: "Location", value: "location", sortable: false },
+        { text: "Qty", value: "qty", sortable: false },
       ],
     };
   },
@@ -109,23 +101,15 @@ export default {
     },
   },
   methods: {
-    async onEnter() {
-      const result = await api.getCarrierList(
-        "%" + this.searchDepartment + "%",
-        "%" + this.searchName + "%"
-      );
-      this.data_set = result.data;
-    },
     async onSelected() {
-      const result = await api.getCarrierList(
-        "%" + this.searchDepartment + "%",
-        "%" + this.searchName + "%"
-      );
-      this.data_set = result.data;
+      const result = await api.getPPESpare(
+        this.searchSpareCode,
+        this.searchLocation)
+      this.data_set = result;
     },
-    ...mapMutations(["setCarrier"]),
+    ...mapMutations(["setSpare"]),
     onClick(item) {
-      this.setCarrier(item);
+      this.setSpare(item);
       this.show = false;
     },
   },

@@ -57,10 +57,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/ppe/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/it/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/ppe/addgi" color="primary">
+          <v-btn class="pa-6" href="/it/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -147,7 +147,7 @@ export default {
       movement: "",
       plant: "",
     };
-    const result = await api.getInoutData(condition);
+    const result = await api.getITInout(condition);
     this.data_set = result;
   },
   name: "Home",
@@ -246,7 +246,7 @@ export default {
         movement: this.selectMovement,
         plant: this.selectPlant,
       }
-      const result = await api.getInoutData(condition);
+      const result = await api.getITInout(condition);
       this.data_set = result;
     },
     async onEnter() {
@@ -255,7 +255,7 @@ export default {
         movement: this.selectMovement,
         plant: this.selectPlant,
       };
-      const result = await api.getInoutData(condition);
+      const result = await api.getITInout(condition);
       this.data_set = result;
     },
     async onSearch() {
@@ -264,14 +264,14 @@ export default {
         movement: this.selectMovement,
         plant: this.selectPlant,
       };
-      const result = await api.getInoutData(condition);
+      const result = await api.getITInout(condition);
       this.data_set = result;
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/ppe/detailgi/${id}`);
+        this.$router.push(`/it/detailgi/${id}`);
       } else {
-        this.$router.push(`/ppe/detailgr/${id}`);
+        this.$router.push(`/it/detailgr/${id}`);
       }
     },
   },

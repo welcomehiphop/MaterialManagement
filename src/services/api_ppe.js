@@ -82,7 +82,6 @@ export const getInoutData = async(condition) => {
 
 export const getInoutDataByID = async(id) => {
     let result = await httpClient.get(ppe.get_ppe_inout + "/" + `${id}`)
-    console.log(result)
     return result.data
 }
 
@@ -112,5 +111,4 @@ export const putPPEStock = async(data) => {
 export const getPPEStock = async(spare_code, location_code) => {
     const result = await httpClient.get(ppe.get_ppe_stock + "?spare_code=" + spare_code + "&location_code=" + location_code)
     return result
-
 }
