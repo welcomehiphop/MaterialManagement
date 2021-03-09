@@ -1,7 +1,9 @@
 <template>
   <v-container>
-    <h1>Location Data</h1>
-    <v-card class="elevation-5 mt-5 px-5">
+    <div class="text-center">
+      <h1>Location Data</h1>
+    </div>
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -44,7 +46,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/it/addlocation" color="primary">
+          <v-btn class="pa-5" href="/esrc/it/addlocation" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -110,7 +112,7 @@ export default {
       location_code: "",
       plant: "",
     };
-    const result = await api.getITLocation(condition);
+    const result = await api.getITLocationT(condition);
     this.data_set = result;
   },
   data() {
@@ -150,7 +152,7 @@ export default {
         location_code: this.search,
         plant: this.selectPlant,
       };
-      const result = await api.getITLocation(condition);
+      const result = await api.getITLocationT(condition);
       this.data_set = result;
     },
     async onSelected() {
@@ -158,7 +160,7 @@ export default {
         location_code: this.search,
         plant: this.selectPlant,
       };
-      const result = await api.getITLocation(condition);
+      const result = await api.getITLocationT(condition);
       this.data_set = result;
     },
     async onClickSearch() {
@@ -166,7 +168,7 @@ export default {
         location_code: this.search,
         plant: this.selectPlant,
       };
-      const result = await api.getITLocation(condition);
+      const result = await api.getITLocationT(condition);
       this.data_set = result;
     },
     ShareData(id) {
@@ -180,7 +182,7 @@ export default {
         location_code: this.search,
         plant: this.selectPlant,
       };
-      const result = await api.getITLocation(condition);
+      const result = await api.getITLocationT(condition);
       this.data_set = result;
     },
   },

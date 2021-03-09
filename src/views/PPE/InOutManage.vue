@@ -1,8 +1,10 @@
 <template>
   <v-container>
-    <h1>In-Out Management</h1>
+    <div class="text-center">
+      <h1>In-Out Management</h1>
+    </div>
     <!-- search tab -->
-    <v-card class="elevation-5 mt-5 px-5">
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -57,10 +59,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/ppe/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/esrc/ppe/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/ppe/addgi" color="primary">
+          <v-btn class="pa-6" href="/esrc/ppe/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -245,7 +247,7 @@ export default {
         spare_code: this.search,
         movement: this.selectMovement,
         plant: this.selectPlant,
-      }
+      };
       const result = await api.getInoutData(condition);
       this.data_set = result;
     },

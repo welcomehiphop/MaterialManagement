@@ -1,13 +1,20 @@
 <template>
   <div class="monitoring">
     <v-container class="container">
-      <h1>Monitoring</h1>
+      <div class="text-center">
+        <h1>Monitoring</h1>
+      </div>
     </v-container>
-    <v-container class="wrapper pa-10 mt-15">
+    <v-container class="wrapper pa-10 mt-5">
       <v-row align="center" justify="center">
         <v-col>
           <div class="todos">
-            <div class="todo" v-for="(item, index) in items" :key="index" @click="onClick(item.path)">
+            <div
+              class="todo"
+              v-for="(item, index) in items"
+              :key="index"
+              @click="onClick(item.path)"
+            >
               <!-- <img src="../assets/add.png" width="100" height="100" alt="" /> -->
               <v-spacer class="mt-5"></v-spacer>
               {{ item.param }}
@@ -21,17 +28,17 @@
 
 <script>
 export default {
-  methods:{
-    onClick(path){
-       this.$router.push(path).catch(()=>{});
-    }
+  methods: {
+    onClick(path) {
+      this.$router.push(path).catch(() => {});
+    },
   },
   data() {
     return {
       items: [
-        { id: "1", param: "PPE Room", path: "/ppe/pperoom" },
-        { id: "2", param: "Equipment", path: "/ppe/equipment" },
-        { id: "3", param: "FE Room", path: "/ppe/feroom" },
+        { id: "3", param: "FE Room", path: "/esrc/ppe/feroom" },
+        { id: "1", param: "PPE Room", path: "/esrc/ppe/pperoom" },
+        { id: "2", param: "Equipment", path: "/esrc/ppe/equipment" },
       ],
     };
   },

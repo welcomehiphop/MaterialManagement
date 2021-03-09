@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import api from "@/services/api";
 export default {
   async mounted() {
@@ -90,33 +89,32 @@ export default {
       bodyFormData.append("description", this.data_set[0].description);
       bodyFormData.append("price", this.data_set[0].price);
       bodyFormData.append("safe_stock", this.data_set[0].safe_stock);
-      bodyFormData.append("reg_name", this.data_set[0].reg_name);
+      bodyFormData.append("reg_empno", this.data_set[0].reg_empno);
       bodyFormData.append("type", this.data_set[0].type);
 
       if (this.selectedFile) {
-        console.log(this.selectedFile);
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
       }
-      
-      await axios
-        .put(
-          "http://localhost:3000/update_esrc_list/" +
-            `${this.$route.params.id}`,
-          bodyFormData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-        .then((resp) => {
-          if (resp.status == "200") {
-            alert("SUCCESS");
-            this.$router.push({ path: "/locationdata" });
-          }
-        }).catch(err =>{
-          alert(err)
-        })
+      await api.updateEsrcData(this.$route.params.id,bodyFormData)
+    //   await axios
+    //     .put(
+    //       "http://localhost:3000/update_esrc_list/" +
+    //         `${this.$route.params.id}`,
+    //       bodyFormData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     )
+    //     .then((resp) => {
+    //       if (resp.status == "200") {
+    //         alert("SUCCESS");
+    //         this.$router.push({ path: "/locationdata" });
+    //       }
+    //     }).catch(err =>{
+    //       alert(err)
+    //     })
     },
   },
 };

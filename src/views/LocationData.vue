@@ -1,7 +1,9 @@
 <template>
   <v-container>
-    <h1>Location Data</h1>
-    <v-card class="elevation-5 mt-5 px-5">
+    <div class="text-center">
+      <h1>Location Data</h1>
+    </div>
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -44,7 +46,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/addlocation" color="primary">
+          <v-btn class="pa-5" href="/esrc/fe/addlocation" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -164,26 +166,24 @@ export default {
     async onClickSearch() {
       const condition = {
         location_code: "%" + this.search + "%",
-        plant :"%" + this.selectPlant +"%"
+        plant: "%" + this.selectPlant + "%",
       };
-      const result = await api.getLocation(condition)
-      this.data_set = result
+      const result = await api.getLocation(condition);
+      this.data_set = result;
     },
     ShareData(id) {
-      this.$router.push(`/editlocation/${id}`);
+      this.$router.push(`/esrc/fe/editlocation/${id}`);
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {
-        await api
-          .deleteLocation(id)
-          .then((resp) => {
-            alert(resp);
-          })
-          .catch((error) => {
-            alert(error);
-          });
+        await api.deleteLocation(id);
       }
-      this.data_set = await api.getLocation();
+      const condition = {
+        location_code: "%" + this.search + "%",
+        plant: "%" + this.selectPlant + "%",
+      };
+      const result = await api.getLocation(condition);
+      this.data_set = result;
     },
   },
 };

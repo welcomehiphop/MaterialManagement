@@ -2,7 +2,8 @@
   <v-container>
     <h2>Carry Out Detail</h2>
     <div class="text-right">
-      <v-btn color="secondary" @click="changeStatus('W')">Withdraw</v-btn>
+      <v-btn color="success" @click="changeStatus('C')">Approve</v-btn>
+      <v-btn class="ml-5" color="error" @click="changeStatus('R')">Reject</v-btn>
     </div>
     <v-card class="mt-5 elevation-5 pa-5">
       <v-card-title>Approval Process</v-card-title>
@@ -277,15 +278,16 @@ import api from "@/services/api";
 export default {
   methods: {
     async changeStatus(docst) {
-      console.log(docst);
+      console.log(docst)
       const data = {
         docst: docst,
       };
       await api.putFeStatus(this.$route.params.id, data);
     },
+
   },
   async mounted() {
-    const result = await api.getITCarryByID(this.$route.params.id);
+    const result = await api.getPPECarryByID(this.$route.params.id);
     this.data_set = result.data.process;
     this.detail = result.data.detail[0];
     this.file = result.data.file;

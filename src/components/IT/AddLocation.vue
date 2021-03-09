@@ -66,12 +66,14 @@ export default {
         location_name: this.form.location_name,
         plant: this.form.selectPlant.value,
       };
-      if (
-        this.form.location_code != "" &&
-        this.form.location_name != "" &&
-        this.form.selectPlant.value != ""
-      )
-        await api.postITLocation(postLocation);
+      // if (
+      //   this.form.location_code != "" &&
+      //   this.form.location_name != "" &&
+      //   this.form.selectPlant.value != ""
+      // )
+      // console.log(postLocation)
+        let result = await api.postITLocation(postLocation);
+        console.log(result)
       // await axios
       //   .post("http://localhost:3000/post_location", postLocation)
       //   .then(

@@ -445,7 +445,7 @@ export default {
         };
         await api.PostProcessApprove(data);
         alert("Success");
-        this.$router.push("/it/carryout");
+        this.$router.push("/esrc/it/carryout");
       }
 
       //   //get ref_id

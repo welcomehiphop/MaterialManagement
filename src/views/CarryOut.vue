@@ -1,8 +1,10 @@
 <template>
   <v-container>
-    <h1>Carry Out</h1>
+    <div class="text-center">
+      <h1>Carry Out</h1>
+    </div>
     <!-- search tab -->
-    <v-card class="elevation-5 mt-5 px-5">
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -83,7 +85,7 @@
         <v-col cols="10"></v-col>
         <v-col cols="2">
           <div class="text-right mr-3 mb-2">
-            <v-btn href="/requestcarry" color="primary">
+            <v-btn href="/esrc/fe/requestcarry" color="primary">
               Request
             </v-btn>
           </div>
@@ -156,7 +158,10 @@
             </td>
             <td>
               <v-layout justify-center>
-                {{ item.status }}
+                <v-chip class="short" :color="getColor(item.status)" dark>
+                  <!-- {{ item.status }} -->
+                  <span>{{ item.status }}</span>
+                </v-chip>
               </v-layout>
             </td>
           </tr>
@@ -173,6 +178,12 @@ export default {
     this.formatDate();
   },
   methods: {
+    getColor(status) {
+      if (status === "Pending") return "#FF9800";
+      if (status === "Approved") return "#4CAF50";
+      if (status === "Reject") return "#F44336";
+      if (status === "Withdraw") return "#9E9E9E";
+    },
     async onSelected() {
       this.format_fromdate =
         this.fromDate.substring(0, 4) +
@@ -238,15 +249,13 @@ export default {
       this.data_set = result.data;
     },
     shareData(id) {
-      this.$router.push(`/carrydetail/${id}`);
+      this.$router.push(`/esrc/fe/carrydetail/${id}`);
     },
   },
   data() {
     return {
       format_fromdate: "",
-
       format_todate: "",
-
       fromDate: "",
       toDate: new Date().toISOString().substring(0, 10),
       search: "",
@@ -321,4 +330,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.short {
+  width: 100px;
+  /* align-content: center; */
+  justify-content: center;
+  /* align-items: center; */
+  /* justify-items: center; */
+}
+.short span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

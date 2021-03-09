@@ -1,8 +1,10 @@
 <template>
-  <v-container>
-    <h1>In-Out Management</h1>
+  <v-container class="container">
+    <div class="text-center">
+      <h1>In-Out Management</h1>
+    </div>
     <!-- search tab -->
-    <v-card class="elevation-5 mt-5 px-5">
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -27,6 +29,7 @@
         </v-col>
         <v-col cols="1">
           <v-select
+            @change="onSelected"
             v-model="selectMovement"
             :items="movements"
             item-text="movement"
@@ -41,6 +44,7 @@
         </v-col>
         <v-col cols="1">
           <v-select
+            @change="onSelected"
             v-model="selectPlant"
             :items="plants"
             item-text="plant"
@@ -55,10 +59,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/esrc/fe/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/addgi" color="primary">
+          <v-btn class="pa-6" href="/esrc/fe/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -233,6 +237,14 @@ export default {
     };
   },
   methods: {
+    async onSelected() {
+      const result = await api.getInout(
+        "%" + this.search + "%",
+        "%" + this.selectMovement + "%",
+        "%" + this.selectPlant + "%"
+      );
+      this.data_set = result;
+    },
     async onEnter() {
       const result = await api.getInout(
         "%" + this.search + "%",
@@ -248,15 +260,12 @@ export default {
         "%" + this.selectPlant + "%"
       );
       this.data_set = result;
-      console.log(this.search);
-      console.log(this.selectMovement);
-      console.log(this.selectPlant);
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/detailgi/${id}`);
+        this.$router.push(`/esrc/fe/detailgi/${id}`);
       } else {
-        this.$router.push(`/detailgr/${id}`);
+        this.$router.push(`/esrc/fe/detailgr/${id}`);
       }
     },
   },

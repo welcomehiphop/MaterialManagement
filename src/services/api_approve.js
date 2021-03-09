@@ -46,3 +46,8 @@ export const getAllLocation = async() => {
     const result = await httpClient.get(esrc_appprove.get_all_location)
     return result
 }
+
+export const putFeStatus = async(id, data) => {
+    const result = await httpClient.put(esrc_appprove.update_fe_status + "/" + `${id}`, data)
+    console.log(result)
+}

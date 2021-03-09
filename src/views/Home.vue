@@ -2,26 +2,43 @@
   <v-container fill-height>
     <v-row class="mb-15">
       <v-col>
-        <v-card class="pa-2">
-          <v-btn href="/inoutmanage" text>
+        <v-hover v-slot:default="{ hover }">
+          <v-card
+            class="pa-2"
+            href="/esrc/fe/inout"
+            :class="{ 'on-hover': hover }"
+            :elevation="hover ? 16 : 4"
+          >
             <v-card-title>FE Room control</v-card-title>
-          </v-btn>
-           <v-card-text>FE Room control</v-card-text>
-        </v-card>
+            <v-card-text>FE Room control</v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
       <v-col>
-        <v-card class="pa-2">
-          <v-btn href="/ppe/inout" text>
-            Safety & PPE Room control
-          </v-btn>
-        </v-card>
+        <v-hover v-slot:default="{ hover }">
+          <v-card
+            class="pa-2"
+            href="/esrc/ppe/inout"
+            :class="{ 'on-hover': hover }"
+            :elevation="hover ? 16 : 4"
+          >
+            <v-card-title>Safety & PPE Room control</v-card-title>
+            <v-card-text>Safety & PPE Room control</v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
       <v-col>
-        <v-card class="pa-2">
-          <v-btn href="/it/inout" text>
-            Equipment & IT Room control
-          </v-btn>
-        </v-card>
+        <v-hover v-slot:default="{ hover }">
+          <v-card
+            class="pa-2"
+            href="/esrc/it/inout"
+            :class="{ 'on-hover': hover }"
+            :elevation="hover ? 16 : 4"
+          >
+            <v-card-title>Equipment & IT Room control</v-card-title>
+            <v-card-text>Equipment & IT Room control</v-card-text>
+          </v-card>
+        </v-hover>
       </v-col>
     </v-row>
   </v-container>

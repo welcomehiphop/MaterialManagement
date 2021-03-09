@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>Equipment & IT Room control</h1>
     <v-navigation-drawer app permanent>
       <v-list-item>
         <v-list-item-content>
@@ -80,15 +81,15 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/it/carryout"],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/it/inout"],
+        ["Carry Out List", "mdi-text-box-multiple-outline", "/esrc/it/carryout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/it/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/it/molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/it/locationdata"],
+        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/it/molddata"],
+        ["Location Data", "mdi-text-box-multiple-outline", "/esrc/it/locationdata"],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/it/monitoring"],
+        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/esrc/it/monitoring"],
       ],
     };
   },

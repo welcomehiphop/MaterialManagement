@@ -15,7 +15,7 @@ export const getITCarryByID = async(id) => {
 }
 
 export const getITSpare = async(spare_code, location_code) => {
-    const result = await httpClient.get(it_carry.get_it_spare + "?spare_code=" + spare_code + "&location=" + location_code)
+    const result = await httpClient.get(it_carry.get_it_spare_carry + "?spare_code=" + spare_code + "&location=" + location_code)
     return result.data
 }
 

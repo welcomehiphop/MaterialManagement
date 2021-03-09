@@ -2,15 +2,15 @@
   <v-container>
     <h2>Spare Part Register</h2>
 
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
         v-model="form.selectPlant"
         :items="plants"
         item-text="plant"
         item-value="value"
         label="Plant *"
+        :rules="[(v) => !!v || 'Plant is required']"
         persistent-hint
-        single-line
         required
       ></v-select>
 
@@ -18,24 +18,32 @@
         v-model="form.spareCode"
         :counter="20"
         label="Spare Code *"
+        :rules="[(v) => !!v || 'Spare code is required']"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="form.description"
         label="Description *"
+        :rules="[(v) => !!v || 'Description is required']"
         required
       ></v-text-field>
 
-      <v-text-field v-model="form.price" label="Price *" required></v-text-field>
+      <v-text-field
+        v-model="form.price"
+        label="Price *"
+        :rules="[(v) => !!v || 'Price is required']"
+        required
+      ></v-text-field>
 
       <v-text-field
         v-model="form.safeStock"
         label="Safe Stock *"
+        :rules="[(v) => !!v || 'Safe stock is required']"
         required
       ></v-text-field>
 
-       <!-- <v-text-field
+      <!-- <v-text-field
         v-model="form.reg_empno"
         label="Reg No *"
         required
@@ -47,16 +55,27 @@
         item-text="type"
         item-value="value"
         label="Type *"
+        :rules="[(v) => !!v || 'Type is required']"
         persistent-hint
-        single-line
         required
       ></v-select>
       <!-- <v-file-input truncate-length="15" @click="onFileSelected"></v-file-input> -->
 
-      <input class="mx-15" type="file" @change="onFileSelected" />
-
+      <!-- <input
+        class="mx-15"
+        type="file"
+        @change="onFileSelected"
+        :rules="[(v) => !!v || 'Please upload image']"
+      /> -->
+      <v-file-input
+        dense
+        label="File input"
+        filled
+        @change="onFileSelected"
+        :rules="[(v) => !!v || 'Please upload image']"
+        prepend-icon="mdi-camera"
+      ></v-file-input>
       <div class="text-right">
-
         <v-btn color="success" class="mt-10 pa-5 pr-9 pl-9" @click="submit">
           Submit
         </v-btn>
@@ -66,26 +85,25 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api";
 export default {
   data() {
     return {
+      valid: true,
       form: {
-        selectPlant: {plant:"Select Plant",value:""},
+        selectPlant: "",
         spareCode: "",
-        selectType: {type:"Select Type",value:""},
+        selectType: "",
         price: "",
         safeStock: "",
         description: "",
-        reg_empno:"",
+        reg_empno: "",
       },
       types: [
-        {type:"Select Type",value:""},
         { type: "Spare Part", value: "Spare Part" },
         { type: "Equipment", value: "Equipment" },
       ],
       plants: [
-        {plant:"Select Plant",value:""},
         { plant: "KS", value: "KS" },
         { plant: "A/C", value: "AC" },
         { plant: "DW", value: "DW" },
@@ -97,47 +115,22 @@ export default {
   },
   methods: {
     onFileSelected(event) {
-      this.selectedFile = event.target.files[0];
+      this.selectedFile = event
     },
     async submit(event) {
+      if (this.$refs.form.validate()) {
+        let bodyFormData = new FormData();
+        bodyFormData.append("plant", this.form.selectPlant);
+        bodyFormData.append("spare_code", this.form.spareCode);
+        bodyFormData.append("description", this.form.description);
+        bodyFormData.append("price", this.form.price);
+        bodyFormData.append("safe_stock", this.form.safeStock);
+        bodyFormData.append("type", this.form.selectType);
+        bodyFormData.append("reg_empno", "20528906");
+        bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
+        await api.postEsrcData(bodyFormData);
+      }
       event.preventDefault();
-      // if (this.form.empNo == "") {
-      //   console.log(1);
-      //   alert("Please input all field.");
-      // } else if (this.form.action == "") {
-      //   console.log(2);
-      //   alert("Please input all field.");
-      // } else if (this.selectedFile == null) {
-      //   console.log(3);
-      //   alert("Please upload image.");
-      // } else {
-      let bodyFormData = new FormData();
-      bodyFormData.append("plant", this.form.selectPlant.value);
-      bodyFormData.append("spare_code", this.form.spareCode);
-      bodyFormData.append("description", this.form.description);
-      bodyFormData.append("price", this.form.price);
-      bodyFormData.append("safe_stock", this.form.safeStock);
-      bodyFormData.append("type", this.form.selectType.value);
-      bodyFormData.append("reg_empno","20528906")
-      // bodyFormData.append("action", this.form.action);
-      // bodyFormData.append("dateAndTime", this.timestamp);
-      // bodyFormData.append("status", "Finish");
-      bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
-
-      await axios
-        .post("http://localhost:3000/post_esrc_list", bodyFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((resp) => {
-          if (resp.status == "200") {
-            alert("SUCCESS");
-            this.$router.push({ path:'/molddata' });
-          }
-        });
-      
-      // }
     },
   },
 };

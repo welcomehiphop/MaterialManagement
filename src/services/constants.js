@@ -29,7 +29,8 @@ export const esrc = {
 export const esrc_location = {
     get_location: 'get_location',
     update_location: 'update_location',
-    delete_location: 'delete_location'
+    delete_location: 'delete_location',
+    post_location: 'post_location'
 }
 
 export const esrc_inout = {
@@ -46,7 +47,12 @@ export const esrc_inout = {
 export const esrc_monitoring = {
     get_fe_monitoring: 'get_fe_monitoring',
     get_fe_spare: 'get_fe_spare',
-    get_stock_qty: 'get_stock_qty'
+    get_stock_qty: 'get_stock_qty',
+    get_ppe_monitoring: 'get_ppe_monitoring',
+    get_ppe_spare: 'get_ppe_spare',
+    get_it_monitoring: 'get_it_monitoring',
+    get_it_spare: 'get_it_spare',
+    get_ppe_spare_monitor: 'get_ppe_spare_monitor'
 }
 
 export const esrc_appprove = {
@@ -57,7 +63,8 @@ export const esrc_appprove = {
     post_list_approve: 'post_list_approve',
     get_carry_list: 'get_carry_list',
     get_app_list: 'get_app_list',
-    get_all_location: 'get_all_location'
+    get_all_location: 'get_all_location',
+    update_fe_status: 'update_fe_status'
 }
 
 export const esrc_fe_search = {
@@ -113,7 +120,7 @@ export const it_inout = {
 export const it_carry = {
     get_it_carry: 'get_it_carry',
     get_it_all_location: 'get_it_all_location',
-    get_it_spare: 'get_it_spare',
+    get_it_spare_carry: 'get_it_spare_carry',
     post_it_req: 'post_it_req',
     post_it_carry_spare: 'post_it_carry_spare',
     post_it_carry_file: 'post_it_carry_file'

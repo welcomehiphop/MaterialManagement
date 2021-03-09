@@ -1,27 +1,89 @@
 <template>
   <div>
-    <h2 class="mt-4">FE Room</h2>
+    <div class="text-center">
+      <h2 class="mt-4">FE Room Monitor</h2>
+    </div>
     <v-container class="pa-10 mt-4">
       <v-row>
         <v-col>
           <div class="todos">
-            <v-card
-              class="todo pb-5"
-              v-for="(item, index) in items"
-              :key="index"
-            >
+            <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  {{ item.param }}
+                  FE-01
                 </v-layout>
               </v-card-title>
               <v-card
-                :color="getColor(stock.total, stock.safeStock)"
                 class="item"
-                v-for="(stock, key) in stocks[index]"
+                v-for="(stock, key) in stockA"
                 :key="key"
+                :color="getColor(stock.location_code, sparesA)"
               >
-                {{ stock.stock }}
+                {{ stock.location_code }}
+              </v-card>
+            </v-card>
+
+            <v-card class="todo pb-5">
+              <v-card-title id="header">
+                <v-layout justify-center align-center>
+                  FE-02
+                </v-layout>
+              </v-card-title>
+              <v-card
+                class="item"
+                v-for="(stock, key) in stockB"
+                :key="key"
+                :color="getColor(stock.location_code, sparesB)"
+              >
+                {{ stock.location_code }}
+              </v-card>
+            </v-card>
+
+            <v-card class="todo pb-5">
+              <v-card-title id="header">
+                <v-layout justify-center align-center>
+                  FE-03
+                </v-layout>
+              </v-card-title>
+              <v-card
+                class="item"
+                v-for="(stock, key) in stockC"
+                :key="key"
+                :color="getColor(stock.location_code, sparesC)"
+              >
+                {{ stock.location_code }}
+              </v-card>
+            </v-card>
+
+            <v-card class="todo pb-5">
+              <v-card-title id="header">
+                <v-layout justify-center align-center>
+                  FE-04
+                </v-layout>
+              </v-card-title>
+              <v-card
+                class="item"
+                v-for="(stock, key) in stockD"
+                :key="key"
+                :color="getColor(stock.location_code, sparesD)"
+              >
+                {{ stock.location_code }}
+              </v-card>
+            </v-card>
+
+            <v-card class="todo pb-5">
+              <v-card-title id="header">
+                <v-layout justify-center align-center>
+                  FE-05
+                </v-layout>
+              </v-card-title>
+              <v-card
+                class="item"
+                v-for="(stock, key) in stockE"
+                :key="key"
+                :color="getColor(stock.location_code, sparesE)"
+              >
+                {{ stock.location_code }}
               </v-card>
             </v-card>
           </div>
@@ -32,67 +94,76 @@
 </template>
 
 <script>
+import api from "@/services/api";
 export default {
+  components: {},
+  async created() {
+    let r1 = await api.getITRoom("StockA");
+    this.stockA = r1.data;
+    let r2 = await api.getITMonitor("StockA");
+    this.sparesA = r2.data;
+
+    let result = await api.getITRoom("StockB");
+    this.stockB = result.data;
+    let result2 = await api.getITMonitor("StockB");
+    this.sparesB = result2.data;
+
+    let result3 = await api.getITRoom("StockC");
+    this.stockC = result3.data;
+    let result4 = await api.getITMonitor("StockC");
+    this.sparesC = result4.data;
+
+    let result5 = await api.getITRoom("StockD");
+    this.stockD = result5.data;
+    let result6 = await api.getITMonitor("StockD");
+    this.sparesD = result6.data;
+
+    let result7 = await api.getITRoom("StockE");
+    this.stockE = result7.data;
+    let result8 = await api.getITMonitor("StockE");
+    this.sparesE = result8.data;
+
+  },
   methods: {
-    onClick(item) {
+    getColor(location, status) {
+      for (let i = 0; i < status.length; i++) {
+        if (status[i].location_code == location) {
+          if (status[i].status === "NULL" || status[i].status == 0)
+            return "#909090";
+          else if (status[i].status == "NG") return "red";
+          else if (status[i].status == "OK") return "green";
+        }
+      }
+    },
+    getSpareData(item) {
       console.log(item);
     },
-    getColor(total, safeStock) {
-      if (total == undefined || safeStock == undefined) return "#909090";
-      if (total >= safeStock) return "green";
-      else if (total < safeStock) return "red";
+    onClickStock(stock) {
+      console.log(stock);
     },
   },
+
   data() {
     return {
-      stocks: [
-        [
-          { id: "1", stock: "StockA-1", total: 5, safeStock: 5 },
-          { id: "2", stock: "StockA-2", total: 1, safeStock: 4 },
-          { id: "3", stock: "StockA-3" },
-          { id: "4", stock: "StockA-4" },
-          { id: "5", stock: "StockA-5" },
-          { id: "6", stock: "StockA-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-        [
-          { id: "1", stock: "StockB-1" },
-          { id: "2", stock: "StockB-2" },
-          { id: "3", stock: "StockB-3" },
-          { id: "4", stock: "StockB-4" },
-          { id: "5", stock: "StockB-5" },
-          { id: "6", stock: "StockB-6" },
-        ],
-      ],
+      color: "",
+      stockA: [],
+      sparesA: [],
+      stockB: [],
+      sparesB: [],
+      sparesC: [],
+      stockC: [],
+      sparesD: [],
+      stockD: [],
+      sparesE: [],
+      stockE: [],
+      stocks: [],
       items: [
-        { id: "1", param: "ET-01" },
-        { id: "2", param: "ET-02" },
-        { id: "3", param: "ET-03" },
-        { id: "4", param: "ET-04" },
-        { id: "5", param: "ET-05" },
+        { id: "1", param: "FE-01" },
+        { id: "1", param: "FE-01" },
+        { id: "2", param: "FE-02" },
+        { id: "3", param: "FE-03" },
+        { id: "4", param: "FE-04" },
+        { id: "5", param: "FE-05" },
       ],
     };
   },

@@ -22,6 +22,7 @@ import PPERoom from '@/components/PPERoom.vue'
 import Equipment from '@/components/Equipment.vue'
 import FERoom from '@/components/FERoom.vue'
 import CarryDetail from '@/components/CarryDetail.vue'
+import Approve from '../components/Approve.vue'
 
 import PPEMenu from '@/components/Main/PPEMenu.vue'
 import PPEInout from '@/views/PPE/InOutManage.vue'
@@ -55,8 +56,7 @@ import ITAddGI from '@/components/IT/AddGI'
 import ITCarryOut from '@/views/IT/CarryOut'
 import ITRequestCarry from '@/components/IT/RequestCarry'
 import ITCarryDetail from '@/components/IT/CarryDetail'
-
-
+import ITMonitoring from '@/views/IT/Monitoring'
 
 
 Vue.use(VueRouter)
@@ -66,13 +66,13 @@ const routes = [{
         name: 'TestVuex',
         component: TestVuex
     }, {
-        path: '/home',
+        path: '/esrc',
         name: 'Home',
         component: Home
     },
     {
         path: '/',
-        redirect: '/home'
+        redirect: '/esrc'
     },
     {
         path: '/itemgr',
@@ -81,101 +81,106 @@ const routes = [{
     },
     {
         path: '*',
-        redirect: '/home'
+        redirect: '/esrc'
     },
     {
         path: '/Menu',
         name: 'Menu',
         component: Menu,
         children: [{
-                path: '/inoutmanage',
+                path: '/esrc/fe/inout',
                 name: 'InOutManage',
                 component: InOutManage
             },
             {
-                path: '/carryout',
+                path: '/esrc/fe/carryout',
                 name: 'CarryOut',
                 component: CarryOut
             },
             {
-                path: '/molddata',
+                path: '/esrc/fe/molddata',
                 name: 'MoldData',
                 component: MoldData,
             },
             {
-                path: '/locationdata',
+                path: '/esrc/fe/locationdata',
                 name: 'locationdata',
                 component: LocationData
             },
             {
-                path: '/monitoring',
+                path: '/esrc/fe/monitoring',
                 name: 'monitoring',
                 component: Monitoring
             },
             {
-                path: '/addspare',
+                path: '/esrc/fe/addspare',
                 name: 'AddSpare',
                 component: AddSpare
             },
             {
-                path: '/addlocation',
+                path: '/esrc/fe/addlocation',
                 name: 'AddLocation',
                 component: AddLocation
             },
             {
-                path: '/editspare/:id',
+                path: '/esrc/fe/editspare/:id',
                 name: 'EditSpare',
                 component: EditSpare
             },
             {
-                path: '/editlocation/:id',
+                path: '/esrc/fe/editlocation/:id',
                 name: 'EditLocation',
                 component: EditLocation
             },
             {
-                path: '/addgr',
+                path: '/esrc/fe/addgr',
                 name: 'AddGR',
                 component: AddGR
             }, {
-                path: '/addgi',
+                path: '/esrc/fe/addgi',
                 name: 'AddGI',
                 component: AddGI
             },
             {
-                path: '/detailgr/:id',
+                path: '/esrc/fe/detailgr/:id',
                 name: 'DetailGR',
                 component: DetailGR
             },
             {
 
-                path: '/detailgi/:id',
+                path: '/esrc/fe/detailgi/:id',
                 name: 'DetailGI',
                 component: DetailGI
             },
             {
-                path: '/requestcarry',
+                path: '/esrc/fe/requestcarry',
                 name: 'Request',
                 component: RequestCarry
             },
             {
-                path: '/pperoom',
-                name: 'PPERoom',
+                path: '/esrc/fe/pperoom',
+                name: '/esrc/fe/PPERoom',
                 component: PPERoom
             },
             {
-                path: '/equipment',
+                path: '/esrc/fe/equipment',
                 name: 'Equipment',
                 component: Equipment
             },
             {
-                path: '/feroom',
+                path: '/esrc/fe/feroom',
                 name: 'FERoom',
                 component: FERoom
             },
             {
-                path: '/carrydetail/:id',
+                path: '/esrc/fe/carrydetail/:id',
                 name: 'CarryDetail',
                 component: CarryDetail
+            },
+            {
+                path: '/esrc/fe/approve/:id',
+                name: 'Approve',
+                component: Approve
             }
         ]
     },
@@ -184,91 +189,91 @@ const routes = [{
         name: 'PPEMenu',
         component: PPEMenu,
         children: [{
-                path: '/ppe/inout',
+                path: '/esrc/ppe/inout',
                 name: 'PPEInout',
                 component: PPEInout
             },
             {
-                path: '/ppe/carryout',
+                path: '/esrc/ppe/carryout',
                 name: 'PPECarryOut',
                 component: PPECarryOut
             },
             {
-                path: '/ppe/molddata',
+                path: '/esrc/ppe/molddata',
                 name: 'PPEMoldData',
                 component: PPEMoldData
             },
             {
-                path: '/ppe/location',
+                path: '/esrc/ppe/location',
                 name: 'PPELocation',
                 component: PPELocationData
             },
             {
-                path: '/ppe/monitoring',
+                path: '/esrc/ppe/monitoring',
                 name: 'PPEMonitoring',
                 component: PPEMonitor
             },
             {
-                path: '/ppe/pperoom',
+                path: '/esrc/ppe/pperoom',
                 name: 'PPE_PPERoom',
                 component: PPERoom
             },
             {
-                path: '/ppe/equipment',
+                path: '/esrc/ppe/equipment',
                 name: 'PPE_Equipment',
                 component: Equipment
             },
             {
-                path: '/ppe/feroom',
+                path: '/esrc/ppe/feroom',
                 name: 'PPE_FERoom',
                 component: FERoom
             },
             {
-                path: '/ppe/addspare',
+                path: '/esrc/ppe/addspare',
                 name: 'PPEAddSpare',
                 component: PPEAddSpare
             },
             {
-                path: '/ppe/editspare/:id',
+                path: '/esrc/ppe/editspare/:id',
                 name: 'PPEEditSpare',
                 component: PPEEditSpare
             },
             {
-                path: '/ppe/editlocation/:id',
+                path: '/esrc/ppe/editlocation/:id',
                 name: 'PPEEditLocation',
                 component: PPEEditLocation
             },
             {
-                path: '/ppe/addlocation',
+                path: '/esrc/ppe/addlocation',
                 name: 'PPEAddLocation',
                 component: PPEAddLocation
             },
             {
-                path: '/ppe/detailgr/:id',
+                path: '/esrc/ppe/detailgr/:id',
                 name: 'PPEDetailGR',
                 component: PPEDetailGR
             }, {
-                path: '/ppe/detailgi/:id',
+                path: '/esrc/ppe/detailgi/:id',
                 name: 'PPEDetailGI',
                 component: PPEDetailGI
             },
             {
-                path: '/ppe/addgr',
+                path: '/esrc/ppe/addgr',
                 name: 'PPEAddGR',
                 component: PPEAddGR
             },
             {
-                path: '/ppe/addgi',
+                path: '/esrc/ppe/addgi',
                 name: 'PPEAddGI',
                 component: PPEAddGI
             },
             {
-                path: '/ppe/requestcarry',
+                path: '/esrc/ppe/requestcarry',
                 name: 'PPERequestCarry',
                 component: PPERequestCarry
             },
             {
-                path: '/ppe/carrydetail/:id',
+                path: '/esrc/ppe/carrydetail/:id',
                 name: 'PPECarryDetail',
                 component: PPECarryDetail
             }
@@ -280,75 +285,95 @@ const routes = [{
         name: 'ITMenu',
         component: ITMenu,
         children: [{
-                path: '/it/inout',
+                path: '/esrc/it/inout',
                 name: 'ITInout',
                 component: ITInout
             },
             {
-                path: '/it/molddata',
+                path: '/esrc/it/molddata',
                 name: 'ITMold',
                 component: ITMold
             },
             {
-                path: '/it/addspare',
+                path: '/esrc/it/addspare',
                 name: 'ITAddSpare',
                 component: ITAddSpare
             },
             {
-                path: '/it/editspare/:id',
+                path: '/esrc/it/editspare/:id',
                 name: 'ITEditSpare',
                 component: ITEditSpare
             },
             {
-                path: '/it/locationdata',
+                path: '/esrc/it/locationdata',
                 name: 'ITLocation',
                 component: ITLocation
             },
             {
-                path: '/it/editlocation/:id',
+                path: '/esrc/it/editlocation/:id',
                 name: 'ITEditLocation',
                 component: ITEditLocation
             },
             {
-                path: '/it/addlocation',
+                path: '/esrc/it/addlocation',
                 name: 'ITAddLocation',
                 component: ITAddLocation
             },
             {
-                path: '/it/detailgr/:id',
+                path: '/esrc/it/detailgr/:id',
                 name: 'ITDetailGR',
                 component: ITDetailGR
             },
             {
-                path: '/it/detailgi/:id',
+                path: '/esrc/it/detailgi/:id',
                 name: 'ITDetailGI',
                 component: ITDetailGI
             },
             {
-                path: '/it/addgr',
+                path: '/esrc/it/addgr',
                 name: 'ITAddGR',
                 component: ITAddGR
             },
             {
-                path: '/it/addgi',
+                path: '/esrc/it/addgi',
                 name: 'ITAddGI',
                 component: ITAddGI
             },
             {
-                path: '/it/carryout',
+                path: '/esrc/it/carryout',
                 name: 'ITCarryOut',
                 component: ITCarryOut
             },
             {
-                path: '/it/requestcarry',
+                path: '/esrc/it/requestcarry',
                 name: 'ITRequestCarry',
                 component: ITRequestCarry
             },
             {
-                path: '/it/carrydetail/:id',
+                path: '/esrc/it/carrydetail/:id',
                 name: 'ITCarryDetail',
                 component: ITCarryDetail
-            }
+            },
+            {
+                path: '/esrc/it/monitoring',
+                name: 'ITMonitoring',
+                component: ITMonitoring
+            },
+            {
+                path: '/esrc/it/pperoom',
+                name: 'IT_PPERoom',
+                component: PPERoom
+            },
+            {
+                path: '/esrc/it/equipment',
+                name: 'IT_Equipment',
+                component: Equipment
+            },
+            {
+                path: '/esrc/it/feroom',
+                name: 'IT_FERoom',
+                component: FERoom
+            },
 
         ]
     }

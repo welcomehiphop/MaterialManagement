@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <h2>Carry Out Detail</h2>
+    <div class="text-right">
+      <v-btn color="secondary" @click="changeStatus('W')">Withdraw</v-btn>
+    </div>
     <v-card class="mt-5 elevation-5 pa-5">
       <v-card-title>Approval Process</v-card-title>
       <v-form>
@@ -259,7 +262,7 @@
             </td>
             <td>
               <v-layout justify-center>
-                {{ item.total + " THB"}}
+                {{ item.total + " THB" }}
               </v-layout>
             </td>
           </tr>
@@ -272,6 +275,15 @@
 <script>
 import api from "@/services/api";
 export default {
+  methods: {
+    async changeStatus(docst) {
+      console.log(docst);
+      const data = {
+        docst: docst,
+      };
+      await api.putFeStatus(this.$route.params.id, data);
+    },
+  },
   async mounted() {
     const result = await api.getPPECarryByID(this.$route.params.id);
     this.data_set = result.data.process;

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>FE Room control</h1>
     <v-navigation-drawer app permanent>
       <v-list-item>
         <v-list-item-content>
@@ -80,21 +81,21 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/carryout"],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/inoutmanage"],
+        ["Carry Out List", "mdi-text-box-multiple-outline", "/esrc/fe/carryout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/fe/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/locationdata"],
+        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/fe/molddata"],
+        ["Location Data", "mdi-text-box-multiple-outline", "/esrc/fe/locationdata"],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/monitoring"],
+        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/esrc/fe/monitoring"],
       ],
     };
   },
   methods: {
     onClickMenu(menu) {
-      this.$router.push(menu).catch(()=>{});
+      this.$router.push(menu).catch(() => {});
     },
   },
 };

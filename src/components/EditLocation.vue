@@ -41,7 +41,6 @@
 
 <script>
 import api from "@/services/api";
-import axios from "axios";
 export default {
   async mounted() {
     let result = await api.getLocationByID(this.$route.params.id);
@@ -63,19 +62,24 @@ export default {
   },
   methods: {
     async updateData(id) {
-      axios
-        .put(
-          "http://localhost:3000/update_location/" + id,
-          {
-            location_name: this.data_set[0].location_name,
-          }
-        )
-        .then((resp) => {
-          if (resp.status == "200") {
-            alert("SUCCESS");
-            this.$router.push({ path: "/locationdata" });
-          }
-        });
+      const data = {
+        location_name: this.data_set[0].location_name
+      }
+      // console.log(id,location_name)
+    await api.updateLocation(id,data)
+      // axios
+      //   .put(
+      //     "http://localhost:3000/update_location/" + id,
+      //     {
+      //       location_name: this.data_set[0].location_name,
+      //     }
+      //   )
+      //   .then((resp) => {
+      //     if (resp.status == "200") {
+      //       alert("SUCCESS");
+      //       this.$router.push({ path: "/locationdata" });
+      //     }
+      //   });
       // await api
       //   .updateLocation(id, {
       //     location_name: this.data_set[0].location_name,

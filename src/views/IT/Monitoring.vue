@@ -36,9 +36,9 @@ export default {
   data() {
     return {
       items: [
-        { id: "3", param: "FE Room", path: "/esrc/fe/feroom" },
-        { id: "1", param: "Safety & PPE Room", path: "/esrc/fe/pperoom" },
-        { id: "2", param: "Equipment & IT Room", path: "/esrc/fe/equipment" },
+        { id: "3", param: "FE Room", path: "/esrc/it/feroom" },
+        { id: "1", param: "PPE Room", path: "/esrc/it/pperoom" },
+        { id: "2", param: "Equipment", path: "/esrc/it/equipment" },
       ],
     };
   },

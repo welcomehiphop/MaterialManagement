@@ -1,7 +1,9 @@
 <template>
   <v-container>
-    <h1>Mold Data</h1>
-    <v-card class="elevation-5 mt-5 px-5">
+    <div class="text-center">
+      <h1>Mold Data</h1>
+    </div>
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -44,7 +46,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/it/addspare" color="primary">
+          <v-btn class="pa-5" href="/esrc/it/addspare" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -115,8 +117,8 @@
                 <img
                   :src="imageUrl + item.picture"
                   alt="Image not found"
-                  width="40px"
-                  height="40px"
+                  width="80px"
+                  height="80px"
                 />
               </v-layout>
             </td>
@@ -129,8 +131,9 @@
                     width="25px"
                     alt="Image not found"
                 /></a>
-                <a href="javascript:;" 
-                  ><img class="ml-3"
+                <a href="javascript:;"
+                  ><img
+                    class="ml-3"
                     @click="onDelete(item.id)"
                     src="@/assets/empty-tash-can.png"
                     height="25px"
@@ -152,23 +155,23 @@ export default {
   methods: {
     async onSelected() {
       const data = {
-        spare_code: this.search ,
-        plant: this.selectPlant ,
+        spare_code: this.search,
+        plant: this.selectPlant,
       };
       const result = await api.getITMold(data);
       this.data_set = result.data;
     },
     async onEnter() {
       const data = {
-        spare_code: this.search ,
-        plant: this.selectPlant ,
+        spare_code: this.search,
+        plant: this.selectPlant,
       };
       const result = await api.getITMold(data);
       this.data_set = result.data;
     },
     async onSearch() {
       const data = {
-        spare_code: this.search ,
+        spare_code: this.search,
         plant: this.selectPlant,
       };
       const result = await api.getITMold(data);
@@ -179,7 +182,7 @@ export default {
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {
-        await api.deleteITMold(id)
+        await api.deleteITMold(id);
       }
       const data = {
         spare_code: "",

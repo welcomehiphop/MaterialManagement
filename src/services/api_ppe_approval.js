@@ -9,7 +9,6 @@ export const getPPECarry = async(condition) => {
 
 export const getPPECarryByID = async(id) => {
     let result = await httpClient.get(ppe_carry.get_ppe_carry + "/" + `${id}`)
-    console.log(result)
     return result
 
 }
@@ -25,7 +24,8 @@ export const postPPECarrySpare = async(data) => {
     await httpClient.post(ppe_carry.post_ppe_carry_spare, data)
 }
 export const postPPECarryFile = async(data) => {
-    await httpClient.post(ppe_carry.post_ppe_carry_file, data)
+    const result = await httpClient.post(ppe_carry.post_ppe_carry_file, data)
+    console.log(result)
 }
 
 export const getPPESpare = async(spare_code, location_code) => {

@@ -1,4 +1,3 @@
-import * as apiAtp from "@/services/api_atp.js"
 import * as apiESRC from "@/services/api_esrc.js"
 import * as apiESRCMonitoring from "@/services/api_monitoring.js"
 import * as apiApprove from "@/services/api_approve"
@@ -11,7 +10,6 @@ import * as apiITInout from '@/services/api_it_inout'
 import * as apiCarryout from '@/services/api_it_carry'
 
 export default {
-    ...apiAtp,
     ...apiESRC,
     ...apiESRCMonitoring,
     ...apiApprove,

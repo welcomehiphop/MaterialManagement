@@ -1,7 +1,9 @@
 <template>
   <v-container>
-    <h1>Mold Data</h1>
-    <v-card class="elevation-5 mt-5 px-5">
+    <div class="text-center">
+      <h1>Mold Data</h1>
+    </div>
+    <v-card class="elevation-5 mt-7 px-5">
       <v-row align="center">
         <v-col cols="1">
           <v-subheader>
@@ -44,7 +46,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/addspare" color="primary">
+          <v-btn class="pa-5" href="/esrc/fe/addspare" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -115,8 +117,8 @@
                 <img
                   :src="imageUrl + item.picture"
                   alt="Image not found"
-                  width="40px"
-                  height="40px"
+                  width="80px"
+                  height="80px"
                 />
               </v-layout>
             </td>
@@ -125,16 +127,17 @@
                 <a href="" @click="ShareData(item.id)"
                   ><img
                     src="@/assets/edit.png"
-                    height="25px"
-                    width="25px"
+                    height="30px"
+                    width="30px"
                     alt="Image not found"
                 /></a>
                 <a href="javascript:;"
-                  ><img class="ml-3"
+                  ><img
+                    class="ml-3"
                     @click="onDelete(item.id)"
                     src="@/assets/empty-tash-can.png"
-                    height="25px"
-                    width="25px"
+                    height="30px"
+                    width="30px"
                     alt="Image not found"
                 /></a>
               </div>
@@ -155,8 +158,8 @@ export default {
         spare_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
-      const result = await api.getEsrcData(data)
-      this.data_set = result
+      const result = await api.getEsrcData(data);
+      this.data_set = result;
     },
     async onEnter() {
       const data = {
@@ -175,7 +178,7 @@ export default {
       this.data_set = result;
     },
     ShareData(id) {
-      this.$router.push(`/editspare/${id}`);
+      this.$router.push(`/esrc/fe/editspare/${id}`);
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {

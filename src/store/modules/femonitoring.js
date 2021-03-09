@@ -12,11 +12,11 @@ const getters = {
 
 const actions = {
     async fetchStocks({ commit }) {
-        const result = await api.getFeRoom('%StockA%');
+        const result = await api.getFeRoom('StockA');
         commit('setStocks', result.data);
     },
     async fetchFeSpares({ commit }) {
-        const result = await api.getFeSpare('%StockA%');
+        const result = await api.getFeSpare('StockA');
         commit('setFeSpares', result.data);
     },
 }

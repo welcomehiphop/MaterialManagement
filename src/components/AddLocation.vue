@@ -2,22 +2,23 @@
   <v-container>
     <h2>Location Register</h2>
 
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
         v-model="form.selectPlant"
         :items="plants"
         item-text="plant"
         item-value="value"
-        label="Plant *"
         persistent-hint
         return-object
-        single-line
+        :rules="[(v) => !!v || 'Plant is required']"
+        label="Plant *"
         required
       ></v-select>
 
       <v-text-field
         v-model="form.location_code"
         :counter="20"
+        :rules="[(v) => !!v || 'Location code is required']"
         label="Location Code *"
         required
       ></v-text-field>
@@ -25,6 +26,7 @@
       <v-text-field
         v-model="form.location_name"
         label="Location Name * "
+        :rules="[(v) => !!v || 'Location name is required']"
         required
       ></v-text-field>
 
@@ -38,17 +40,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import api from "@/services/api";
 export default {
   data() {
     return {
+      valid: true,
       form: {
-        selectPlant: { plant: "Select Plant", value: "undefined" },
+        selectPlant: "",
         location_code: "",
         location_name: "",
       },
       plants: [
-        { plant: "Select Plant", value: "undefined" },
         { plant: "KS", value: "KS" },
         { plant: "A/C", value: "AC" },
         { plant: "DW", value: "DW" },
@@ -60,24 +62,26 @@ export default {
   },
   methods: {
     async submit(event) {
+      if (this.$refs.form.validate()) {
+        const postLocation = {
+          location_code: this.form.location_code,
+          location_name: this.form.location_name,
+          plant: this.form.selectPlant.value,
+        };
+        await api.postLocation(postLocation);
+      }
       event.preventDefault();
-      const postLocation = {
-        location_code: this.form.location_code,
-        location_name: this.form.location_name,
-        plant: this.form.selectPlant.value,
-      };
-      console.log(postLocation);
-      await axios
-        .post("http://localhost:3000/post_location", postLocation)
-        .then(
-          () => {
-            alert("Add success fully");
-            this.$router.push("/locationdata");
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+      // await axios
+      //   .post("http://localhost:3000/post_location", postLocation)
+      //   .then(
+      //     () => {
+      //       alert("Add success fully");
+      //       this.$router.push("/locationdata");
+      //     },
+      //     (error) => {
+      //       console.log(error);
+      //     }
+      //   );
     },
   },
 };

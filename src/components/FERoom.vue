@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h2 class="mt-4">FE Room</h2>
+    <div class="text-center">
+      <h2 class="mt-4">FE Room Monitor</h2>
+    </div>
     <v-container class="pa-10 mt-4">
       <v-row>
         <v-col>
@@ -97,24 +99,24 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {},
   async created() {
-    let result = await api.getFeRoom("%StockB%");
+    let result = await api.getFeRoom("StockB");
     this.stockB = result.data;
-    let result2 = await api.getFeSpare("%StockB%");
+    let result2 = await api.getFeSpare("StockB");
     this.sparesB = result2.data;
 
-    let result3 = await api.getFeRoom("%StockC%");
+    let result3 = await api.getFeRoom("StockC");
     this.stockC = result3.data;
-    let result4 = await api.getFeSpare("%StockC%");
+    let result4 = await api.getFeSpare("StockC");
     this.sparesC = result4.data;
 
-    let result5 = await api.getFeRoom("%StockD%");
+    let result5 = await api.getFeRoom("StockD");
     this.stockD = result5.data;
-    let result6 = await api.getFeSpare("%StockD%");
+    let result6 = await api.getFeSpare("StockD");
     this.sparesD = result6.data;
 
-    let result7 = await api.getFeRoom("%StockE%");
+    let result7 = await api.getFeRoom("StockE");
     this.stockE = result7.data;
-    let result8 = await api.getFeSpare("%StockE%");
+    let result8 = await api.getFeSpare("StockE");
     this.sparesE = result8.data;
 
     await this.fetchStocks();
@@ -125,7 +127,8 @@ export default {
     getColor(location, status) {
       for (let i = 0; i < status.length; i++) {
         if (status[i].location_code == location) {
-          if (status[i].status === "NULL" || status[i].status == 0) return "#909090";
+          if (status[i].status === "NULL" || status[i].status == 0)
+            return "#909090";
           else if (status[i].status == "NG") return "red";
           else if (status[i].status == "OK") return "green";
         }

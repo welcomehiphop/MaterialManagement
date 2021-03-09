@@ -26,7 +26,7 @@ export const postITStock = async(data) => {
         if (resp.status == "200") {
             alert(resp.data)
         }
-        router.push('/it/inout').catch(() => {})
+        router.push('/esrc/it/inout').catch(() => {})
     }))
 }
 
@@ -35,7 +35,7 @@ export const putITStock = async(data) => {
         if (resp.status == "200") {
             alert(resp.data)
         }
-        router.push('/it/inout').catch(() => {})
+        router.push('/esrc/it/inout').catch(() => {})
     }))
 
 }
