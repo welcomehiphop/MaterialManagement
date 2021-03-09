@@ -1,12 +1,13 @@
 <template>
   <v-container>
     <h2>GR Register</h2>
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-row>
         <v-col cols="4">
           <v-text-field
             label="Spare Code * "
             v-model="allSpare.spare_code"
+            :rules="spareCodeRules"
             readonly
           />
         </v-col>
@@ -31,6 +32,8 @@
           <v-text-field
             v-model="allSpare.type"
             label="Spare Type * "
+            :rules="spareTypeRules"
+            required
             readonly
           ></v-text-field>
         </v-col>
@@ -40,13 +43,26 @@
             v-model="allSpare.description"
             label="Spare Name * "
             readonly
+            :rules="spareNameRules"
+            required
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-text-field v-model="form.purpose" label="Purpose * "> </v-text-field>
+      <v-text-field
+        v-model="form.purpose"
+        label="Purpose * "
+        :rules="purposeRules"
+        required
+      >
+      </v-text-field>
       <v-row>
         <v-col cols="4">
-          <v-text-field v-model="form.po" label="PO * "></v-text-field>
+          <v-text-field
+            v-model="form.po"
+            label="PO * "
+            :rules="PORules"
+            required
+          ></v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
         <v-col cols="3">
@@ -57,6 +73,8 @@
                 label="GR Date * "
                 v-bind="attrs"
                 v-on="on"
+                :rules="grDateRules"
+                required
                 prepend-icon="mdi-calendar-month-outline"
               />
             </template>
@@ -64,13 +82,20 @@
           </v-menu>
         </v-col>
       </v-row>
-      <v-text-field v-model="form.qty" label="Qty * "></v-text-field>
+      <v-text-field
+        v-model.number="form.qty"
+        label="Qty * "
+        :rules="qtyRules"
+        required
+      ></v-text-field>
       <v-select
         v-model="form.location"
         :items="locations"
         item-text="location_code"
         item-value="location_code"
         label="Location * "
+        :rules="LocationRules"
+        required
       ></v-select>
       <div class="text-right">
         <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit">
@@ -106,6 +131,19 @@ export default {
   },
   data() {
     return {
+      valid: true,
+      spareCodeRules: [(v) => !!v || "Spare Code is required"],
+      spareTypeRules: [(v) => !!v || "Spare Type is required"],
+      spareNameRules: [(v) => !!v || "Spare Name is required"],
+      purposeRules: [(v) => !!v || "Purpose is required"],
+      PORules: [(v) => !!v || "PO is required"],
+      grDateRules: [(v) => !!v || "Date is required"],
+      qtyRules: [
+        (v) => !!v || "qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The qty must be greater than zero",
+      ],
+      LocationRules: [(v) => !!v || "Location is required"],
       form: {
         purpose: "",
         po: "",
@@ -124,36 +162,39 @@ export default {
   },
 
   methods: {
-    async submit() {
-      let data = {
-        spare_code: this.allSpare.spare_code,
-        purpose: this.form.purpose,
-        po: this.form.po,
-        reg_date: this.form.gr_date,
-        qty: this.form.qty,
-        location: this.form.location,
-        reg_empno: this.form.gr_empNo,
-        movement: "GR",
-      };
-      await api.postITInout(data);
-      let result = await api.getITStock(
-        this.allSpare.spare_code,
-        this.form.location
-      );
-      if (result[0] != null) {
-        let dataUpdate = {
+    async submit(event) {
+      if (this.$refs.form.validate()) {
+        let data = {
           spare_code: this.allSpare.spare_code,
-          location_code: this.form.location,
-          qty: parseInt(this.form.qty) + parseInt(result[0].qty),
-        };
-        await api.putITStock(dataUpdate);
-      } else {
-        let data_stock = {
-          spare_code: this.allSpare.spare_code,
-          location_code: this.form.location,
+          purpose: this.form.purpose,
+          po: this.form.po,
+          reg_date: this.form.gr_date,
           qty: this.form.qty,
+          location: this.form.location,
+          reg_empno: this.form.gr_empNo,
+          movement: "GR",
         };
-        await api.postITStock(data_stock);
+        await api.postITInout(data);
+        let result = await api.getITStock(
+          this.allSpare.spare_code,
+          this.form.location
+        );
+        if (result[0] != null) {
+          let dataUpdate = {
+            spare_code: this.allSpare.spare_code,
+            location_code: this.form.location,
+            qty: parseInt(this.form.qty) + parseInt(result[0].qty),
+          };
+          await api.putITStock(dataUpdate);
+        } else {
+          let data_stock = {
+            spare_code: this.allSpare.spare_code,
+            location_code: this.form.location,
+            qty: this.form.qty,
+          };
+          await api.postITStock(data_stock);
+        }
+        event.preventDefault();
       }
     },
   },

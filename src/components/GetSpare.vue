@@ -18,7 +18,7 @@
                 v-model="searchLocation"
                 :items="locations"
                 item-text="location_code"
-                item-value="location_code"
+                item-value="value"
               />
             </v-col>
           </v-row>
@@ -31,7 +31,11 @@
               </v-subheader>
             </v-col>
             <v-col cols="7">
-              <v-text-field outlined dense v-model="searchSpareCode"></v-text-field>
+              <v-text-field
+                outlined
+                dense
+                v-model="searchSpareCode"
+              ></v-text-field>
             </v-col>
           </v-row>
         </div>
@@ -78,7 +82,7 @@ export default {
   },
   data() {
     return {
-      searchLocation: { location_code: "All", id: "" },
+      searchLocation: { location_code: "All", value: "" },
       searchSpareCode: "",
       data_set: [],
       locations: [],
@@ -103,8 +107,10 @@ export default {
   methods: {
     async onSelected() {
       const result = await api.getSparePart(
-        "%"+this.searchLocation+"%",
-        "%"+this.searchSpareCode+"%");
+        "%" + this.searchLocation + "%",
+        "%" + this.searchSpareCode + "%"
+      );
+      console.log(result)
       this.data_set = result;
     },
     ...mapMutations(["setSpare"]),

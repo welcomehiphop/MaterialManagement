@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h2>Spare Part Register</h2>
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
         v-model="form.selectPlant"
         :items="plants"
@@ -9,8 +9,8 @@
         item-value="value"
         label="Plant *"
         persistent-hint
-        single-line
         required
+        :rules="plantRules"
       ></v-select>
 
       <v-text-field
@@ -18,24 +18,28 @@
         :counter="20"
         label="Spare Code *"
         required
+        :rules="spareCodeRules"
       ></v-text-field>
 
       <v-text-field
         v-model="form.description"
         label="Description *"
+        :rules="descriptionRules"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="form.price"
         label="Price *"
+        :rules="priceRules"
         required
       ></v-text-field>
 
       <v-text-field
-        v-model="form.safeStock"
+        v-model.number="form.safeStock"
         label="Safe Stock *"
         required
+        :rules="safeStockRules"
       ></v-text-field>
 
       <!-- <v-text-field
@@ -51,12 +55,19 @@
         item-value="value"
         label="Type *"
         persistent-hint
-        single-line
+        :rules="typeRules"
         required
       ></v-select>
       <!-- <v-file-input truncate-length="15" @click="onFileSelected"></v-file-input> -->
 
-      <input class="mx-15" type="file" @change="onFileSelected" />
+      <v-file-input
+        dense
+        label="File input"
+        filled
+        @change="onFileSelected"
+        :rules="imageRules"
+        prepend-icon="mdi-camera"
+      ></v-file-input>
 
       <div class="text-right">
         <v-btn color="success" class="mt-10 pa-5 pr-9 pl-9" @click="submit">
@@ -68,26 +79,37 @@
 </template>
 
 <script>
-import api from "@/services/api"
+import api from "@/services/api";
 export default {
   data() {
     return {
+      //validate part
+      valid: true,
+      plantRules: [(v) => !!v || "Plant is required"],
+      spareCodeRules: [(v) => !!v || "Spare code is required"],
+      descriptionRules: [(v) => !!v || "Spare Name is required"],
+      priceRules: [(v) => !!v || "Price is required"],
+      safeStockRules: [
+        (v) => !!v || "Safe Stock is required",
+        (v) => Number.isInteger(Number(v)) || "The safe stock must be an integer",
+        (v) => v > 0 || "The safe stock must be greater than zero",
+      ],
+      typeRules: [(v) => !!v || "Type is required"],
+      imageRules: [(v) => !!v || "Please upload image"],
       form: {
-        selectPlant: { plant: "Select Plant", value: "" },
+        selectPlant: "",
         spareCode: "",
-        selectType: { type: "Select Type", value: "" },
+        selectType: "",
         price: "",
         safeStock: "",
         description: "",
         reg_empno: "",
       },
       types: [
-        { type: "Select Type", value: "" },
         { type: "Spare Part", value: "Spare Part" },
         { type: "Equipment", value: "Equipment" },
       ],
       plants: [
-        { plant: "Select Plant", value: "" },
         { plant: "KS", value: "KS" },
         { plant: "A/C", value: "AC" },
         { plant: "DW", value: "DW" },
@@ -99,48 +121,22 @@ export default {
   },
   methods: {
     onFileSelected(event) {
-      this.selectedFile = event.target.files[0];
+      this.selectedFile = event;
     },
     async submit(event) {
       event.preventDefault();
-      // if (this.form.empNo == "") {
-      //   console.log(1);
-      //   alert("Please input all field.");
-      // } else if (this.form.action == "") {
-      //   console.log(2);
-      //   alert("Please input all field.");
-      // } else if (this.selectedFile == null) {
-      //   console.log(3);
-      //   alert("Please upload image.");
-      // } else {
-
-      let bodyFormData = new FormData();
-      bodyFormData.append("plant", this.form.selectPlant);
-      bodyFormData.append("spare_code", this.form.spareCode);
-      bodyFormData.append("description", this.form.description);
-      bodyFormData.append("price", this.form.price);
-      bodyFormData.append("safe_stock", this.form.safeStock);
-      bodyFormData.append("type", this.form.selectType);
-      bodyFormData.append("reg_empno", "20528906");
-      // bodyFormData.append("action", this.form.action);
-      // bodyFormData.append("dateAndTime", this.timestamp);
-      // bodyFormData.append("status", "Finish");
-      bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
-      await api.postITMold(bodyFormData);
-      // await
-      //   .post("http://localhost:3000/post_esrc_list", bodyFormData, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((resp) => {
-      //     if (resp.status == "200") {
-      //       alert("SUCCESS");
-      //       this.$router.push({ path: "/molddata" });
-      //     }
-      //   });
-
-      // }
+      if (this.$refs.form.validate()) {
+        let bodyFormData = new FormData();
+        bodyFormData.append("plant", this.form.selectPlant);
+        bodyFormData.append("spare_code", this.form.spareCode);
+        bodyFormData.append("description", this.form.description);
+        bodyFormData.append("price", this.form.price);
+        bodyFormData.append("safe_stock", this.form.safeStock);
+        bodyFormData.append("type", this.form.selectType);
+        bodyFormData.append("reg_empno", "20528906");
+        bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
+        await api.postITMold(bodyFormData);
+      }
     },
   },
 };

@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <h1>FE Room control</h1>
+    <v-card width="40%">
+      <v-system-bar  height="2" dark></v-system-bar>
+    </v-card>
     <v-navigation-drawer app permanent>
       <v-list-item>
         <v-list-item-content>
@@ -81,15 +84,27 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/esrc/fe/carryout"],
+        [
+          "Carry Out List",
+          "mdi-text-box-multiple-outline",
+          "/esrc/fe/carryout",
+        ],
         ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/fe/inout"],
       ],
       masterData: [
         ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/fe/molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/esrc/fe/locationdata"],
+        [
+          "Location Data",
+          "mdi-text-box-multiple-outline",
+          "/esrc/fe/locationdata",
+        ],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/esrc/fe/monitoring"],
+        [
+          "Mold Monitoring",
+          "mdi-text-box-multiple-outline",
+          "/esrc/fe/monitoring",
+        ],
       ],
     };
   },

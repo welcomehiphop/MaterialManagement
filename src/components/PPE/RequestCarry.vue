@@ -239,7 +239,12 @@
               <v-subheader>Qty</v-subheader>
             </v-col>
             <v-col cols="3">
-              <v-text-field outlined dense v-model="spare.qty"></v-text-field>
+              <v-text-field
+                outlined
+                dense
+                v-model.number="spare.qty"
+                :rules="qtyRules"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row align-content="center" justify="center">
@@ -461,7 +466,7 @@ export default {
       //   // console.log(result.data[0].id);
     },
     onFileSelected(event) {
-      this.selectedFile = event
+      this.selectedFile = event;
     },
     ...mapMutations(["deSpare"]),
   },
@@ -478,6 +483,11 @@ export default {
       carrierRules: [(v) => !!v || "Carrier is required"],
       departmentRules: [(v) => !!v || "Department is required"],
       spareCodeRules: [(v) => !!v || "Spare code is required"],
+      qtyRules: [
+        (v) => !!v || "qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The qty must be greater than zero",
+      ],
       selectedFile: [],
       approveProcess: {
         req: {

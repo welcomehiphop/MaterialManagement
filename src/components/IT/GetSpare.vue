@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     async onSelected() {
-      const result = await api.getPPESpare(
+      const result = await api.getITSpare(
         this.searchSpareCode,
         this.searchLocation)
       this.data_set = result;

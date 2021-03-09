@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <h1>Safety & PPE Room control</h1>
+    <v-card width="40%">
+      <v-system-bar height="2" dark></v-system-bar>
+    </v-card>
     <v-navigation-drawer app permanent>
       <v-list-item>
         <v-list-item-content>
@@ -81,21 +84,33 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/esrc/ppe/carryout"],
+        [
+          "Carry Out List",
+          "mdi-text-box-multiple-outline",
+          "/esrc/ppe/carryout",
+        ],
         ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/ppe/inout"],
       ],
       masterData: [
         ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/ppe/molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/esrc/ppe/location"],
+        [
+          "Location Data",
+          "mdi-text-box-multiple-outline",
+          "/esrc/ppe/location",
+        ],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/esrc/ppe/monitoring"],
+        [
+          "Mold Monitoring",
+          "mdi-text-box-multiple-outline",
+          "/esrc/ppe/monitoring",
+        ],
       ],
     };
   },
   methods: {
     onClickMenu(menu) {
-      this.$router.push(menu).catch(()=>{});
+      this.$router.push(menu).catch(() => {});
     },
   },
 };

@@ -8,7 +8,7 @@
             label="Spare Code * "
             v-model="allSpare.spare_code"
             readonly
-            :rules="[(v) => !!v || 'Spare code is required']"
+            :rules="spareCodeRules"
             required
           />
         </v-col>
@@ -34,8 +34,8 @@
             v-model="allSpare.type"
             label="Spare Type * "
             readonly
-            :rules="[(v) => !!v || 'Spare type is required']"
             required
+            :rules="spareTypeRules"
           ></v-text-field>
         </v-col>
         <v-col cols="1"></v-col>
@@ -44,7 +44,7 @@
             v-model="allSpare.description"
             label="Spare Name * "
             readonly
-            :rules="[(v) => !!v || 'Spare name is required']"
+            :rules="spareNameRules"
             required
           ></v-text-field>
         </v-col>
@@ -52,7 +52,7 @@
       <v-text-field
         v-model="form.purpose"
         label="Purpose * "
-        :rules="[(v) => !!v || 'Purpose is required']"
+        :rules="purposeRules"
         required
       ></v-text-field>
       <v-row>
@@ -60,7 +60,7 @@
           <v-text-field
             v-model="form.po"
             label="PO * "
-            :rules="[(v) => !!v || 'PO is required']"
+            :rules="PORules"
             required
           ></v-text-field>
         </v-col>
@@ -73,7 +73,7 @@
                 label="GR Date * "
                 v-bind="attrs"
                 v-on="on"
-                :rules="[(v) => !!v || 'GR Date is required']"
+                :rules="grDateRules"
                 required
                 prepend-icon="mdi-calendar-month-outline"
               />
@@ -83,9 +83,10 @@
         </v-col>
       </v-row>
       <v-text-field
-        v-model="form.qty"
+        v-model.number="form.qty"
         label="Qty * "
-        :rules="[(v) => !!v || 'Qty is required']"
+        type="number"
+        :rules="qtyRules"
         required
       ></v-text-field>
       <v-select
@@ -93,8 +94,8 @@
         :items="locations"
         item-text="location_code"
         item-value="location_code"
- 
         label="Location * "
+        :rules="LocationRules"
       ></v-select>
       <div class="text-right">
         <v-btn color="success" class="mt-5 pa-5 pr-9 pl-9" @click="submit">
@@ -131,6 +132,18 @@ export default {
   data() {
     return {
       valid: true,
+      spareCodeRules: [(v) => !!v || "Spare Code is required"],
+      spareTypeRules: [(v) => !!v || "Spare Type is required"],
+      spareNameRules: [(v) => !!v || "Spare Name is required"],
+      purposeRules: [(v) => !!v || "Purpose is required"],
+      PORules: [(v) => !!v || "PO is required"],
+      grDateRules: [(v) => !!v || "Date is required"],
+      qtyRules: [
+        (v) => !!v || "Qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The value must be greater than zero",
+      ],
+      LocationRules: [(v) => !!v || "Location is required"],
       form: {
         purpose: "",
         po: "",

@@ -1,7 +1,7 @@
 <template>
   <v-container fill-height>
     <v-row class="mb-15">
-      <v-col>
+      <v-col cols="12" md="4" sm="12">
         <v-hover v-slot:default="{ hover }">
           <v-card
             class="pa-2"
@@ -14,7 +14,7 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col>
+      <v-col sm="12" cols="12" md="4">
         <v-hover v-slot:default="{ hover }">
           <v-card
             class="pa-2"
@@ -27,7 +27,7 @@
           </v-card>
         </v-hover>
       </v-col>
-      <v-col>
+      <v-col sm="12" md="4" cols="12">
         <v-hover v-slot:default="{ hover }">
           <v-card
             class="pa-2"

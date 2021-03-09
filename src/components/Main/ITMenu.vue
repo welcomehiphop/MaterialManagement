@@ -1,6 +1,9 @@
 <template>
   <v-container>
     <h1>Equipment & IT Room control</h1>
+    <v-card width="40%">
+      <v-system-bar height="2" dark></v-system-bar>
+    </v-card>
     <v-navigation-drawer app permanent>
       <v-list-item>
         <v-list-item-content>
@@ -81,21 +84,33 @@ export default {
     return {
       selectedItem: "",
       transaction: [
-        ["Carry Out List", "mdi-text-box-multiple-outline", "/esrc/it/carryout"],
+        [
+          "Carry Out List",
+          "mdi-text-box-multiple-outline",
+          "/esrc/it/carryout",
+        ],
         ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/it/inout"],
       ],
       masterData: [
         ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/it/molddata"],
-        ["Location Data", "mdi-text-box-multiple-outline", "/esrc/it/locationdata"],
+        [
+          "Location Data",
+          "mdi-text-box-multiple-outline",
+          "/esrc/it/locationdata",
+        ],
       ],
       monitoring: [
-        ["Mold Monitoring", "mdi-text-box-multiple-outline", "/esrc/it/monitoring"],
+        [
+          "Mold Monitoring",
+          "mdi-text-box-multiple-outline",
+          "/esrc/it/monitoring",
+        ],
       ],
     };
   },
   methods: {
     onClickMenu(menu) {
-      this.$router.push(menu).catch(()=>{});
+      this.$router.push(menu).catch(() => {});
     },
   },
 };

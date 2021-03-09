@@ -8,7 +8,7 @@
             v-model="allSpare.spare_code"
             label="Spare Code * "
             readonly
-            :rules="[(v) => !!v || 'Spare code is required']"
+            :rules="spareCodeRules"
             required
           />
         </v-col>
@@ -34,7 +34,7 @@
             v-model="allSpare.type"
             label="Spare Type * "
             readonly
-            :rules="[(v) => !!v || 'Spare type is required']"
+            :rules="spareTypeRules"
             required
           ></v-text-field>
         </v-col>
@@ -44,7 +44,7 @@
             v-model="allSpare.description"
             label="Spare Name * "
             readonly
-            :rules="[(v) => !!v || 'Spare name is required']"
+            :rules="spareNameRules"
             required
           ></v-text-field>
         </v-col>
@@ -52,7 +52,7 @@
       <v-text-field
         v-model="form.purpose"
         label="Purpose * "
-        :rules="[(v) => !!v || 'Purpose is required']"
+        :rules="purposeRules"
         required
       >
       </v-text-field>
@@ -66,7 +66,7 @@
                 v-bind="attrs"
                 v-on="on"
                 prepend-icon="mdi-calendar-month-outline"
-                :rules="[(v) => !!v || 'GI Date is required']"
+                :rules="grDateRules"
                 required
               />
             </template>
@@ -75,9 +75,9 @@
         </v-col>
       </v-row>
       <v-text-field
-        v-model="form.qty"
+        v-model.number="form.qty"
         label="Qty * "
-        :rules="[(v) => !!v || 'Qty is required']"
+        :rules="qtyRules"
         required
       ></v-text-field>
       <v-select
@@ -86,7 +86,7 @@
         item-text="location_code"
         item-value="location_code"
         label="Location * "
-        :rules="[(v) => !!v || 'Location is required']"
+        :rules="LocationRules"
         required
       ></v-select>
       <div class="text-right">
@@ -124,6 +124,17 @@ export default {
   data() {
     return {
       valid: true,
+      spareCodeRules: [(v) => !!v || "Spare Code is required"],
+      spareTypeRules: [(v) => !!v || "Spare Type is required"],
+      spareNameRules: [(v) => !!v || "Spare Name is required"],
+      purposeRules: [(v) => !!v || "Purpose is required"],
+      grDateRules: [(v) => !!v || "Date is required"],
+      qtyRules: [
+        (v) => !!v || "Qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The value must be greater than zero",
+      ],
+      LocationRules: [(v) => !!v || "Location is required"],
       form: {
         purpose: "",
         gr_date: new Date().toISOString().substr(0, 10),

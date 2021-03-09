@@ -29,14 +29,14 @@
       ></v-text-field>
 
       <v-text-field
-        v-model="form.price"
+        v-model.number="form.price"
         label="Price *"
         :rules="priceRules"
         required
       ></v-text-field>
 
       <v-text-field
-        v-model="form.safeStock"
+        v-model.number="form.safeStock"
         label="Safe Stock *"
         :rules="safeStockRules"
         required
@@ -88,7 +88,12 @@ export default {
       spareCodeRules: [(v) => !!v || "Spare code is required"],
       descriptionRules: [(v) => !!v || "Spare Name is required"],
       priceRules: [(v) => !!v || "Price is required"],
-      safeStockRules: [(v) => !!v || "Safe stock is required"],
+      safeStockRules: [
+        (v) => !!v || "Safe stock is required",
+        (v) =>
+          Number.isInteger(Number(v)) || "The safe stock must be an integer.",
+        (v) => v > 0 || "The value must be greater than zero",
+      ],
       typeRules: [(v) => !!v || "Type is required"],
       imageRules: [(v) => !!v || "Please upload image"],
       form: {

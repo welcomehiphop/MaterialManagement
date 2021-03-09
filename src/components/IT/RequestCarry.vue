@@ -2,9 +2,9 @@
   <v-container>
     <h2>Request Carry Out</h2>
     <!-- Approveal Process Form -->
-    <v-card class="mt-5 elevation-5">
-      <v-card-title>Approval Process</v-card-title>
-      <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
+      <v-card class="mt-5 elevation-5">
+        <v-card-title>Approval Process</v-card-title>
         <v-data-table
           :headers="headers"
           :items="items"
@@ -52,6 +52,7 @@
                       dense
                       readonly
                       v-model="getApprover.usrnm"
+                      :rules="approverRules"
                     />
                     <v-btn
                       class="ml-4"
@@ -99,13 +100,11 @@
             </tr>
           </template>
         </v-data-table>
-      </v-form>
-    </v-card>
+      </v-card>
 
-    <!-- Request Detail form -->
-    <v-card class="mt-5 elevation-5">
-      <v-card-title>Request Detail</v-card-title>
-      <v-form>
+      <!-- Request Detail form -->
+      <v-card class="mt-5 elevation-5">
+        <v-card-title>Request Detail</v-card-title>
         <v-row align-content="center" justify="center">
           <v-col cols="1">
             <v-subheader>Request For :</v-subheader>
@@ -120,7 +119,7 @@
               item-value="value"
               persistent-hint
               return-object
-              single-line
+              :rules="reqTypeRules"
             ></v-select>
           </v-col>
           <v-col cols="1"></v-col>
@@ -135,6 +134,7 @@
                   v-bind="attrs"
                   v-on="on"
                   prepend-icon="mdi-calendar-month-outline"
+                  :rules="carryDateRules"
                   readonly
                 />
               </template>
@@ -151,6 +151,7 @@
               outlined
               dense
               v-model="reqDetail.destination"
+              :rules="destinationRules"
             ></v-text-field>
           </v-col>
           <v-col cols="1"></v-col>
@@ -162,6 +163,7 @@
               outlined
               dense
               v-model="reqDetail.purpose"
+              :rules="purposeRules"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -176,6 +178,7 @@
               readonly
               v-bind="reqDetail.carrier"
               v-model="getCarrier.usrnm"
+              :rules="carrierRules"
             ></v-text-field>
           </v-col>
           <v-col cols="1">
@@ -203,111 +206,122 @@
               dense
               readonly
               v-model="getCarrier.deptnm"
+              :rules="departmentRules"
             ></v-text-field>
           </v-col>
         </v-row>
-      </v-form>
 
-      <!-- Detail Information form -->
-    </v-card>
-    <v-card class="elevation-5 mt-5">
-      <v-card-title>Detail Information</v-card-title>
-      <!--dynamic add form-->
-      <v-card
-        class="elevation-5 pt-10 ma-5"
-        v-for="(spare, index) in getSpare"
-        :key="index"
-        id="form"
-      >
+        <!-- Detail Information form -->
+      </v-card>
+      <v-card class="elevation-5 mt-5">
+        <v-card-title>Detail Information</v-card-title>
+        <!--dynamic add form-->
+        <v-card
+          class="elevation-5 pt-10 ma-5"
+          v-for="(spare, index) in getSpare"
+          :key="index"
+          id="form"
+        >
+          <v-row align-content="center" justify="center">
+            <v-col cols="1">
+              <v-subheader>Spare Code</v-subheader>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                v-model="spare.spare_code"
+                outlined
+                dense
+                readonly
+              ></v-text-field>
+            </v-col>
+            <v-col cols="1"></v-col>
+            <v-col cols="1">
+              <v-subheader>Qty</v-subheader>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                outlined
+                dense
+                v-model.number="spare.qty"
+                :rules="qtyRules"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row align-content="center" justify="center">
+            <v-col cols="1">
+              <v-subheader>Spare Name</v-subheader>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                outlined
+                dense
+                readonly
+                v-model="spare.description"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="1"></v-col>
+            <v-col cols="1">
+              <v-subheader>Location</v-subheader>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field
+                outlined
+                dense
+                readonly
+                v-model="spare.location"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <div class="text-right pa-4 ">
+          <a @click="deSpare()" class="mr-5 mt-10">
+            <img
+              src="@/assets/minus-sign.png"
+              height="30px"
+              width="30px"
+              alt="Image not found"
+            />
+          </a>
+          <a>
+            <img
+              src="@/assets/add.png"
+              height="25px"
+              width="25px"
+              alt="Image not found"
+              @click.stop="showGetSpare = true"
+            />
+            <GetSpare v-model="showGetSpare" />
+          </a>
+        </div>
+
+        <!-- Form upload multifile-->
+      </v-card>
+      <v-card class="elevation-5 mt-5">
+        <v-card-title>
+          Attchment
+        </v-card-title>
         <v-row align-content="center" justify="center">
           <v-col cols="1">
-            <v-subheader>Spare Code</v-subheader>
+            <v-subheader>
+              Attach File:
+            </v-subheader>
           </v-col>
-          <v-col cols="3">
-            <v-text-field
-              v-model="spare.spare_code"
-              outlined
-              dense
-              readonly
-            ></v-text-field>
+          <v-col cols="6" class="mt-2">
+            <v-file-input
+              multiple
+              label="File input"
+              @change="onFileSelected"
+              :rules="filesRules"
+            ></v-file-input>
           </v-col>
-          <v-col cols="1"></v-col>
-          <v-col cols="1">
-            <v-subheader>Qty</v-subheader>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field outlined dense v-model="spare.qty"></v-text-field>
-          </v-col>
-        </v-row>
-        <v-row align-content="center" justify="center">
-          <v-col cols="1">
-            <v-subheader>Spare Name</v-subheader>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              outlined
-              dense
-              readonly
-              v-model="spare.description"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="1"></v-col>
-          <v-col cols="1">
-            <v-subheader>Location</v-subheader>
-          </v-col>
-          <v-col cols="3">
-            <v-text-field
-              outlined
-              dense
-              readonly
-              v-model="spare.location"
-            ></v-text-field>
-          </v-col>
+          <v-col cols="2"></v-col>
         </v-row>
       </v-card>
-
-      <div class="text-right pa-4 ">
-        <a @click="deSpare()" class="mr-5 mt-10">
-          <img
-            src="@/assets/minus-sign.png"
-            height="30px"
-            width="30px"
-            alt="Image not found"
-          />
-        </a>
-        <a>
-          <img
-            src="@/assets/add.png"
-            height="25px"
-            width="25px"
-            alt="Image not found"
-            @click.stop="showGetSpare = true"
-          />
-          <GetSpare v-model="showGetSpare" />
-        </a>
+      <div class="text-right mt-10">
+        <v-btn color="success" @click="onSubmit()">Submit</v-btn>
       </div>
-
-      <!-- Form upload multifile-->
-    </v-card>
-    <v-card class="elevation-5 mt-5">
-      <v-card-title>
-        Attchment
-      </v-card-title>
-      <v-row align-content="center" justify="center">
-        <v-col cols="1">
-          <v-subheader>
-            Attach File:
-          </v-subheader>
-        </v-col>
-        <v-col cols="1" class="mt-2">
-          <input type="file" @change="onFileSelected" multiple />
-        </v-col>
-        <v-col cols="7"></v-col>
-      </v-row>
-    </v-card>
-    <div class="text-right mt-10">
-      <v-btn color="success" @click="onSubmit()">Submit</v-btn>
-    </div>
+    </v-form>
   </v-container>
 </template>
 
@@ -342,122 +356,141 @@ export default {
       return dt.getTime();
     },
     async onSubmit() {
-      let count = "1";
-      let stocks = [];
-      let stock = [];
-      for (let i = 0; i < this.getSpare.length; i++) {
-        stock[i] = await api.getITStock(
-          this.getSpare[i].spare_code,
-          this.getSpare[i].location
-        );
-        stocks[i] = stock[i];
-      }
-
-      for (let i = 0; i < this.getSpare.length; i++) {
-        if (this.getSpare[i].qty === 0) {
-          alert(
-            "Spare Code : " + stocks[i][0].spare_code + " are out of stock"
-          );
-        } else if (this.getSpare[i].qty <= stocks[i][0].qty) {
-          count = "0";
-        } else {
-          alert("Spare Code " + stocks[i][0].spare_code + " is not enough");
-        }
-      }
-      if (count == "0") {
-        // insert to t_esrc_carry
-        const payload = {
-          docno: this.ramdomno(),
-          reqType: this.reqDetail.reqFor.type,
-          carry_date: this.reqDetail.date,
-          destination: this.reqDetail.destination,
-          purpose: this.reqDetail.purpose,
-          carrier: this.getCarrier.empno,
-          department: this.getCarrier.deptnm,
-          reg_no: this.approveProcess.req.emp_no,
-          reg_date: this.approveProcess.req.date,
-        };
-        let result = await api.postITReqCarry(payload);
-        // console.log(result)
-        // console.log(result.data[0].id);
-        //insert to t_esrc_carry_spare
+      if (this.$refs.form.validate()) {
+        if (this.getSpare.length === 0) alert("Please select spare part.");
+        let count = "1";
+        let stocks = [];
+        let stock = [];
         for (let i = 0; i < this.getSpare.length; i++) {
-          const spare_data = {
-            ref_id: result.data[0].id,
-            spare_code: this.getSpare[i].spare_code,
-            location_code: this.getSpare[i].location,
-            qty: this.getSpare[i].qty,
-            approve_status: "P",
-            price: this.getSpare[i].price,
-          };
-          await api.postITCarrySpare(spare_data);
+          stock[i] = await api.getITStock(
+            this.getSpare[i].spare_code,
+            this.getSpare[i].location
+          );
+          stocks[i] = stock[i];
         }
-        //insert to t_esrc_carry_file
-        let bodyFormData = new FormData();
-        bodyFormData.append("ref_id", result.data[0].id);
-        for (let i = 0; i < this.selectedFile.length; i++) {
-          bodyFormData.append("files", this.selectedFile[i]);
-        }
-        await api.postITCarryFile(bodyFormData);
-        //insert to t_esrc_applist
-        const role = ["Creator", "Mold Team Charger", "Carrier"];
-        const app_type = ["CR", "AP", "NO"];
-        const step = ["0", "1", "2"];
-        const app_user = [
-          payload.reg_no,
-          this.getApprover.empno,
-          this.getCarrier.empno,
-        ];
-        for (let i = 0; i < role.length; i++) {
-          const app_list = {
-            docno: payload.docno,
-            bocd: "pperoom",
-            ref_id: result.data[0].id,
-            app_user: app_user[i],
-            role: role[i],
-            app_type: app_type[i],
-            appst: "P",
-            withdraw: "0",
-            step: step[i],
-            ordno: step[i],
-            comment: "",
-            rcv_date: payload.reg_date,
-            app_date: payload.reg_date,
-            send_mail: "1",
-          };
-          if (i == 0) app_list.comment = this.approveProcess.req.comment;
-          if (i === 1 || i == 2) {
-            app_list.rcv_date = "";
-            app_list.app_date = "";
+
+        for (let i = 0; i < this.getSpare.length; i++) {
+          if (this.getSpare[i].qty === 0) {
+            alert(
+              "Spare Code : " + stocks[i][0].spare_code + " are out of stock"
+            );
+          } else if (this.getSpare[i].qty <= stocks[i][0].qty) {
+            count = "0";
+          } else {
+            alert("Spare Code " + stocks[i][0].spare_code + " is not enough");
           }
-          await api.PostListApprove(app_list);
         }
-        // Insert to t_esrc_appprocess
-        const data = {
-          title:
-            "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
-          bocd: "itroom",
-          ref_id: result.data[0].id,
-          reg_no: payload.reg_no,
-          reg_date: payload.reg_date,
-          curstep: "2",
-          docst: "P",
-        };
-        await api.PostProcessApprove(data);
-        alert("Success");
-        this.$router.push("/esrc/it/carryout");
+        if (count == "0") {
+          // insert to t_esrc_carry
+          const payload = {
+            docno: this.ramdomno(),
+            reqType: this.reqDetail.reqFor.type,
+            carry_date: this.reqDetail.date,
+            destination: this.reqDetail.destination,
+            purpose: this.reqDetail.purpose,
+            carrier: this.getCarrier.empno,
+            department: this.getCarrier.deptnm,
+            reg_no: this.approveProcess.req.emp_no,
+            reg_date: this.approveProcess.req.date,
+          };
+          let result = await api.postITReqCarry(payload);
+          // console.log(result)
+          // console.log(result.data[0].id);
+          //insert to t_esrc_carry_spare
+          for (let i = 0; i < this.getSpare.length; i++) {
+            const spare_data = {
+              ref_id: result.data[0].id,
+              spare_code: this.getSpare[i].spare_code,
+              location_code: this.getSpare[i].location,
+              qty: this.getSpare[i].qty,
+              approve_status: "P",
+              price: this.getSpare[i].price,
+            };
+            await api.postITCarrySpare(spare_data);
+          }
+          //insert to t_esrc_carry_file
+          let bodyFormData = new FormData();
+          bodyFormData.append("ref_id", result.data[0].id);
+          for (let i = 0; i < this.selectedFile.length; i++) {
+            bodyFormData.append("files", this.selectedFile[i]);
+          }
+          await api.postITCarryFile(bodyFormData);
+          //insert to t_esrc_applist
+          const role = ["Creator", "Mold Team Charger", "Carrier"];
+          const app_type = ["CR", "AP", "NO"];
+          const step = ["0", "1", "2"];
+          const app_user = [
+            payload.reg_no,
+            this.getApprover.empno,
+            this.getCarrier.empno,
+          ];
+          for (let i = 0; i < role.length; i++) {
+            const app_list = {
+              docno: payload.docno,
+              bocd: "pperoom",
+              ref_id: result.data[0].id,
+              app_user: app_user[i],
+              role: role[i],
+              app_type: app_type[i],
+              appst: "P",
+              withdraw: "0",
+              step: step[i],
+              ordno: step[i],
+              comment: "",
+              rcv_date: payload.reg_date,
+              app_date: payload.reg_date,
+              send_mail: "1",
+            };
+            if (i == 0) app_list.comment = this.approveProcess.req.comment;
+            if (i === 1 || i == 2) {
+              app_list.rcv_date = "";
+              app_list.app_date = "";
+            }
+            await api.PostListApprove(app_list);
+          }
+          // Insert to t_esrc_appprocess
+          const data = {
+            title:
+              "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
+            bocd: "itroom",
+            ref_id: result.data[0].id,
+            reg_no: payload.reg_no,
+            reg_date: payload.reg_date,
+            curstep: "2",
+            docst: "P",
+          };
+          await api.PostProcessApprove(data);
+          alert("Success");
+          this.$router.push("/esrc/it/carryout");
+        }
       }
 
       //   //get ref_id
       //   // console.log(result.data[0].id);
     },
     onFileSelected(event) {
-      this.selectedFile = event.target.files;
+      this.selectedFile = event;
     },
     ...mapMutations(["deSpare"]),
   },
   data() {
     return {
+      //Validate part
+      valid: true,
+      filesRules: [(v) => !!v || "Please upload file."],
+      approverRules: [(v) => !!v || "Approver is required"],
+      reqTypeRules: [(v) => !!v || "Request type is required"],
+      carryDateRules: [(v) => !!v || "Carry date is required"],
+      destinationRules: [(v) => !!v || "Destination is required"],
+      purposeRules: [(v) => !!v || "Purpose is required"],
+      carrierRules: [(v) => !!v || "Carrier is required"],
+      departmentRules: [(v) => !!v || "Department is required"],
+      spareCodeRules: [(v) => !!v || "Spare code is required"],
+      qtyRules: [
+        (v) => !!v || "qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The qty must be greater than zero",
+      ],
       selectedFile: [],
       approveProcess: {
         req: {

@@ -2,7 +2,7 @@
   <v-container>
     <h2>Location Register</h2>
 
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
         v-model="form.selectPlant"
         :items="plants"
@@ -11,7 +11,7 @@
         label="Plant *"
         persistent-hint
         return-object
-        single-line
+        :rules="plantRules"
         required
       ></v-select>
 
@@ -19,6 +19,7 @@
         v-model="form.location_code"
         :counter="20"
         label="Location Code *"
+        :rules="locationCodeRules"
         required
       ></v-text-field>
 
@@ -26,6 +27,7 @@
         v-model="form.location_name"
         label="Location Name * "
         required
+        :rules="locationNameRules"
       ></v-text-field>
 
       <div class="text-right">
@@ -38,17 +40,20 @@
 </template>
 
 <script>
-import api from '@/services/api'
+import api from "@/services/api";
 export default {
   data() {
     return {
+      //Validate part
+      valid: true,
+      plantRules: [(v) => !!v || "Plant is required"],
+      locationCodeRules: [(v) => !!v || "Spare code is required"],
+      locationNameRules: [(v) => !!v || "Spare Name is required"],
       form: {
-        selectPlant: { plant: "Select Plant", value: "" },
         location_code: "",
         location_name: "",
       },
       plants: [
-        { plant: "Select Plant", value: "" },
         { plant: "KS", value: "KS" },
         { plant: "A/C", value: "AC" },
         { plant: "DW", value: "DW" },
@@ -60,20 +65,22 @@ export default {
   },
   methods: {
     async submit(event) {
+      if (this.$refs.form.validate()) {
+        const postLocation = {
+          location_code: this.form.location_code,
+          location_name: this.form.location_name,
+          plant: this.form.selectPlant.value,
+        };
+        await api.postITLocation(postLocation);
+      }
       event.preventDefault();
-      const postLocation = {
-        location_code: this.form.location_code,
-        location_name: this.form.location_name,
-        plant: this.form.selectPlant.value,
-      };
+
       // if (
       //   this.form.location_code != "" &&
       //   this.form.location_name != "" &&
       //   this.form.selectPlant.value != ""
       // )
       // console.log(postLocation)
-        let result = await api.postITLocation(postLocation);
-        console.log(result)
       // await axios
       //   .post("http://localhost:3000/post_location", postLocation)
       //   .then(

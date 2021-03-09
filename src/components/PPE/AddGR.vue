@@ -84,7 +84,7 @@
         </v-col>
       </v-row>
       <v-text-field
-        v-model="form.qty"
+        v-model.number="form.qty"
         label="Qty * "
         :rules="qtyRules"
         required
@@ -141,8 +141,12 @@ export default {
       purposeRules: [(v) => !!v || "Purpose is required"],
       PORules: [(v) => !!v || "PO is required"],
       grDateRules: [(v) => !!v || "Date is required"],
-      qtyRules: [(v) => !!v || "Qty is required"],
       LocationRules: [(v) => !!v || "Location is required"],
+      qtyRules: [
+        (v) => !!v || "Qty is required",
+        (v) => Number.isInteger(Number(v)) || "The qty must be an integer",
+        (v) => v > 0 || "The value must be greater than zero",
+      ],
       form: {
         purpose: "",
         po: "",
