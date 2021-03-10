@@ -42,6 +42,7 @@ export const GetCarryListByID = async(id) => {
     return result
 }
 
+
 export const getAllLocation = async() => {
     const result = await httpClient.get(esrc_appprove.get_all_location)
     return result

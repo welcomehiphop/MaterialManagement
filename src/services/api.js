@@ -8,6 +8,7 @@ import * as apiITMold from '@/services/api_it_mold'
 import * as apiITLocation from '@/services/api_it_location'
 import * as apiITInout from '@/services/api_it_inout'
 import * as apiCarryout from '@/services/api_it_carry'
+import * as apiStockView from '@/services/api_stockview'
 
 export default {
     ...apiESRC,
@@ -19,5 +20,6 @@ export default {
     ...apiITMold,
     ...apiITLocation,
     ...apiITInout,
-    ...apiCarryout
+    ...apiCarryout,
+    ...apiStockView,
 };

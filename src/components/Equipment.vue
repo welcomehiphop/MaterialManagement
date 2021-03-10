@@ -10,7 +10,7 @@
             <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  FE-01
+                  ET-01
                 </v-layout>
               </v-card-title>
               <v-card
@@ -18,6 +18,7 @@
                 v-for="(stock, key) in stockA"
                 :key="key"
                 :color="getColor(stock.location_code, sparesA)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -26,7 +27,7 @@
             <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  FE-02
+                  ET-02
                 </v-layout>
               </v-card-title>
               <v-card
@@ -34,6 +35,7 @@
                 v-for="(stock, key) in stockB"
                 :key="key"
                 :color="getColor(stock.location_code, sparesB)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -42,7 +44,7 @@
             <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  FE-03
+                  ET-03
                 </v-layout>
               </v-card-title>
               <v-card
@@ -50,6 +52,7 @@
                 v-for="(stock, key) in stockC"
                 :key="key"
                 :color="getColor(stock.location_code, sparesC)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -58,7 +61,7 @@
             <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  FE-04
+                  ET-04
                 </v-layout>
               </v-card-title>
               <v-card
@@ -66,6 +69,7 @@
                 v-for="(stock, key) in stockD"
                 :key="key"
                 :color="getColor(stock.location_code, sparesD)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -74,7 +78,7 @@
             <v-card class="todo pb-5">
               <v-card-title id="header">
                 <v-layout justify-center align-center>
-                  FE-05
+                  ET-05
                 </v-layout>
               </v-card-title>
               <v-card
@@ -82,6 +86,7 @@
                 v-for="(stock, key) in stockE"
                 :key="key"
                 :color="getColor(stock.location_code, sparesE)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -89,11 +94,84 @@
           </div>
         </v-col>
       </v-row>
+      <!-- stock view -->
+      <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="800px" scrollable>
+          <v-card class="pa-10">
+            <h2>PPE Room Monitoring</h2>
+            <v-data-table
+              dense
+              :headers="headers"
+              :items="data_set"
+              item-key="name"
+              class="elevation-1 row-pointer"
+              :items-per-page="6"
+            >
+              <template v-slot:item="{ item }">
+                <tr @click="onClick(item)">
+                  <td>
+                    <v-layout justify-center>
+                      {{
+                        data_set
+                          .map(function(x) {
+                            return x.id;
+                          })
+                          .indexOf(item.id) + 1
+                      }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.spare_code }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.type }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.description }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.qty }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.location_code }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      <img
+                        :src="imageUrl + item.picture"
+                        alt="Image not found"
+                        width="80px"
+                        height="80px"
+                      />
+                    </v-layout>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+
+            <v-btn class="mt-5" color="primary" @click.stop="dialog = false"
+              >Close</v-btn
+            >
+          </v-card>
+        </v-dialog>
+      </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
+import { imageUrl } from "@/services/constants";
+
 import api from "@/services/api";
 export default {
   components: {},
@@ -122,9 +200,17 @@ export default {
     this.stockE = result7.data;
     let result8 = await api.getITMonitor("StockE");
     this.sparesE = result8.data;
-
   },
   methods: {
+    async getItem(item) {
+      const condition = {
+        location: item,
+        plant: "",
+      };
+      const result = await api.getITStockClick(condition);
+      this.data_set = result;
+      this.dialog = true;
+    },
     getColor(location, status) {
       for (let i = 0; i < status.length; i++) {
         if (status[i].location_code == location) {
@@ -145,6 +231,38 @@ export default {
 
   data() {
     return {
+      imageUrl: imageUrl,
+      data_set: [],
+      headers: [
+        { text: "No", value: "no", sortable: false, align: "center" },
+        {
+          text: "Spare Code",
+          value: "spare_code",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: "Spare Type",
+          value: "spare_type",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: "Spare Name",
+          value: "spare_name",
+          sortable: false,
+          align: "center",
+        },
+        { text: "Qty", value: "qty", sortable: false, align: "center" },
+        {
+          text: "Location",
+          value: "location",
+          sortable: false,
+          align: "center",
+        },
+        { text: "Picture", value: "picture", sortable: false, align: "center" },
+      ],
+      dialog: false,
       color: "",
       stockA: [],
       sparesA: [],
@@ -158,12 +276,12 @@ export default {
       stockE: [],
       stocks: [],
       items: [
-        { id: "1", param: "FE-01" },
-        { id: "1", param: "FE-01" },
-        { id: "2", param: "FE-02" },
-        { id: "3", param: "FE-03" },
-        { id: "4", param: "FE-04" },
-        { id: "5", param: "FE-05" },
+        { id: "1", param: "ET-01" },
+        { id: "1", param: "ET-01" },
+        { id: "2", param: "ET-02" },
+        { id: "3", param: "ET-03" },
+        { id: "4", param: "ET-04" },
+        { id: "5", param: "ET-05" },
       ],
     };
   },

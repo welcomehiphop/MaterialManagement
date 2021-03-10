@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
+
 import InOutManage from '@/views/InOutManage.vue'
 import CarryOut from '@/views/CarryOut.vue'
 import MoldData from '@/views/MoldData.vue'
@@ -22,7 +23,8 @@ import PPERoom from '@/components/PPERoom.vue'
 import Equipment from '@/components/Equipment.vue'
 import FERoom from '@/components/FERoom.vue'
 import CarryDetail from '@/components/CarryDetail.vue'
-import Approve from '../components/Approve.vue'
+import StockView from '@/views/StockView.vue'
+import Approve from '@/components/Approve.vue'
 
 import PPEMenu from '@/components/Main/PPEMenu.vue'
 import PPEInout from '@/views/PPE/InOutManage.vue'
@@ -40,6 +42,8 @@ import PPEAddGR from '@/components/PPE/AddGR'
 import PPEAddGI from '@/components/PPE/AddGI'
 import PPERequestCarry from '@/components/PPE/RequestCarry'
 import PPECarryDetail from '@/components/PPE/CarryDetail'
+import PPEStockView from '@/views/PPE/StockView.vue'
+
 
 import ITMenu from '@/components/Main/ITMenu'
 import ITInout from '@/views/IT/InOutManage'
@@ -57,6 +61,8 @@ import ITCarryOut from '@/views/IT/CarryOut'
 import ITRequestCarry from '@/components/IT/RequestCarry'
 import ITCarryDetail from '@/components/IT/CarryDetail'
 import ITMonitoring from '@/views/IT/Monitoring'
+import ITStockView from '@/views/IT/StockView.vue'
+
 
 
 Vue.use(VueRouter)
@@ -181,6 +187,11 @@ const routes = [{
                 path: '/esrc/fe/approve/:id',
                 name: 'Approve',
                 component: Approve
+            },
+            {
+                path: '/esrc/fe/stockview',
+                name: 'StockView',
+                component: StockView
             }
         ]
     },
@@ -276,6 +287,11 @@ const routes = [{
                 path: '/esrc/ppe/carrydetail/:id',
                 name: 'PPECarryDetail',
                 component: PPECarryDetail
+            },
+            {
+                path: '/esrc/ppe/stockview',
+                name: 'PPEStockView',
+                component: PPEStockView,
             }
 
         ]
@@ -374,6 +390,11 @@ const routes = [{
                 name: 'IT_FERoom',
                 component: FERoom
             },
+            {
+                path: '/esrc/it/stockview',
+                name: 'ITStockView',
+                component: ITStockView,
+            }
 
         ]
     }

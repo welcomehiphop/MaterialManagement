@@ -101,6 +101,12 @@ export default {
       ],
       monitoring: [
         [
+          "Stock Overview",
+          "mdi-text-box-multiple-outline",
+          "/esrc/it/stockview",
+        ],
+      
+        [
           "Mold Monitoring",
           "mdi-text-box-multiple-outline",
           "/esrc/it/monitoring",

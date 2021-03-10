@@ -18,6 +18,7 @@
                 v-for="(stock, key) in stocks"
                 :key="key"
                 :color="getColor(stock.location_code, getFeSpares)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -34,6 +35,7 @@
                 v-for="(stock, key) in stockB"
                 :key="key"
                 :color="getColor(stock.location_code, sparesB)"
+                @click="getItem(stock)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -50,6 +52,7 @@
                 v-for="(stock, key) in stockC"
                 :key="key"
                 :color="getColor(stock.location_code, sparesC)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -66,6 +69,7 @@
                 v-for="(stock, key) in stockD"
                 :key="key"
                 :color="getColor(stock.location_code, sparesD)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -82,6 +86,7 @@
                 v-for="(stock, key) in stockE"
                 :key="key"
                 :color="getColor(stock.location_code, sparesE)"
+                @click="getItem(stock.location_code)"
               >
                 {{ stock.location_code }}
               </v-card>
@@ -89,12 +94,85 @@
           </div>
         </v-col>
       </v-row>
+
+      <!-- dialog view stock -->
+      <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="800px" scrollable>
+          <v-card class="pa-10">
+            <h2>Fe Room Monitoring</h2>
+            <v-data-table
+              dense
+              :headers="headers"
+              :items="data_set"
+              item-key="name"
+              class="elevation-1 row-pointer"
+              :items-per-page="6"
+            >
+              <template v-slot:item="{ item }">
+                <tr @click="onClick(item)">
+                  <td>
+                    <v-layout justify-center>
+                      {{
+                        data_set
+                          .map(function(x) {
+                            return x.id;
+                          })
+                          .indexOf(item.id) + 1
+                      }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.spare_code }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.type }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.description }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.qty }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      {{ item.location_code }}
+                    </v-layout>
+                  </td>
+                  <td>
+                    <v-layout justify-center>
+                      <img
+                        :src="imageUrl + item.picture"
+                        alt="Image not found"
+                        width="80px"
+                        height="80px"
+                      />
+                    </v-layout>
+                  </td>
+                </tr>
+              </template>
+            </v-data-table>
+
+            <v-btn class="mt-5" color="primary" @click.stop="dialog = false"
+              >Close</v-btn
+            >
+          </v-card>
+        </v-dialog>
+      </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
 import api from "@/services/api";
+import { imageUrl } from "@/services/constants";
 import { mapGetters, mapActions } from "vuex";
 export default {
   components: {},
@@ -124,6 +202,15 @@ export default {
     this.stocks = this.getStocks;
   },
   methods: {
+    async getItem(item) {
+      const condition = {
+        location: item,
+        plant: "",
+      };
+      const result = await api.getFeStockClick(condition);
+      this.data_set = result;
+      this.dialog = true;
+    },
     getColor(location, status) {
       for (let i = 0; i < status.length; i++) {
         if (status[i].location_code == location) {
@@ -146,6 +233,38 @@ export default {
 
   data() {
     return {
+      imageUrl: imageUrl,
+      data_set: [],
+      headers: [
+        { text: "No", value: "no", sortable: false, align: "center" },
+        {
+          text: "Spare Code",
+          value: "spare_code",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: "Spare Type",
+          value: "spare_type",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: "Spare Name",
+          value: "spare_name",
+          sortable: false,
+          align: "center",
+        },
+        { text: "Qty", value: "qty", sortable: false, align: "center" },
+        {
+          text: "Location",
+          value: "location",
+          sortable: false,
+          align: "center",
+        },
+        { text: "Picture", value: "picture", sortable: false, align: "center" },
+      ],
+      dialog: false,
       color: "",
       stockB: [],
       sparesB: [],

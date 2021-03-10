@@ -82,13 +82,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="10"></v-col>
-        <v-col cols="2">
-          <div class="text-right mr-3 mb-2">
-            <v-btn href="/esrc/ppe/requestcarry" color="primary">
-              Request
-            </v-btn>
-          </div>
+        <v-spacer></v-spacer>
+        <v-col cols="1">
+          <v-btn href="/esrc/ppe/requestcarry" color="primary">
+            Request
+          </v-btn>
+        </v-col>
+        <v-col cols="1" class="ml-7">
+          <v-btn color="primary" @click="excel">Excel</v-btn>
         </v-col>
       </v-row>
     </v-card>
@@ -170,12 +171,16 @@
 </template>
 
 <script>
+import {onExport} from '@/function/exportexcel'
 import api from "@/services/api";
 export default {
   created() {
     this.formatDate();
   },
   methods: {
+    excel(){
+      onExport("PPE_CarryOut",this.data_set)
+    },
     getColor(status) {
       if (status === "Pending") return "#FF9800";
       if (status === "Approved") return "#4CAF50";
@@ -255,7 +260,6 @@ export default {
       format_fromdate: "",
 
       format_todate: "",
-
       fromDate: "",
       toDate: new Date().toISOString().substring(0, 10),
       search: "",

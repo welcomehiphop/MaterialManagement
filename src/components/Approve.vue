@@ -278,7 +278,6 @@ import api from "@/services/api";
 export default {
   methods: {
     async changeStatus(docst) {
-      console.log(docst)
       const data = {
         docst: docst,
       };

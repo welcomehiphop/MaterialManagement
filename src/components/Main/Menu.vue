@@ -2,7 +2,7 @@
   <v-container>
     <h1>FE Room control</h1>
     <v-card width="40%">
-      <v-system-bar  height="2" dark></v-system-bar>
+      <v-system-bar height="2" dark></v-system-bar>
     </v-card>
     <v-navigation-drawer app permanent>
       <v-list-item>
@@ -100,6 +100,11 @@ export default {
         ],
       ],
       monitoring: [
+        [
+          "Stock Overview",
+          "mdi-text-box-multiple-outline",
+          "/esrc/fe/stockview",
+        ],
         [
           "Mold Monitoring",
           "mdi-text-box-multiple-outline",

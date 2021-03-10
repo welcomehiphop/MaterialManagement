@@ -67,6 +67,12 @@
           </v-btn>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="8" md="10" xl="11"></v-col>
+        <v-col cols="4" md="2" xl="1">
+          <v-btn width="95%" color="primary" @click="excel">Excel</v-btn>
+        </v-col>
+      </v-row>
     </v-card>
 
     <!-- table data -->
@@ -141,6 +147,7 @@
 </template>
 
 <script>
+import {onExport} from '@/function/exportexcel'
 import api from "@/services/api";
 export default {
   async mounted() {
@@ -242,6 +249,9 @@ export default {
     };
   },
   methods: {
+    excel(){
+      onExport("PPE_Inout",this.data_set)
+    },
     async onSelected() {
       const condition = {
         spare_code: this.search,

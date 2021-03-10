@@ -5,7 +5,7 @@ export const UPLOAD_PHOTO_FAIL_MESSAGE = "An error has occurred. The photo was u
 export const NOT_CONNECT_NETWORK = "NOT_CONNECT_NETWORK";
 
 export const apiUrl = "http://localhost:3000";
-export const imageUrl = "http://localhost:3000/images";
+export const imageUrl = "http://localhost:3000/image/";
 export const resumeUrl = "http://localhost:3000/resume";
 
 
@@ -124,6 +124,15 @@ export const it_carry = {
     post_it_req: 'post_it_req',
     post_it_carry_spare: 'post_it_carry_spare',
     post_it_carry_file: 'post_it_carry_file'
+}
+
+export const esrc_stockview = {
+    get_fe_stockview: 'get_fe_stockview',
+    get_ppe_stockview: 'get_ppe_stockview',
+    get_it_stockview: 'get_it_stockview',
+    get_fe_stock_click: 'get_fe_stock_click',
+    get_ppe_stock_click: 'get_ppe_stock_click',
+    get_it_stock_click: 'get_it_stock_click'
 }
 
 export const test = {

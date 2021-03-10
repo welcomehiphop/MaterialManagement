@@ -67,6 +67,12 @@
           </v-btn>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="8" md="10" xl="11"></v-col>
+        <v-col cols="4" md="2" xl="1">
+          <v-btn width="95%" color="primary" @click="excel">Excel</v-btn>
+        </v-col>
+      </v-row>
     </v-card>
 
     <!-- table data -->
@@ -142,6 +148,7 @@
 
 <script>
 import api from "@/services/api";
+import { onExport } from "@/function/exportexcel";
 export default {
   async mounted() {
     const result = await api.getInout("%%", "%%", "%%");
@@ -237,6 +244,9 @@ export default {
     };
   },
   methods: {
+    excel() {
+      onExport("FE_Inout",this.data_set);
+    },
     async onSelected() {
       const result = await api.getInout(
         "%" + this.search + "%",
