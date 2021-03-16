@@ -194,6 +194,7 @@ export default {
           };
           await api.postITStock(data_stock);
         }
+        this.$router.push('/esrc/itroom/inout')
         event.preventDefault();
       }
     },

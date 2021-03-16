@@ -64,7 +64,7 @@ export const esrc_appprove = {
     get_carry_list: 'get_carry_list',
     get_app_list: 'get_app_list',
     get_all_location: 'get_all_location',
-    update_fe_status: 'update_fe_status'
+    update_fe_status: 'update_fe_status',
 }
 
 export const esrc_fe_search = {
@@ -92,7 +92,8 @@ export const ppe_carry = {
     post_ppe_carry_spare: 'post_ppe_carry_spare',
     post_ppe_carry_file: 'post_ppe_carry_file',
     get_ppe_spare: 'get_ppe_spare',
-    get_ppe_all_location: 'get_ppe_all_location'
+    get_ppe_all_location: 'get_ppe_all_location',
+    update_ppe_status: 'update_ppe_status',
 }
 
 export const it_mold = {
@@ -123,7 +124,8 @@ export const it_carry = {
     get_it_spare_carry: 'get_it_spare_carry',
     post_it_req: 'post_it_req',
     post_it_carry_spare: 'post_it_carry_spare',
-    post_it_carry_file: 'post_it_carry_file'
+    post_it_carry_file: 'post_it_carry_file',
+    update_it_status: 'update_it_status'
 }
 
 export const esrc_stockview = {
@@ -135,7 +137,6 @@ export const esrc_stockview = {
     get_it_stock_click: 'get_it_stock_click'
 }
 
-export const test = {
-    post_test: 'atp_get_list',
-    atp_get_list_update: 'atp_get_list_update'
+export const esrc_app_process = {
+    get_fe_app_list: 'get_fe_app_list'
 }

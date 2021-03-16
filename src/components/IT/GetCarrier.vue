@@ -76,7 +76,7 @@ export default {
   async mounted() {
     const deptListResult = await api.getDeptList();
     this.deptList = deptListResult.data;
-    // this.deptList.unshift(this.searchDepartment);
+    this.deptList.unshift(this.searchDepartment);
 
     // this.deptList.unshift(this.searchDepartment);
     // this.deptList.unshift(this.searchDepartment);

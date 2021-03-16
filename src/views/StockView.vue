@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>Stock Overview</h1>
     </div>
@@ -73,14 +74,21 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   async mounted() {
+    this.loading = true
     const response = await api.getFeStockView();
     this.data_set = response;
+    this.loading = false
   },
   data() {
     return {
+      loading: false,
       data_set: [],
       headers: [
         { text: "No", value: "no", sortable: false, align: "center" },

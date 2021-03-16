@@ -1,9 +1,12 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Carry Out Detail</h2>
     <div class="text-right">
       <v-btn color="success" @click="changeStatus('C')">Approve</v-btn>
-      <v-btn class="ml-5" color="error" @click="changeStatus('R')">Reject</v-btn>
+      <v-btn class="ml-5" color="error" @click="changeStatus('R')"
+        >Reject</v-btn
+      >
     </div>
     <v-card class="mt-5 elevation-5 pa-5">
       <v-card-title>Approval Process</v-card-title>
@@ -274,27 +277,35 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
+import Loading from "../loading.vue";
 export default {
+  components: {
+    Loading,
+  },
   methods: {
     async changeStatus(docst) {
-      console.log(docst)
+      this.loading = true;
       const data = {
         docst: docst,
       };
       await api.putFeStatus(this.$route.params.id, data);
+      this.loading = false;
     },
-
   },
   async mounted() {
+    this.loading = true
     const result = await api.getPPECarryByID(this.$route.params.id);
     this.data_set = result.data.process;
     this.detail = result.data.detail[0];
     this.file = result.data.file;
     this.spares = result.data.spares;
+    this.loading = false
   },
   data() {
     return {
+      loading: false,
       spareHeaders: [
         { text: "No", value: "No", align: "center", sortable: false },
         {

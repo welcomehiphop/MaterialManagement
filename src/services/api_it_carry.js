@@ -36,3 +36,7 @@ export const postITCarrySpare = async(data) => {
 export const postITCarryFile = async(data) => {
     await httpClient.post(it_carry.post_it_carry_file, data)
 }
+
+export const putITStatus = async(id, data) => {
+    await httpClient.put(it_carry.update_it_status + "/" + `${id}`, data)
+}

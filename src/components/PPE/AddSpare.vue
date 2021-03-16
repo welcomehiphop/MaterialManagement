@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Spare Part Register</h2>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
@@ -61,7 +62,7 @@
       <!-- <v-file-input truncate-length="15" @click="onFileSelected"></v-file-input> -->
       <v-file-input
         dense
-        label="File input"
+        label="Image input"
         filled
         @change="onFileSelected"
         :rules="imageRules"
@@ -78,21 +79,29 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
+      loading: false,
       //validate part
       valid: true,
       plantRules: [(v) => !!v || "Plant is required"],
       spareCodeRules: [(v) => !!v || "Spare code is required"],
       descriptionRules: [(v) => !!v || "Spare Name is required"],
-      priceRules: [(v) => !!v || "Price is required"],
+      priceRules: [
+        (v) => !!v || "Price is required",
+        (v) => v > 0 || "The price must be greater than zero",
+      ],
       safeStockRules: [
         (v) => !!v || "Safe stock is required",
         (v) =>
           Number.isInteger(Number(v)) || "The safe stock must be an integer.",
-        (v) => v > 0 || "The value must be greater than zero",
+        (v) => v > 0 || "The safe stock must be greater than zero",
       ],
       typeRules: [(v) => !!v || "Type is required"],
       imageRules: [(v) => !!v || "Please upload image"],
@@ -125,6 +134,7 @@ export default {
     },
     async submit(event) {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         let bodyFormData = new FormData();
         bodyFormData.append("plant", this.form.selectPlant);
         bodyFormData.append("spare_code", this.form.spareCode);
@@ -136,6 +146,7 @@ export default {
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
         await api.postMoldData(bodyFormData);
       }
+      this.loading = false;
       event.preventDefault();
     },
   },

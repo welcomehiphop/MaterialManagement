@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Request Carry Out</h2>
     <!-- Approveal Process Form -->
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -329,6 +330,7 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import { mapGetters, mapMutations } from "vuex";
 import GetApprove from "@/components/GetApprove";
@@ -348,9 +350,7 @@ export default {
       const time =
         String(today.getHours()).padStart(2, "0") +
         ":" +
-        String(today.getMinutes()).padStart(2, "0") +
-        ":" +
-        String(today.getSeconds()).padStart(2, "0");
+        String(today.getMinutes()).padStart(2, "0");
       const dateTime = date + " " + time;
       this.approveProcess.req.date = dateTime;
     },
@@ -361,6 +361,7 @@ export default {
 
     async onSubmit() {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         if (this.getSpare.length === 0) alert("Please select spare part.");
         let count = "1";
         let stocks = [];
@@ -384,7 +385,8 @@ export default {
         if (count == "0") {
           //insert to t_esrc_carry
           const payload = {
-            docno: this.ramdomno(),
+            docno:
+              this.ramdomno() + ~~(Math.random() * 10) + ~~(Math.random() * 10),
             reqType: this.reqDetail.reqFor.type,
             carry_date: this.reqDetail.date,
             destination: this.reqDetail.destination,
@@ -396,7 +398,7 @@ export default {
           };
           let result = await api.PostApproveProcess(payload);
 
-          //insert to t_esrc_carry_spare
+          //   //insert to t_esrc_carry_spare
           for (let i = 0; i < this.getSpare.length; i++) {
             const spare_data = {
               ref_id: result.data[0].id,
@@ -408,7 +410,7 @@ export default {
             };
             await api.PostApproveSpare(spare_data);
           }
-          //   //insert to t_esrc_carry_file
+          //   //   //insert to t_esrc_carry_file
           let bodyFormData = new FormData();
           bodyFormData.append("ref_id", result.data[0].id);
           for (let i = 0; i < this.selectedFile.length; i++) {
@@ -416,7 +418,7 @@ export default {
           }
           await api.PostApproveFiles(bodyFormData);
 
-          //   //insert to t_esrc_applist
+          //   //   //insert to t_esrc_applist
           const role = ["Creator", "Mold Team Charger", "Carrier"];
           const app_type = ["CR", "AP", "NO"];
           const step = ["0", "1", "2"];
@@ -428,7 +430,7 @@ export default {
           for (let i = 0; i < role.length; i++) {
             const app_list = {
               docno: payload.docno,
-              bocd: "spfe",
+              bocd: "feroom",
               ref_id: result.data[0].id,
               app_user: app_user[i],
               role: role[i],
@@ -444,28 +446,31 @@ export default {
             };
             if (i == 0) app_list.comment = this.approveProcess.req.comment;
             if (i === 1 || i == 2) {
-              app_list.rcv_date = "";
-              app_list.app_date = "";
+              app_list.rcv_date = null;
+              app_list.app_date = null;
             }
             await api.PostListApprove(app_list);
           }
-
-          //   // Insert to t_esrc_appprocess
+          //   //   // Insert to t_esrc_appprocess
           const data = {
             title:
-              "Spare Part Carry Out Request : [SPFE" + `${payload.docno}` + "]",
-            bocd: "spfe",
+              "Spare Part Carry Out Request : [FE ROOM" +
+              `${payload.docno}` +
+              "]",
+            bocd: "feroom",
             ref_id: result.data[0].id,
             reg_no: payload.reg_no,
             reg_date: payload.reg_date,
-            curstep: "2",
+            curstep: "1",
             docst: "P",
           };
           await api.PostProcessApprove(data);
+          this.loading = false;
           alert("Success");
-          this.$router.push("/esrc/fe/carryout");
+          this.$router.push("/esrc/feroom/carryout");
         }
       }
+
       //   //get ref_id
       //   // console.log(result.data[0].id);
     },
@@ -477,6 +482,7 @@ export default {
   data() {
     return {
       //validate
+      loading: false,
       valid: true,
       filesRules: [(v) => !!v || "Please upload file."],
       approverRules: [(v) => !!v || "Approver is required"],
@@ -600,6 +606,7 @@ export default {
     GetApprove,
     GetCarrier,
     GetSpare,
+    Loading,
   },
 };
 </script>

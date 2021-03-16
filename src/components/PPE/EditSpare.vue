@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Spare Part Detail</h2>
     <form>
       <div v-for="(list, index) in data_set" :key="index" class="mt-5">
@@ -35,7 +36,7 @@
           :key="index + 6"
           label="Type *"
         />
- 
+
         <input type="file" @change="onFileSelected" />
       </div>
       <div class="text-right">
@@ -53,14 +54,21 @@
 
 <script>
 // import axios from "axios";
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   async mounted() {
+    this.loading = true;
     let result = await api.getMoldByID(this.$route.params.id);
     this.data_set = result.data;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       data_set: [],
       types: [
         { type: "Select Type", value: "undefined" },
@@ -83,6 +91,7 @@ export default {
       this.selectedFile = event.target.files[0];
     },
     async updateData() {
+      this.loading = true;
       let bodyFormData = new FormData();
       bodyFormData.append("plant", this.data_set[0].plant);
       bodyFormData.append("spare_code", this.data_set[0].spare_code);
@@ -91,31 +100,32 @@ export default {
       bodyFormData.append("safe_stock", this.data_set[0].safe_stock);
       bodyFormData.append("type", this.data_set[0].type);
       bodyFormData.append("reg_empno", "20528906");
-    
+
       if (this.selectedFile) {
         console.log(this.selectedFile);
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
       }
-      await api.putMoldData(this.$route.params.id,bodyFormData)
-    //   await axios
-    //     .put(
-    //       "http://localhost:3000/update_esrc_list/" +
-    //         `${this.$route.params.id}`,
-    //       bodyFormData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     )
-    //     .then((resp) => {
-    //       if (resp.status == "200") {
-    //         alert("SUCCESS");
-    //         this.$router.push({ path: "/locationdata" });
-    //       }
-    //     }).catch(err =>{
-    //       alert(err)
-    //     })
+      await api.putMoldData(this.$route.params.id, bodyFormData);
+      this.loading = false;
+      //   await axios
+      //     .put(
+      //       "http://localhost:3000/update_esrc_list/" +
+      //         `${this.$route.params.id}`,
+      //       bodyFormData,
+      //       {
+      //         headers: {
+      //           "Content-Type": "multipart/form-data",
+      //         },
+      //       }
+      //     )
+      //     .then((resp) => {
+      //       if (resp.status == "200") {
+      //         alert("SUCCESS");
+      //         this.$router.push({ path: "/locationdata" });
+      //       }
+      //     }).catch(err =>{
+      //       alert(err)
+      //     })
     },
   },
 };

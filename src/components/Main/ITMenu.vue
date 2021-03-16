@@ -1,7 +1,11 @@
 <template>
   <v-container>
-    <h1>Equipment & IT Room control</h1>
-    <v-card width="40%">
+    <v-toolbar>
+      <img src="@/assets/web-maintenance.png" width="50" height="50" alt="" />
+      <h1>Equipment & IT Room control</h1>
+    </v-toolbar>
+
+    <v-card width="50%">
       <v-system-bar height="2" dark></v-system-bar>
     </v-card>
     <v-navigation-drawer app permanent>
@@ -87,29 +91,29 @@ export default {
         [
           "Carry Out List",
           "mdi-text-box-multiple-outline",
-          "/esrc/it/carryout",
+          "/esrc/itroom/carryout",
         ],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/it/inout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/itroom/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/it/molddata"],
+        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/itroom/molddata"],
         [
           "Location Data",
           "mdi-text-box-multiple-outline",
-          "/esrc/it/locationdata",
+          "/esrc/itroom/locationdata",
         ],
       ],
       monitoring: [
         [
           "Stock Overview",
           "mdi-text-box-multiple-outline",
-          "/esrc/it/stockview",
+          "/esrc/itroom/stockview",
         ],
-      
+
         [
           "Mold Monitoring",
           "mdi-text-box-multiple-outline",
-          "/esrc/it/monitoring",
+          "/esrc/itroom/monitoring",
         ],
       ],
     };
@@ -123,6 +127,9 @@ export default {
 </script>
 
 <style scoped>
+h1{
+  margin: 0 0 0 20px;
+}
 .v-list-item-title {
   background: black;
 }

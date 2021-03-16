@@ -16,7 +16,7 @@ export const postMoldData = async(data) => {
     let result = await httpClient.post(ppe.post_ppe_mold, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS")
-            router.push('/esrc/ppe/molddata')
+            router.push('/esrc/pperoom/molddata')
         }
     }))
     return result
@@ -26,7 +26,7 @@ export const putMoldData = async(id, data) => {
     let result = await httpClient.put(ppe.update_ppe_mold + "/" + `${id}`, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS")
-            router.push('/esrc/ppe/molddata')
+            router.push('/esrc/pperoom/molddata')
         }
     }))
     return result
@@ -51,7 +51,7 @@ export const putLocationData = async(id, data) => {
     await httpClient.put(ppe.put_ppe_location + "/" + `${id}`, data).then((resp => {
         if (resp.status == "200") {
             alert(resp.data)
-            router.push('/esrc/ppe/location').catch(() => {})
+            router.push('/esrc/pperoom/location').catch(() => {})
         }
     }))
 }
@@ -60,7 +60,7 @@ export const deleteLocationData = async(id) => {
     await httpClient.delete(ppe.delete_ppe_location + "/" + `${id}`).then((resp => {
         if (resp.status == "200") {
             alert(resp.data)
-            router.push('/esrc/ppe/location').catch(() => {})
+            router.push('/esrc/pperoom/location').catch(() => {})
         }
 
     }))
@@ -70,7 +70,7 @@ export const postLocationData = async(data) => {
     await httpClient.post(ppe.post_ppe_location, data).then((resp => {
         if (resp.status == "200") {
             alert(resp.data);
-            router.push('/esrc/ppe/location').catch(() => {})
+            router.push('/esrc/pperoom/location').catch(() => {})
         }
     }))
 }
@@ -94,17 +94,12 @@ export const postPPEStock = async(data) => {
         if (resp.status == "200") {
             alert(resp.data)
         }
-        router.push('/esrc/ppe/inout').catch(() => {})
+        router.push('/esrc/pperoom/inout').catch(() => {})
     }))
 }
 
 export const putPPEStock = async(data) => {
-    await httpClient.put(ppe.put_ppe_stock, data).then((resp => {
-        if (resp.status == "200") {
-            alert(resp.data)
-        }
-        router.push('/esrc/ppe/inout').catch(() => {})
-    }))
+    await httpClient.put(ppe.put_ppe_stock, data)
 
 }
 

@@ -37,3 +37,7 @@ export const getPPELocation = async() => {
     const result = await httpClient.get(ppe_carry.get_ppe_all_location)
     return result.data
 }
+
+export const putPPEStatus = async(id, data) => {
+    await httpClient.put(ppe_carry.update_ppe_status + "/" + `${id}`, data)
+}

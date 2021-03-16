@@ -16,7 +16,7 @@ export const getEsrcDataByID = async id => {
 export const updateEsrcData = async(id, data) => {
     let result = await httpClient.put(esrc.update_esrc_list + "/" + `${id}`, data)
     alert(result.data)
-    router.push('/esrc/fe/molddata').catch(() => {})
+    router.push('/esrc/feroom/molddata').catch(() => {})
 }
 
 export const deleteEsrcData = async id => {
@@ -27,7 +27,7 @@ export const deleteEsrcData = async id => {
 export const postEsrcData = async(data) => {
     let result = await httpClient.post(esrc.post_esrc_list, data)
     alert(result.data)
-    router.push('/esrc/fe/molddata').catch(() => {})
+    router.push('/esrc/feroom/molddata').catch(() => {})
 }
 
 export const getLocation = async(condition) => {
@@ -42,13 +42,13 @@ export const getLocationByID = async id => {
 export const postLocation = async(data) => {
     const result = await httpClient.post(esrc_location.post_location, data)
     alert(result.data)
-    router.push('/esrc/fe/locationdata').catch(() => {})
+    router.push('/esrc/feroom/locationdata').catch(() => {})
 }
 
 export const updateLocation = async(id, data) => {
     let result = await httpClient.put(esrc_location.update_location + "/" + `${id}`, data)
     alert(result.data)
-    router.push('/esrc/fe/locationdata').catch(() => {})
+    router.push('/esrc/feroom/locationdata').catch(() => {})
 }
 
 export const deleteLocation = async id => {
@@ -80,7 +80,7 @@ export const postInoutGR = async(data) => {
     await httpClient.post(esrc_inout.post_inout_gr, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS");
-            router.push("/esrc/fe/inout")
+            router.push("/esrc/feroom/inout")
         }
     }))
 }

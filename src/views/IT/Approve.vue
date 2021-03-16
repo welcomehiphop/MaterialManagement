@@ -3,7 +3,9 @@
     <h2>Carry Out Detail</h2>
     <div class="text-right">
       <v-btn color="success" @click="changeStatus('C')">Approve</v-btn>
-      <v-btn class="ml-5" color="error" @click="changeStatus('R')">Reject</v-btn>
+      <v-btn class="ml-5" color="error" @click="changeStatus('R')"
+        >Reject</v-btn
+      >
     </div>
     <v-card class="mt-5 elevation-5 pa-5">
       <v-card-title>Approval Process</v-card-title>
@@ -21,9 +23,9 @@
                   {{
                     data_set
                       .map(function(x) {
-                        return x.id;
+                        return x.idx;
                       })
-                      .indexOf(item.id)
+                      .indexOf(item.idx)
                   }}
                 </v-layout>
               </td>
@@ -77,17 +79,17 @@
                 <v-layout justify-center>
                   <div v-if="item.step == '0'">
                     <v-layout justify-center>
-                      {{ item.rcv_date }}
+                      {{ formatDateFromDB(item.appdate) }}
                     </v-layout>
                   </div>
                   <div v-if="item.step == '1'">
                     <v-layout justify-center>
-                      {{ item.rcv_date }}
+                      {{ item.appdate }}
                     </v-layout>
                   </div>
                   <div v-if="item.step == '2'">
                     <v-layout justify-center>
-                      {{ item.rcv_date }}
+                      {{ item.appdate }}
                     </v-layout>
                   </div>
                 </v-layout>
@@ -274,23 +276,50 @@
 </template>
 
 <script>
+import { formatDate, formatDateFromDB } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
   methods: {
+    formatDate,
+    formatDateFromDB,
     async changeStatus(docst) {
       const data = {
         docst: docst,
+        rcv_date: formatDate(new Date()),
+        app_date: formatDate(new Date()),
       };
-      await api.putFeStatus(this.$route.params.id, data);
-    },
+      let qty = [];
+      let stocks = [];
+      let temp_stocks = [];
+      for (let i = 0; i < this.spares.length; i++) {
+        stocks[i] = await api.getITStock(
+          this.spares[i].spare_code,
+          this.spares[i].location_code
+        );
+        temp_stocks[i] = stocks[i][0];
+      }
+      for (let i = 0; i < this.spares.length; i++) {
+        qty[i] = parseInt(temp_stocks[i].qty) - parseInt(this.spares[i].qty);
+      }
 
+      for (let i = 0; i < this.spares.length; i++) {
+        const dataUpdate = {
+          spare_code: this.spares[i].spare_code,
+          location_code: this.spares[i].location_code,
+          qty: qty[i],
+        };
+        await api.putITStock(dataUpdate);
+      }
+      await api.putITStatus(this.$route.params.id, data);
+      this.$router.push({ name: "AppList" });
+    },
   },
   async mounted() {
-    const result = await api.GetCarryListByID(this.$route.params.id);
-    this.data_set = result.data.process;
-    this.detail = result.data.detail[0];
-    this.file = result.data.file;
-    this.spares = result.data.spares;
+    const result = await api.getITCarryByID(this.$route.params.id);
+    this.data_set = await result.data.process;
+    this.detail = await result.data.detail[0];
+    this.file = await result.data.file;
+    this.spares = await result.data.spares;
   },
   data() {
     return {

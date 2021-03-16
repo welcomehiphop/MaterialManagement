@@ -1,5 +1,6 @@
 <template>
   <v-container class="container">
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>In-Out Management</h1>
     </div>
@@ -59,10 +60,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/esrc/fe/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/esrc/feroom/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/esrc/fe/addgi" color="primary">
+          <v-btn class="pa-6" href="/esrc/feroom/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -121,7 +122,9 @@
             <v-layout justify-center>{{ item.emp_name }}</v-layout>
           </td>
           <td>
-            <v-layout justify-center>{{ item.reg_date }} </v-layout>
+            <v-layout justify-center
+              >{{ formatDateOnly(item.reg_date) }}
+            </v-layout>
           </td>
           <td>
             <v-layout justify-center>{{ item.plant }}</v-layout>
@@ -147,17 +150,22 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
+import { formatDateOnly } from "@/function/exportexcel";
 import api from "@/services/api";
 import { onExport } from "@/function/exportexcel";
 export default {
   async mounted() {
+    this.loading = true;
     const result = await api.getInout("%%", "%%", "%%");
     this.data_set = result;
+    this.loading = false;
   },
   name: "Home",
-  components: {},
+  components: { Loading },
   data() {
     return {
+      loading: false,
       search: "",
       selectMovement: "",
       selectPlant: "",
@@ -244,38 +252,46 @@ export default {
     };
   },
   methods: {
+    formatDateOnly,
     excel() {
-      onExport("FE_Inout",this.data_set);
+      onExport("FE_Inout", this.data_set);
     },
     async onSelected() {
+      this.loading = true;
       const result = await api.getInout(
         "%" + this.search + "%",
         "%" + this.selectMovement + "%",
         "%" + this.selectPlant + "%"
       );
       this.data_set = result;
+      this.loading = false;
     },
     async onEnter() {
+      this.loading = true;
+
       const result = await api.getInout(
         "%" + this.search + "%",
         "%" + this.selectMovement + "%",
         "%" + this.selectPlant + "%"
       );
       this.data_set = result;
+      this.loading = false;
     },
     async onSearch() {
+      this.loading = true;
       const result = await api.getInout(
         "%" + this.search + "%",
         "%" + this.selectMovement + "%",
         "%" + this.selectPlant + "%"
       );
       this.data_set = result;
+      this.loading = false;
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/esrc/fe/detailgi/${id}`);
+        this.$router.push(`detailgi/${id}`);
       } else {
-        this.$router.push(`/esrc/fe/detailgr/${id}`);
+        this.$router.push(`detailgr/${id}`);
       }
     },
   },

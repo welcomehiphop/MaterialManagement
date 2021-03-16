@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>Mold Data</h1>
     </div>
@@ -46,7 +47,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/esrc/fe/addspare" color="primary">
+          <v-btn class="pa-5" href="/esrc/feroom/addspare" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -150,37 +151,47 @@
 </template>
 
 <script>
+import Loading from "../components/Loading";
 import api from "@/services/api";
 export default {
   methods: {
     async onSelected() {
+      this.loading = true;
       const data = {
         spare_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getEsrcData(data);
       this.data_set = result;
+      this.loading = false;
     },
     async onEnter() {
+      this.loading = true;
+
       const data = {
         spare_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getEsrcData(data);
       this.data_set = result;
+      this.loading = false;
     },
     async onSearch() {
+      this.loading = true;
+
       const data = {
         spare_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getEsrcData(data);
       this.data_set = result;
+      this.loading = false;
     },
     ShareData(id) {
-      this.$router.push(`/esrc/fe/editspare/${id}`);
+      this.$router.push(`/esrc/feroom/editspare/${id}`);
     },
     async onDelete(id) {
+      this.loading = true;
       if (confirm("Do you really want to delete?")) {
         await api
           .deleteEsrcData(id)
@@ -197,18 +208,22 @@ export default {
       };
       const result = await api.getEsrcData(data);
       this.data_set = result;
+      this.loading = false;
     },
   },
   async mounted() {
+    this.loading = true;
     const data = {
       spare_code: "%%",
       plant: "%%",
     };
     const result = await api.getEsrcData(data);
     this.data_set = result;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       search: "",
       selectPlant: "",
       plants: [
@@ -289,7 +304,9 @@ export default {
       ],
     };
   },
-  components: {},
+  components: {
+    Loading,
+  },
 };
 </script>
 

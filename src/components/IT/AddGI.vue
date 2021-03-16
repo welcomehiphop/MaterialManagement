@@ -181,6 +181,7 @@ export default {
             };
             await api.putITStock(dataUpdate);
             await api.postITInout(data);
+            this.$router.push('inout')
           } else {
             alert(
               this.form.location +

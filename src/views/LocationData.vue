@@ -46,7 +46,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/esrc/fe/addlocation" color="primary">
+          <v-btn class="pa-5" href="/esrc/feroom/addlocation" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -172,7 +172,7 @@ export default {
       this.data_set = result;
     },
     ShareData(id) {
-      this.$router.push(`/esrc/fe/editlocation/${id}`);
+      this.$router.push(`/esrc/feroom/editlocation/${id}`);
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {

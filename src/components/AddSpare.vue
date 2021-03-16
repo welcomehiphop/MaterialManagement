@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Spare Part Register</h2>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
@@ -70,7 +71,7 @@
       /> -->
       <v-file-input
         dense
-        label="File input"
+        label="Image input"
         filled
         @change="onFileSelected"
         :rules="imageRules"
@@ -86,10 +87,15 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
+      loading: false,
       //validate part
       valid: true,
       plantRules: [(v) => !!v || "Plant is required"],
@@ -136,6 +142,7 @@ export default {
     },
     async submit(event) {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         let bodyFormData = new FormData();
         bodyFormData.append("plant", this.form.selectPlant);
         bodyFormData.append("spare_code", this.form.spareCode);
@@ -146,6 +153,7 @@ export default {
         bodyFormData.append("reg_empno", "20528906");
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
         await api.postEsrcData(bodyFormData);
+        this.loading = false;
       }
       event.preventDefault();
     },

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading :start="loading" />
     <div class="text-center">
       <h2 class="mt-4">FE Room Monitor</h2>
     </div>
@@ -171,12 +172,14 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import { imageUrl } from "@/services/constants";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  components: {},
+  components: { Loading },
   async created() {
+    this.loading = true;
     let result = await api.getFeRoom("StockB");
     this.stockB = result.data;
     let result2 = await api.getFeSpare("StockB");
@@ -200,15 +203,18 @@ export default {
     await this.fetchStocks();
     await this.fetchFeSpares();
     this.stocks = this.getStocks;
+    this.loading = false;
   },
   methods: {
     async getItem(item) {
+      this.loading = true;
       const condition = {
         location: item,
         plant: "",
       };
       const result = await api.getFeStockClick(condition);
       this.data_set = result;
+      this.loading = false;
       this.dialog = true;
     },
     getColor(location, status) {
@@ -233,6 +239,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       imageUrl: imageUrl,
       data_set: [],
       headers: [

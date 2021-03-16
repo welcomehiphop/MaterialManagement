@@ -426,8 +426,13 @@ export default {
           ];
           for (let i = 0; i < role.length; i++) {
             const app_list = {
-              docno: payload.docno,
-              bocd: "pperoom",
+              docno:
+                payload.docno +
+                ~~(Math.random() * 10) +
+                ~~(Math.random() * 10) +
+                ~~(Math.random() * 10) +
+                ~~(Math.random() * 10),
+              bocd: "itroom",
               ref_id: result.data[0].id,
               app_user: app_user[i],
               role: role[i],
@@ -443,25 +448,25 @@ export default {
             };
             if (i == 0) app_list.comment = this.approveProcess.req.comment;
             if (i === 1 || i == 2) {
-              app_list.rcv_date = "";
-              app_list.app_date = "";
+              app_list.rcv_date = null;
+              app_list.app_date = null;
             }
             await api.PostListApprove(app_list);
           }
           // Insert to t_esrc_appprocess
           const data = {
             title:
-              "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
+              "Spare Part Carry Out Request : [IT ROOM" + `${payload.docno}` + "]",
             bocd: "itroom",
             ref_id: result.data[0].id,
             reg_no: payload.reg_no,
             reg_date: payload.reg_date,
-            curstep: "2",
+            curstep: "1",
             docst: "P",
           };
           await api.PostProcessApprove(data);
           alert("Success");
-          this.$router.push("/esrc/it/carryout");
+          this.$router.push("/esrc/itroom/carryout");
         }
       }
 

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>Location Data</h1>
     </div>
@@ -46,7 +47,7 @@
           </v-btn>
         </v-col>
         <v-col cols="1">
-          <v-btn class="pa-5" href="/esrc/ppe/addlocation" color="primary">
+          <v-btn class="pa-5" href="/esrc/pperoom/addlocation" color="primary">
             ADD
           </v-btn>
         </v-col>
@@ -105,18 +106,22 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
   async mounted() {
+    this.loading = true;
     const condition = {
       location_code: "%%",
       plant: "%%",
     };
     const result = await api.getLocationData(condition);
     this.data_set = result.data;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       search: "",
       selectPlant: "",
       plants: [
@@ -145,37 +150,44 @@ export default {
       ],
     };
   },
-  components: {},
+  components: { Loading },
   methods: {
     async onEnter() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocationData(condition);
       this.data_set = result.data;
+      this.loading = false;
     },
     async onSelected() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocationData(condition);
       this.data_set = result.data;
+      this.loading = false;
     },
     async onClickSearch() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocationData(condition);
       this.data_set = result.data;
+      this.loading = false;
     },
     ShareData(id) {
       this.$router.push(`editlocation/${id}`);
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {
+        this.loading = true;
         await api.deleteLocationData(id);
       }
       const condition = {
@@ -184,6 +196,7 @@ export default {
       };
       const result = await api.getLocationData(condition);
       this.data_set = result.data;
+      this.loading = false;
     },
   },
 };

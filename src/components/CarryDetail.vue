@@ -17,13 +17,7 @@
             <tr class="mx-2">
               <td>
                 <v-layout justify-center>
-                  {{
-                    data_set
-                      .map(function(x) {
-                        return x.id;
-                      })
-                      .indexOf(item.id)
-                  }}
+                  {{ item.step }}
                 </v-layout>
               </td>
               <td>
@@ -37,77 +31,23 @@
                 </v-layout>
               </td>
               <td>
-                <div v-if="item.step == '0'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-                <div v-if="item.step == '1'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-                <div v-if="item.step == '2'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-              </td>
-              <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
+                  {{ item.Name }}
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
+                  {{ item.cl_band }}
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
+                  {{ formatDateFromDB(item.appdate) }}
+                </v-layout>
+              </td>
+              <td>
+                <v-layout justify-center>
+                  {{ item.comment }}
                 </v-layout>
               </td>
             </tr>
@@ -273,14 +213,22 @@
 </template>
 
 <script>
+import { formatDateFromDB, formatDate } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
   methods: {
+    formatDateFromDB,
+    formatDate,
     async changeStatus(docst) {
-      const data = {
-        docst: docst,
-      };
-      await api.putFeStatus(this.$route.params.id, data);
+      if (confirm("Do you really want to withdraw?")) {
+        const data = {
+          docst: docst,
+          rcv_date: formatDate(new Date()),
+          app_date: formatDate(new Date()),
+        };
+        await api.putFeStatus(this.$route.params.id, data);
+        this.$route.push("/esrc/fe/carryout");
+      }
     },
   },
   async mounted() {

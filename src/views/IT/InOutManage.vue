@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>In-Out Management</h1>
     </div>
@@ -59,10 +60,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/esrc/it/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/esrc/itroom/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/esrc/it/addgi" color="primary">
+          <v-btn class="pa-6" href="/esrc/itroom/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -147,10 +148,12 @@
 </template>
 
 <script>
-import {onExport} from '@/function/exportexcel'
+import Loading from "@/components/Loading";
+import { onExport } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
   async mounted() {
+    this.loading = true;
     const condition = {
       spare_code: "",
       movement: "",
@@ -158,11 +161,13 @@ export default {
     };
     const result = await api.getITInout(condition);
     this.data_set = result;
+    this.loading = false;
   },
   name: "Home",
-  components: {},
+  components: { Loading },
   data() {
     return {
+      loading: false,
       search: "",
       selectMovement: "",
       selectPlant: "",
@@ -249,10 +254,11 @@ export default {
     };
   },
   methods: {
-    excel(){
-      onExport("IT_Inout",this.data_set)
+    excel() {
+      onExport("IT_Inout", this.data_set);
     },
     async onSelected() {
+      this.loading = true;
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -260,8 +266,10 @@ export default {
       };
       const result = await api.getITInout(condition);
       this.data_set = result;
+      this.loading = false;
     },
     async onEnter() {
+      this.loading = true;
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -269,8 +277,10 @@ export default {
       };
       const result = await api.getITInout(condition);
       this.data_set = result;
+      this.loading = false;
     },
     async onSearch() {
+      this.loading = true;
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -278,12 +288,13 @@ export default {
       };
       const result = await api.getITInout(condition);
       this.data_set = result;
+      this.loading = false;
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/esrc/it/detailgi/${id}`);
+        this.$router.push(`/esrc/itroom/detailgi/${id}`);
       } else {
-        this.$router.push(`/esrc/it/detailgr/${id}`);
+        this.$router.push(`/esrc/itroom/detailgr/${id}`);
       }
     },
   },

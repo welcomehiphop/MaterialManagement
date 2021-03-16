@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>GR Register</h2>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-row>
@@ -66,13 +67,21 @@
         </v-col>
         <v-col cols="1"></v-col>
         <v-col cols="3">
-          <v-menu offset-y>
+          <v-menu
+            offset-y
+            v-model="menu"
+            ref="menu"
+            max-width="290px"
+            min-width="auto"
+          >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="form.gr_date"
                 label="GR Date * "
                 v-bind="attrs"
                 v-on="on"
+                hint="YYYY-MM-DD"
+                persistent-hint
                 :rules="grDateRules"
                 required
                 prepend-icon="mdi-calendar-month-outline"
@@ -117,20 +126,26 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
+import { formatDate } from "@/function/exportexcel";
 import api from "@/services/api";
 import ScheduleForm from "../components/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
+    this.loading = true;
     const condition = {
       location_code: "%%",
       plant: "%%",
     };
     const result = await api.getLocation(condition);
     this.locations = result;
+    this.loading = false;
   },
-  data() {
+  data: () => {
     return {
+      loading: false,
+      menu: false,
       valid: true,
       spareCodeRules: [(v) => !!v || "Spare Code is required"],
       spareTypeRules: [(v) => !!v || "Spare Type is required"],
@@ -146,8 +161,7 @@ export default {
       LocationRules: [(v) => !!v || "Location is required"],
       form: {
         purpose: "",
-        po: "",
-        gr_date: new Date().toISOString().substr(0, 10),
+        gr_date: formatDate(new Date()),
         qty: "",
         location: "",
         gr_empName: "Pamorn Sirimak",
@@ -159,10 +173,12 @@ export default {
   },
   components: {
     ScheduleForm,
+    Loading,
   },
-
   methods: {
+    formatDate,
     async submit(event) {
+      this.loading = true;
       let data = {
         spare_code: this.allSpare.spare_code,
         purpose: this.form.purpose,
@@ -195,6 +211,7 @@ export default {
           await api.postInoutStock(data_stock);
         }
       }
+      this.loading = false;
       event.preventDefault();
     },
   },

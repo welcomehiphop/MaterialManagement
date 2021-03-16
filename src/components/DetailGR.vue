@@ -52,7 +52,7 @@
                     v-on="on"
                     prepend-icon="mdi-calendar-month-outline"
                     readonly
-                  />
+                  ></v-text-field>
                 </template>
                 <v-date-picker disabled></v-date-picker>
               </v-menu>
@@ -88,17 +88,22 @@
 </template>
 
 <script>
+import { formatDateOnly } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
+  methods: {
+    formatDateOnly,
+  },
   async mounted() {
     let result = await api.getInoutByID(this.$route.params.id);
     this.data_set = result;
+    this.data_set[0].reg_date = formatDateOnly(this.data_set[0].reg_date) 
   },
   data() {
     return {
       data_set: [],
-      gr_empName: 'Pamorn Sirimak',
-      gr_empNo : '20528906'
+      gr_empName: "Pamorn Sirimak",
+      gr_empNo: "20528906",
     };
   },
 };

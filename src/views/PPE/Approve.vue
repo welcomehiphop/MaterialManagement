@@ -1,9 +1,11 @@
 <template>
   <v-container>
-    <Loading :start="loading" />
     <h2>Carry Out Detail</h2>
     <div class="text-right">
-      <v-btn color="secondary" @click="changeStatus('W')">Withdraw</v-btn>
+      <v-btn color="success" @click="changeStatus('C')">Approve</v-btn>
+      <v-btn class="ml-5" color="error" @click="changeStatus('R')"
+        >Reject</v-btn
+      >
     </div>
     <v-card class="mt-5 elevation-5 pa-5">
       <v-card-title>Approval Process</v-card-title>
@@ -18,7 +20,13 @@
             <tr class="mx-2">
               <td>
                 <v-layout justify-center>
-                  {{ item.step }}
+                  {{
+                    data_set
+                      .map(function(x) {
+                        return x.idx;
+                      })
+                      .indexOf(item.idx)
+                  }}
                 </v-layout>
               </td>
               <td>
@@ -32,23 +40,77 @@
                 </v-layout>
               </td>
               <td>
+                <div v-if="item.step == '0'">
+                  <v-layout justify-center>
+                    {{ item.Name }}
+                  </v-layout>
+                </div>
+                <div v-if="item.step == '1'">
+                  <v-layout justify-center>
+                    {{ item.Name }}
+                  </v-layout>
+                </div>
+                <div v-if="item.step == '2'">
+                  <v-layout justify-center>
+                    {{ item.Name }}
+                  </v-layout>
+                </div>
+              </td>
+              <td>
                 <v-layout justify-center>
-                  {{ item.Name }}
+                  <div v-if="item.step == '0'">
+                    <v-layout justify-center>
+                      {{ item.cl_band }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '1'">
+                    <v-layout justify-center>
+                      {{ item.cl_band }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '2'">
+                    <v-layout justify-center>
+                      {{ item.cl_band }}
+                    </v-layout>
+                  </div>
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  {{ item.cl_band }}
+                  <div v-if="item.step == '0'">
+                    <v-layout justify-center>
+                      {{ formatDateFromDB(item.appdate) }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '1'">
+                    <v-layout justify-center>
+                      {{ item.appdate }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '2'">
+                    <v-layout justify-center>
+                      {{ item.appdate }}
+                    </v-layout>
+                  </div>
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  {{ formatDateFromDB(item.appdate) }}
-                </v-layout>
-              </td>
-              <td>
-                <v-layout justify-center>
-                  {{ item.comment }}
+                  <div v-if="item.step == '0'">
+                    <v-layout justify-center>
+                      {{ item.comment }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '1'">
+                    <v-layout justify-center>
+                      {{ item.comment }}
+                    </v-layout>
+                  </div>
+                  <div v-if="item.step == '2'">
+                    <v-layout justify-center>
+                      {{ item.comment }}
+                    </v-layout>
+                  </div>
                 </v-layout>
               </td>
             </tr>
@@ -180,9 +242,9 @@
                 {{
                   spares
                     .map(function(x) {
-                      return x.id;
+                      return x.idx;
                     })
-                    .indexOf(item.id) + 1
+                    .indexOf(item.idx) + 1
                 }}
               </v-layout>
             </td>
@@ -214,42 +276,55 @@
 </template>
 
 <script>
-import Loading from "@/components/Loading";
-import { formatDateFromDB, formatDate } from "@/function/exportexcel";
+import { formatDate, formatDateFromDB } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
-  components: {
-    Loading,
-  },
   methods: {
-    formatDateFromDB,
     formatDate,
+    formatDateFromDB,
     async changeStatus(docst) {
-      if (confirm("Do you really want to withdraw?")) {
-        this.loading = true;
-        const data = {
-          docst: docst,
-          rcv_date: formatDate(new Date()),
-          app_date: formatDate(new Date()),
-        };
-        await api.putFeStatus(this.$route.params.id, data);
-        this.loading = false;
-        this.$route.push("/esrc/fe/carryout");
+      const data = {
+        docst: docst,
+        rcv_date: formatDate(new Date()),
+        app_date: formatDate(new Date()),
+      };
+      let qty = [];
+      let stocks = [];
+      let temp_stocks = [];
+      for (let i = 0; i < this.spares.length; i++) {
+        stocks[i] = await api.getPPEStock(
+          this.spares[i].spare_code,
+          this.spares[i].location_code
+        );
+        temp_stocks[i] = stocks[i].data[0];
       }
+
+      for (let i = 0; i < this.spares.length; i++) {
+        qty[i] = parseInt(temp_stocks[i].qty) - parseInt(this.spares[i].qty);
+      }
+
+      for (let i = 0; i < this.spares.length; i++) {
+        const dataUpdate = {
+          spare_code: this.spares[i].spare_code,
+          location_code: this.spares[i].location_code,
+          qty: qty[i],
+        };
+        await api.putPPEStock(dataUpdate);
+      }
+      await api.putPPEStatus(this.$route.params.id, data);
+      alert("Success")
+      this.$router.push({ name: "AppList" });
     },
   },
   async mounted() {
-    this.loading = true;
     const result = await api.getPPECarryByID(this.$route.params.id);
-    this.data_set = result.data.process;
-    this.detail = result.data.detail[0];
-    this.file = result.data.file;
-    this.spares = result.data.spares;
-    this.loading = false;
+    this.data_set = await result.data.process;
+    this.detail = await result.data.detail[0];
+    this.file = await result.data.file;
+    this.spares = await result.data.spares;
   },
   data() {
     return {
-      loading: false,
       spareHeaders: [
         { text: "No", value: "No", align: "center", sortable: false },
         {

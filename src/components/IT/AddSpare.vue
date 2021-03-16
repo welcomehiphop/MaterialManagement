@@ -62,7 +62,7 @@
 
       <v-file-input
         dense
-        label="File input"
+        label="Image input"
         filled
         @change="onFileSelected"
         :rules="imageRules"

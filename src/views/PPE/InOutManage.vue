@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading"/>
     <div class="text-center">
       <h1>In-Out Management</h1>
     </div>
@@ -59,10 +60,10 @@
           </v-btn>
         </v-col>
         <v-col cols="2">
-          <v-btn class="pa-6 mr-5" href="/esrc/ppe/addgr" color="primary">
+          <v-btn class="pa-6 mr-5" href="/esrc/pperoom/addgr" color="primary">
             GR
           </v-btn>
-          <v-btn class="pa-6" href="/esrc/ppe/addgi" color="primary">
+          <v-btn class="pa-6" href="/esrc/pperoom/addgi" color="primary">
             GI
           </v-btn>
         </v-col>
@@ -147,10 +148,15 @@
 </template>
 
 <script>
-import {onExport} from '@/function/exportexcel'
+import Loading from "@/components/Loading";
+import { onExport } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   async mounted() {
+    this.loading = true
     const condition = {
       spare_code: "",
       movement: "",
@@ -158,11 +164,12 @@ export default {
     };
     const result = await api.getInoutData(condition);
     this.data_set = result;
+    this.loading = false
   },
   name: "Home",
-  components: {},
   data() {
     return {
+      loading:false,
       search: "",
       selectMovement: "",
       selectPlant: "",
@@ -249,10 +256,11 @@ export default {
     };
   },
   methods: {
-    excel(){
-      onExport("PPE_Inout",this.data_set)
+    excel() {
+      onExport("PPE_Inout", this.data_set);
     },
     async onSelected() {
+      this.loading = true
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -260,8 +268,10 @@ export default {
       };
       const result = await api.getInoutData(condition);
       this.data_set = result;
+      this.loading = false
     },
     async onEnter() {
+      this.loading = true
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -269,8 +279,10 @@ export default {
       };
       const result = await api.getInoutData(condition);
       this.data_set = result;
+      this.loading = false
     },
     async onSearch() {
+      this.loading = true
       const condition = {
         spare_code: this.search,
         movement: this.selectMovement,
@@ -278,12 +290,13 @@ export default {
       };
       const result = await api.getInoutData(condition);
       this.data_set = result;
+      this.loading = false
     },
     ShareData(id, movement) {
       if (movement === "GI") {
-        this.$router.push(`/ppe/detailgi/${id}`);
+        this.$router.push(`detailgi/${id}`);
       } else {
-        this.$router.push(`/ppe/detailgr/${id}`);
+        this.$router.push(`detailgr/${id}`);
       }
     },
   },

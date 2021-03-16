@@ -1,7 +1,72 @@
 <template>
   <v-dialog v-model="show" max-width="500px" scrollable>
-    <v-card class="pa-10">
+      <v-card>
+        <v-card-title primary-title>
+          <h2>Select Carrier</h2>
+        </v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col cols="4">
+              <v-subheader>
+                Department
+              </v-subheader>
+            </v-col>
+            <v-col cols="7">
+              <v-select
+                :items="deptList"
+                item-text="name"
+                label="Select Department"
+                item-value="code"
+                @change="onSelected()"
+                outlined
+                dense
+                v-model="searchDepartment"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="4">
+              <v-subheader>
+                Emp Name
+              </v-subheader>
+            </v-col>
+            <v-col cols="7">
+              <v-text-field
+                v-on:keyup.enter="onEnter"
+                label="Enter Emp Name"
+                outlined
+                dense
+                v-model="searchName"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+
+          <v-data-table
+            dense
+            :headers="headers"
+            :items="data_set"
+            item-key="name"
+            class="elevation-1 row-pointer"
+            :items-per-page="6"
+          >
+            <template v-slot:item="{ item }">
+              <tr @click="onClick(item)">
+                <td>{{ item.usrnm }}</td>
+                <td>{{ item.posnm }}</td>
+                <td></td>
+              </tr>
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn class="mt-5" width="100%" color="primary" @click.stop="show = false"
+        >Close</v-btn
+      >
+        </v-card-actions>
+      </v-card>
+    <!-- <v-card class="pa-10">
       <h2>Select Carrier</h2>
+
       <v-card class="ma-5">
         <div>
           <v-row>
@@ -64,7 +129,7 @@
       <v-btn class="mt-5" color="primary" @click.stop="show = false"
         >Close</v-btn
       >
-    </v-card>
+    </v-card> -->
   </v-dialog>
 </template>
 
@@ -76,7 +141,7 @@ export default {
   async mounted() {
     const deptListResult = await api.getDeptList();
     this.deptList = deptListResult.data;
-    // this.deptList.unshift(this.searchDepartment);
+    this.deptList.unshift(this.searchDepartment);
 
     // this.deptList.unshift(this.searchDepartment);
     // this.deptList.unshift(this.searchDepartment);

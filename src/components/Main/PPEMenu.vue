@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <h1>Safety & PPE Room control</h1>
+    <v-toolbar>
+      <img src="@/assets/worker.png" width="50" height="50" alt="" />
+      <h1>Safety & PPE Room control</h1>
+    </v-toolbar>
     <v-card width="40%">
       <v-system-bar height="2" dark></v-system-bar>
     </v-card>
@@ -87,28 +90,32 @@ export default {
         [
           "Carry Out List",
           "mdi-text-box-multiple-outline",
-          "/esrc/ppe/carryout",
+          "/esrc/pperoom/carryout",
         ],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/ppe/inout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/pperoom/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/ppe/molddata"],
+        [
+          "Mold Data",
+          "mdi-text-box-multiple-outline",
+          "/esrc/pperoom/molddata",
+        ],
         [
           "Location Data",
           "mdi-text-box-multiple-outline",
-          "/esrc/ppe/location",
+          "/esrc/pperoom/location",
         ],
       ],
       monitoring: [
         [
           "Stock Overview",
           "mdi-text-box-multiple-outline",
-          "/esrc/ppe/stockview",
+          "/esrc/pperoom/stockview",
         ],
         [
           "Mold Monitoring",
           "mdi-text-box-multiple-outline",
-          "/esrc/ppe/monitoring",
+          "/esrc/pperoom/monitoring",
         ],
       ],
     };
@@ -122,6 +129,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  margin: 0 0 0 20px;
+}
 .v-list-item-title {
   background: black;
 }

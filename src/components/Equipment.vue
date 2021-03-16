@@ -1,7 +1,8 @@
 <template>
   <div>
+    <Loading :start="loading" />
     <div class="text-center">
-      <h2 class="mt-4">FE Room Monitor</h2>
+      <h2 class="mt-4">Equipment & IT Room Monitor</h2>
     </div>
     <v-container class="pa-10 mt-4">
       <v-row>
@@ -171,11 +172,12 @@
 
 <script>
 import { imageUrl } from "@/services/constants";
-
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
-  components: {},
+  components: { Loading },
   async created() {
+    this.loading = true;
     let r1 = await api.getITRoom("StockA");
     this.stockA = r1.data;
     let r2 = await api.getITMonitor("StockA");
@@ -200,15 +202,18 @@ export default {
     this.stockE = result7.data;
     let result8 = await api.getITMonitor("StockE");
     this.sparesE = result8.data;
+    this.loading = false;
   },
   methods: {
     async getItem(item) {
+      this.loading = true;
       const condition = {
         location: item,
         plant: "",
       };
       const result = await api.getITStockClick(condition);
       this.data_set = result;
+      this.loading = false;
       this.dialog = true;
     },
     getColor(location, status) {
@@ -231,6 +236,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       imageUrl: imageUrl,
       data_set: [],
       headers: [

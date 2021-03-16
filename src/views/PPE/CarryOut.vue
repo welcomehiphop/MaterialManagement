@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading"/>
     <div class="text-center">
       <h1>Carry Out</h1>
     </div>
@@ -84,7 +85,7 @@
       <v-row>
         <v-spacer></v-spacer>
         <v-col cols="1">
-          <v-btn href="/esrc/ppe/requestcarry" color="primary">
+          <v-btn href="/esrc/pperoom/requestcarry" color="primary">
             Request
           </v-btn>
         </v-col>
@@ -149,7 +150,7 @@
             </td>
             <td>
               <v-layout justify-center>
-                {{ item.reg_date }}
+                {{ fDate(item.reg_date) }}
               </v-layout>
             </td>
             <td>
@@ -171,13 +172,15 @@
 </template>
 
 <script>
-import {onExport} from '@/function/exportexcel'
+import Loading  from '@/components/Loading'
+import {onExport , formatDate as fDate} from '@/function/exportexcel'
 import api from "@/services/api";
 export default {
   created() {
     this.formatDate();
   },
   methods: {
+    fDate,
     excel(){
       onExport("PPE_CarryOut",this.data_set)
     },
@@ -188,6 +191,7 @@ export default {
       if (status === "Withdraw") return "#9E9E9E";
     },
     async onSelected() {
+      this.loading = true
       this.format_fromdate =
         this.fromDate.substring(0, 4) +
         this.fromDate.substring(5, 7) +
@@ -204,8 +208,10 @@ export default {
       };
       let result = await api.getPPECarry(condition);
       this.data_set = result;
+      this.loading = false
     },
     async onEnter() {
+      this.loading = true
       this.format_fromdate =
         this.fromDate.substring(0, 4) +
         this.fromDate.substring(5, 7) +
@@ -222,6 +228,7 @@ export default {
       };
       let result = await api.getPPECarry(condition);
       this.data_set = result;
+      this.loading = false
     },
     formatDate() {
       var days = 7;
@@ -234,6 +241,7 @@ export default {
     },
 
     async onClickSearch() {
+      this.loading = true
       this.format_fromdate =
         this.fromDate.substring(0, 4) +
         this.fromDate.substring(5, 7) +
@@ -250,6 +258,7 @@ export default {
       };
       let result = await api.getPPECarry(condition);
       this.data_set = result;
+      this.loading = false
     },
     shareData(id) {
       this.$router.push(`carrydetail/${id}`);
@@ -257,8 +266,8 @@ export default {
   },
   data() {
     return {
+      loading:false,
       format_fromdate: "",
-
       format_todate: "",
       fromDate: "",
       toDate: new Date().toISOString().substring(0, 10),
@@ -330,7 +339,9 @@ export default {
       ],
     };
   },
-  components: {},
+  components: {
+    Loading
+  },
 };
 </script>
 

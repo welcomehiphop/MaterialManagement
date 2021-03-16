@@ -16,7 +16,7 @@ export const postITMold = async(data) => {
     let result = await httpClient.post(it_mold.post_it_mold, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS")
-            router.push('/esrc/it/molddata').catch(() => {})
+            router.push('/esrc/itroom/molddata').catch(() => {})
         }
     }))
     return result
@@ -26,7 +26,7 @@ export const putITMold = async(id, data) => {
     let result = await httpClient.put(it_mold.update_it_mold + "/" + `${id}`, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS")
-            router.push('/esrc/it/molddata').catch(() => {})
+            router.push('/esrc/itroom/molddata').catch(() => {})
         }
     }))
     return result
@@ -36,7 +36,7 @@ export const deleteITMold = async(id) => {
     await httpClient.delete(it_mold.delete_it_mold + "/" + `${id}`).then((resp => {
         if (resp.status == "200") {
             alert(resp.data)
-            router.push('/esrc/it/molddata').catch(() => {})
+            router.push('/esrc/itroom/molddata').catch(() => {})
         }
     }))
 }

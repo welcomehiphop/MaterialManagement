@@ -1,6 +1,9 @@
 <template>
   <v-container>
-    <h1>FE Room control</h1>
+    <v-toolbar>
+      <img src="@/assets/settings.png" width="50" height="50" alt="" />
+      <h1>FE Room control</h1>
+    </v-toolbar>
     <v-card width="40%">
       <v-system-bar height="2" dark></v-system-bar>
     </v-card>
@@ -87,28 +90,28 @@ export default {
         [
           "Carry Out List",
           "mdi-text-box-multiple-outline",
-          "/esrc/fe/carryout",
+          "/esrc/feroom/carryout",
         ],
-        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/fe/inout"],
+        ["In-Out Mgmt", "mdi-text-box-multiple-outline", "/esrc/feroom/inout"],
       ],
       masterData: [
-        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/fe/molddata"],
+        ["Mold Data", "mdi-text-box-multiple-outline", "/esrc/feroom/molddata"],
         [
           "Location Data",
           "mdi-text-box-multiple-outline",
-          "/esrc/fe/locationdata",
+          "/esrc/feroom/locationdata",
         ],
       ],
       monitoring: [
         [
           "Stock Overview",
           "mdi-text-box-multiple-outline",
-          "/esrc/fe/stockview",
+          "/esrc/feroom/stockview",
         ],
         [
           "Mold Monitoring",
           "mdi-text-box-multiple-outline",
-          "/esrc/fe/monitoring",
+          "/esrc/feroom/monitoring",
         ],
       ],
     };
@@ -122,6 +125,9 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  margin: 0 0 0 20px;
+}
 .v-list-item-title {
   background: black;
 }

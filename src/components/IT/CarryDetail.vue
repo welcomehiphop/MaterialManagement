@@ -17,13 +17,7 @@
             <tr class="mx-2">
               <td>
                 <v-layout justify-center>
-                  {{
-                    data_set
-                      .map(function(x) {
-                        return x.id;
-                      })
-                      .indexOf(item.id)
-                  }}
+                  {{ item.step }}
                 </v-layout>
               </td>
               <td>
@@ -37,77 +31,23 @@
                 </v-layout>
               </td>
               <td>
-                <div v-if="item.step == '0'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-                <div v-if="item.step == '1'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-                <div v-if="item.step == '2'">
-                  <v-layout justify-center>
-                    {{ item.Name }}
-                  </v-layout>
-                </div>
-              </td>
-              <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.cl_band }}
-                    </v-layout>
-                  </div>
+                  {{ item.Name }}
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.rcv_date }}
-                    </v-layout>
-                  </div>
+                  {{ item.cl_band }}
                 </v-layout>
               </td>
               <td>
                 <v-layout justify-center>
-                  <div v-if="item.step == '0'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '1'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
-                  <div v-if="item.step == '2'">
-                    <v-layout justify-center>
-                      {{ item.comment }}
-                    </v-layout>
-                  </div>
+                  {{ formatDateFromDB(item.appdate) }}
+                </v-layout>
+              </td>
+              <td>
+                <v-layout justify-center>
+                  {{ item.comment }}
                 </v-layout>
               </td>
             </tr>
@@ -239,9 +179,9 @@
                 {{
                   spares
                     .map(function(x) {
-                      return x.id;
+                      return x.idx;
                     })
-                    .indexOf(item.id) + 1
+                    .indexOf(item.idx) + 1
                 }}
               </v-layout>
             </td>
@@ -273,9 +213,11 @@
 </template>
 
 <script>
+import {formatDateFromDB} from '@/function/exportexcel'
 import api from "@/services/api";
 export default {
   methods: {
+    formatDateFromDB,
     async changeStatus(docst) {
       console.log(docst);
       const data = {

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Location Detail</h2>
     <form>
       <div v-for="(list, id) in data_set" :key="id" class="mt-5">
@@ -40,14 +41,21 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   async mounted() {
+    this.loading = true;
     let result = await api.getLocaitonDataByID(this.$route.params.id);
     this.data_set = result.data;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       data_set: [],
       plants: [
         { plant: "Select Plant", value: "undefined" },
@@ -62,11 +70,12 @@ export default {
   },
   methods: {
     async updateData(id) {
+      this.loading = true;
       const data = {
         location_name: this.data_set[0].location_name,
       };
-
       await api.putLocationData(id, data);
+      this.loading = false;
       // axios
       //   .put(
       //     "http://localhost:3000/update_location/" + id,

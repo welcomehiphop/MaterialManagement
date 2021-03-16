@@ -9,6 +9,7 @@ import * as apiITLocation from '@/services/api_it_location'
 import * as apiITInout from '@/services/api_it_inout'
 import * as apiCarryout from '@/services/api_it_carry'
 import * as apiStockView from '@/services/api_stockview'
+import * as apiAppProcess from '@/services/api_app_process'
 
 export default {
     ...apiESRC,
@@ -22,4 +23,5 @@ export default {
     ...apiITInout,
     ...apiCarryout,
     ...apiStockView,
+    ...apiAppProcess,
 };

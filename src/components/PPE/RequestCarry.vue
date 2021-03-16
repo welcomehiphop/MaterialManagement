@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Request Carry Out</h2>
     <!-- Approveal Process Form -->
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -326,6 +327,7 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import { mapGetters, mapMutations } from "vuex";
 import GetApprove from "@/components/PPE/GetApprove";
@@ -357,6 +359,7 @@ export default {
     },
     async onSubmit() {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         if (this.getSpare.length === 0) alert("Please select spare part.");
         let count = "1";
         let stocks = [];
@@ -382,7 +385,11 @@ export default {
         if (count == "0") {
           // insert to t_esrc_carry
           const payload = {
-            docno: this.ramdomno(),
+            docno:
+              this.ramdomno() +
+              ~~(Math.random() * 10) +
+              ~~(Math.random() * 10) +
+              ~~(Math.random() * 10),
             reqType: this.reqDetail.reqFor.type,
             carry_date: this.reqDetail.date,
             destination: this.reqDetail.destination,
@@ -441,15 +448,17 @@ export default {
             };
             if (i == 0) app_list.comment = this.approveProcess.req.comment;
             if (i === 1 || i == 2) {
-              app_list.rcv_date = "";
-              app_list.app_date = "";
+              app_list.rcv_date = null;
+              app_list.app_date = null;
             }
             await api.PostListApprove(app_list);
           }
           //   // Insert to t_esrc_appprocess
           const data = {
             title:
-              "Spare Part Carry Out Request : [SP" + `${payload.docno}` + "]",
+              "Spare Part Carry Out Request : [PPE ROOM" +
+              `${payload.docno}` +
+              "]",
             bocd: "pperoom",
             ref_id: result.data[0].id,
             reg_no: payload.reg_no,
@@ -458,8 +467,9 @@ export default {
             docst: "P",
           };
           await api.PostProcessApprove(data);
+          this.loading = false;
           alert("Success");
-          this.$router.push("/esrc/ppe/carryout");
+          this.$router.push("/esrc/pperoom/carryout");
         }
       }
       //   //get ref_id
@@ -472,6 +482,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       //validate  part
       valid: true,
       filesRules: [(v) => !!v || "Please upload file."],
@@ -593,6 +604,7 @@ export default {
     ...mapGetters(["getSpare"]),
   },
   components: {
+    Loading,
     GetApprove,
     GetCarrier,
     GetSpare,

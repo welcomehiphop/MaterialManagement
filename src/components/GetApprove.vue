@@ -1,49 +1,50 @@
 <template>
   <v-dialog v-model="show" max-width="500px" scrollable>
-    <v-card class="pa-10">
-      <h2>Select Approver</h2>
-      <v-card class="ma-5">
-        <div>
-          <v-row>
-            <v-col cols="4">
-              <v-subheader>
-                Department
-              </v-subheader>
-            </v-col>
-            <v-col cols="7">
-              <v-select
-                :items="deptList"
-                item-text="name"
-                label="Select Department"
-                item-value="code"
-                @change="onSelected()"
-                outlined
-                dense
-                v-model="searchDepartment"
-              />
-            </v-col>
-          </v-row>
-        </div>
-        <div>
-          <v-row>
-            <v-col cols="4">
-              <v-subheader>
-                Emp Name
-              </v-subheader>
-            </v-col>
-            <v-col cols="7">
-              <v-text-field
-                v-on:keyup.enter="onEnter"
-                label="Enter Emp Name"
-                outlined
-                dense
-                v-model="searchName"
-                clearable
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-      </v-card>
+    <v-card class="ma-5">
+      <v-card-title>
+        <h2>Select Approver</h2>
+      </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="4">
+            <v-subheader>
+              Department
+            </v-subheader>
+          </v-col>
+          <v-col cols="7">
+            <v-select
+              :items="deptList"
+              item-text="name"
+              label="Select Department"
+              item-value="code"
+              @change="onSelected()"
+              outlined
+              dense
+              v-model="searchDepartment"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <div></div>
+      <div>
+        <v-row>
+          <v-col cols="4">
+            <v-subheader>
+              Emp Name
+            </v-subheader>
+          </v-col>
+          <v-col cols="7">
+            <v-text-field
+              v-on:keyup.enter="onEnter"
+              label="Enter Emp Name"
+              outlined
+              dense
+              v-model="searchName"
+              clearable
+            ></v-text-field>
+          </v-col>
+        </v-row>
+      </div>
 
       <v-data-table
         dense

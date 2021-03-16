@@ -17,7 +17,7 @@ export const putITLocation = async(id, data) => {
     let result = await httpClient.put(it_location.update_it_location + "/" + `${id}`, data).then((resp => {
         if (resp.status == "200") {
             alert("SUCCESS")
-            router.push('/esrc/it/locationdata')
+            router.push('/esrc/itroom/locationdata')
         }
     }))
     return result
@@ -27,7 +27,7 @@ export const postITLocation = async(data) => {
     await httpClient.post(it_location.post_it_location, data).then((resp => {
         if (resp.status == "200") {
             alert(resp.data);
-            router.push('/esrc/it/locationdata').catch(() => {})
+            router.push('/esrc/itroom/locationdata').catch(() => {})
         }
     }))
 }
@@ -36,7 +36,7 @@ export const deleteITLocation = async id => {
     let result = await httpClient.delete(it_location.delete_it_location + "/" + `${id}`).then((resp => {
         if (resp.status == "200") {
             alert(resp.data)
-            router.push('/esrc/it/locationdata').catch(() => {})
+            router.push('/esrc/itroom/locationdata').catch(() => {})
         }
     }))
     return result

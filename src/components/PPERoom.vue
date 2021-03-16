@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Loading :start="loading" />
     <div class="text-center">
       <h2 class="mt-4">PPE Room Monitor</h2>
     </div>
@@ -170,12 +171,16 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import { imageUrl } from "@/services/constants";
 
 export default {
-  components: {},
+  components: {
+    Loading,
+  },
   async created() {
+    this.loading = true
     const r1 = await api.getPPERoom("StockA");
     this.stockA = r1.data;
     const r2 = await api.getPPEMonitor("stockA");
@@ -200,15 +205,18 @@ export default {
     this.stockE = result7.data;
     let result8 = await api.getPPEMonitor("StockE");
     this.sparesE = result8.data;
+    this.loading = false
   },
   methods: {
     async getItem(item) {
+      this.loading = true
       const condition = {
         location: item,
         plant: "",
       };
       const result = await api.getPPEStockClick(condition);
       this.data_set = result;
+      this.loading = false
       this.dialog = true;
     },
     getColor(location, status) {
@@ -231,6 +239,7 @@ export default {
 
   data() {
     return {
+      loading: false,
       imageUrl: imageUrl,
       data_set: [],
       headers: [
