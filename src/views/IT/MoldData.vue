@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import {imageUrl} from '@/services/constants'
 import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
@@ -214,6 +215,7 @@ export default {
   },
   data() {
     return {
+      imageUrl,
       loading: false,
       search: "",
       selectPlant: "",
@@ -226,7 +228,6 @@ export default {
         { plant: "REF", value: "REF" },
         { plant: "W/M", value: "WM" },
       ],
-      imageUrl: "http://localhost:3000/image/",
       data_set: [],
       headers: [
         {

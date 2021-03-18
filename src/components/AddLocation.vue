@@ -78,17 +78,6 @@ export default {
         this.loading = false;
       }
       event.preventDefault();
-      // await axios
-      //   .post("http://localhost:3000/post_location", postLocation)
-      //   .then(
-      //     () => {
-      //       alert("Add success fully");
-      //       this.$router.push("/locationdata");
-      //     },
-      //     (error) => {
-      //       console.log(error);
-      //     }
-      //   );
     },
   },
 };

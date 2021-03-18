@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Request Carry Out</h2>
     <!-- Approveal Process Form -->
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -326,6 +327,7 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import { mapGetters, mapMutations } from "vuex";
 import GetApprove from "@/components/IT/GetApprove";
@@ -357,6 +359,7 @@ export default {
     },
     async onSubmit() {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         if (this.getSpare.length === 0) alert("Please select spare part.");
         let count = "1";
         let stocks = [];
@@ -371,12 +374,14 @@ export default {
 
         for (let i = 0; i < this.getSpare.length; i++) {
           if (this.getSpare[i].qty === 0) {
+            this.loading = false;
             alert(
               "Spare Code : " + stocks[i][0].spare_code + " are out of stock"
             );
           } else if (this.getSpare[i].qty <= stocks[i][0].qty) {
             count = "0";
           } else {
+            this.loading = false;
             alert("Spare Code " + stocks[i][0].spare_code + " is not enough");
           }
         }
@@ -456,7 +461,9 @@ export default {
           // Insert to t_esrc_appprocess
           const data = {
             title:
-              "Spare Part Carry Out Request : [IT ROOM" + `${payload.docno}` + "]",
+              "Spare Part Carry Out Request : [IT ROOM" +
+              `${payload.docno}` +
+              "]",
             bocd: "itroom",
             ref_id: result.data[0].id,
             reg_no: payload.reg_no,
@@ -465,6 +472,7 @@ export default {
             docst: "P",
           };
           await api.PostProcessApprove(data);
+          this.loading = false;
           alert("Success");
           this.$router.push("/esrc/itroom/carryout");
         }
@@ -480,6 +488,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       //Validate part
       valid: true,
       filesRules: [(v) => !!v || "Please upload file."],
@@ -604,6 +613,7 @@ export default {
     GetApprove,
     GetCarrier,
     GetSpare,
+    Loading,
   },
 };
 </script>

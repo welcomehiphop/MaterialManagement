@@ -374,10 +374,12 @@ export default {
 
         for (let i = 0; i < this.getSpare.length; i++) {
           if (this.getSpare[i].qty === 0) {
+            this.loading = false;
             alert("Spare Code : " + stocks[i].spare_code + " are out of stock");
           } else if (this.getSpare[i].qty <= stocks[i].qty) {
             count = "0";
           } else {
+            this.loading = false;
             alert("Spare Code " + stocks[i].spare_code + " is not enough");
           }
         }

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Spare Part Register</h2>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-select
@@ -79,10 +80,15 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
+      loading: false,
       //validate part
       valid: true,
       plantRules: [(v) => !!v || "Plant is required"],
@@ -91,7 +97,8 @@ export default {
       priceRules: [(v) => !!v || "Price is required"],
       safeStockRules: [
         (v) => !!v || "Safe Stock is required",
-        (v) => Number.isInteger(Number(v)) || "The safe stock must be an integer",
+        (v) =>
+          Number.isInteger(Number(v)) || "The safe stock must be an integer",
         (v) => v > 0 || "The safe stock must be greater than zero",
       ],
       typeRules: [(v) => !!v || "Type is required"],
@@ -126,6 +133,7 @@ export default {
     async submit(event) {
       event.preventDefault();
       if (this.$refs.form.validate()) {
+        this.loading = true;
         let bodyFormData = new FormData();
         bodyFormData.append("plant", this.form.selectPlant);
         bodyFormData.append("spare_code", this.form.spareCode);
@@ -136,6 +144,7 @@ export default {
         bodyFormData.append("reg_empno", "20528906");
         bodyFormData.append("file", this.selectedFile, this.selectedFile.name);
         await api.postITMold(bodyFormData);
+        this.loading = false;
       }
     },
   },

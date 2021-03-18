@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Location Register</h2>
 
     <v-form ref="form" v-model="valid" lazy-validation>
@@ -40,10 +41,15 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
+      loading: false,
       //Validate part
       valid: true,
       plantRules: [(v) => !!v || "Plant is required"],
@@ -66,6 +72,7 @@ export default {
   methods: {
     async submit(event) {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         const postLocation = {
           location_code: this.form.location_code,
           location_name: this.form.location_name,
@@ -73,6 +80,7 @@ export default {
         };
         await api.postITLocation(postLocation);
       }
+      this.loading = false;
       event.preventDefault();
 
       // if (

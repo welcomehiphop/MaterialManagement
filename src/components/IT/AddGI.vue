@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>GI Register</h2>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-row>
@@ -109,20 +110,24 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 import ScheduleForm from "@/components/IT/ScheduleForm";
 import { mapGetters } from "vuex";
 export default {
   async mounted() {
+    this.loading = true;
     const condition = {
       location_code: "",
       plant: "",
     };
     const result = await api.getITLocation(condition);
     this.locations = result;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       valid: true,
       spareCodeRules: [(v) => !!v || "Spare Code is required"],
       spareTypeRules: [(v) => !!v || "Spare Type is required"],
@@ -150,10 +155,12 @@ export default {
   },
   components: {
     ScheduleForm,
+    Loading,
   },
   methods: {
     async submit(e) {
       if (this.$refs.form.validate()) {
+        this.loading = true;
         let data = {
           spare_code: this.allSpare.spare_code,
           purpose: this.form.purpose,
@@ -181,7 +188,7 @@ export default {
             };
             await api.putITStock(dataUpdate);
             await api.postITInout(data);
-            this.$router.push('inout')
+            this.$router.push("inout");
           } else {
             alert(
               this.form.location +
@@ -194,6 +201,7 @@ export default {
           alert("Location : " + this.form.location + " is empty");
         }
       }
+      this.loading = false;
       e.preventDefault();
     },
   },

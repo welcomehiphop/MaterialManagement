@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Carry Out Detail</h2>
     <div class="text-right">
       <v-btn color="secondary" @click="changeStatus('W')">Withdraw</v-btn>
@@ -213,28 +214,36 @@
 </template>
 
 <script>
-import {formatDateFromDB} from '@/function/exportexcel'
+import Loading from "@/components/Loading";
+import { formatDateFromDB } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   methods: {
     formatDateFromDB,
     async changeStatus(docst) {
-      console.log(docst);
+      this.loading = true;
       const data = {
         docst: docst,
       };
       await api.putFeStatus(this.$route.params.id, data);
+      this.loading = false;
     },
   },
   async mounted() {
+    this.loading = true;
     const result = await api.getITCarryByID(this.$route.params.id);
     this.data_set = result.data.process;
     this.detail = result.data.detail[0];
     this.file = result.data.file;
     this.spares = result.data.spares;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       spareHeaders: [
         { text: "No", value: "No", align: "center", sortable: false },
         {

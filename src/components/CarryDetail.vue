@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <h2>Carry Out Detail</h2>
     <div class="text-right">
       <v-btn color="secondary" @click="changeStatus('W')">Withdraw</v-btn>
@@ -213,33 +214,42 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import { formatDateFromDB, formatDate } from "@/function/exportexcel";
 import api from "@/services/api";
 export default {
+  components: {
+    Loading,
+  },
   methods: {
     formatDateFromDB,
     formatDate,
     async changeStatus(docst) {
       if (confirm("Do you really want to withdraw?")) {
+        this.loading = true;
         const data = {
           docst: docst,
           rcv_date: formatDate(new Date()),
           app_date: formatDate(new Date()),
         };
         await api.putFeStatus(this.$route.params.id, data);
+        this.loading = false;
         this.$route.push("/esrc/fe/carryout");
       }
     },
   },
   async mounted() {
+    this.loading = true;
     const result = await api.GetCarryListByID(this.$route.params.id);
     this.data_set = result.data.process;
     this.detail = result.data.detail[0];
     this.file = result.data.file;
     this.spares = result.data.spares;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       spareHeaders: [
         { text: "No", value: "No", align: "center", sortable: false },
         {

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div v-for="(item, id) in data_set" :key="id">
       <v-card class="pa-5">
         <h2>GI Detail</h2>
@@ -81,16 +82,21 @@
 
 <script>
 import api from "@/services/api";
+import Loading from "@/components/Loading";
 export default {
+  components: { Loading },
   async mounted() {
+    this.loading = true;
     let result = await api.getITInoutByID(this.$route.params.id);
     this.data_set = result;
+    this.loading = false;
   },
   data() {
     return {
+      loading: false,
       data_set: [],
-      gr_empName: 'Pamorn Sirimak',
-      gr_empNo : '20528906'
+      gr_empName: "Pamorn Sirimak",
+      gr_empNo: "20528906",
     };
   },
 };

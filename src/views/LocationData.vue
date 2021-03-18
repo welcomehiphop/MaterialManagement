@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Loading :start="loading" />
     <div class="text-center">
       <h1>Location Data</h1>
     </div>
@@ -105,6 +106,7 @@
 </template>
 
 <script>
+import Loading from "@/components/Loading";
 import api from "@/services/api";
 export default {
   async mounted() {
@@ -117,6 +119,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       search: "",
       selectPlant: "",
       plants: [
@@ -145,37 +148,44 @@ export default {
       ],
     };
   },
-  components: {},
+  components: { Loading },
   methods: {
     async onEnter() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocation(condition);
       this.data_set = result;
+      this.loading = false;
     },
     async onSelected() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocation(condition);
       this.data_set = result;
+      this.loading = false;
     },
     async onClickSearch() {
+      this.loading = true;
       const condition = {
         location_code: "%" + this.search + "%",
         plant: "%" + this.selectPlant + "%",
       };
       const result = await api.getLocation(condition);
       this.data_set = result;
+      this.loading = false;
     },
     ShareData(id) {
       this.$router.push(`/esrc/feroom/editlocation/${id}`);
     },
     async onDelete(id) {
       if (confirm("Do you really want to delete?")) {
+        this.loading = true;
         await api.deleteLocation(id);
       }
       const condition = {
@@ -184,6 +194,7 @@ export default {
       };
       const result = await api.getLocation(condition);
       this.data_set = result;
+      this.loading = false;
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Loading :start="loading" />
+    <Loading :start="loading"/>
     <div class="text-center">
       <h1>Carry Out</h1>
     </div>

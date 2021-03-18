@@ -15,7 +15,6 @@ import EditSpare from '@/components/EditSpare.vue'
 import EditLocation from '@/components/EditLocation.vue'
 import AddGR from '@/components/AddGR.vue'
 import AddGI from '@/components/AddGI.vue'
-import ItemGR from '@/components/ItemGR.vue'
 import DetailGR from '@/components/DetailGR.vue'
 import DetailGI from '@/components/DetailGI.vue'
 import RequestCarry from '@/components/RequestCarry.vue'
@@ -89,11 +88,6 @@ const routes = [{
     {
         path: '/',
         redirect: '/esrc'
-    },
-    {
-        path: '/itemgr',
-        name: 'ItemGR',
-        component: ItemGR
     },
     {
         path: '*',
